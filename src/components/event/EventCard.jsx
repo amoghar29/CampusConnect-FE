@@ -16,13 +16,20 @@ export default function EventCard({ event }) {
           </div>
         )}
       </div>
-      <div className="p-4 bg-">
+      <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900">
           {event.title}
         </h3>
         <p className="text-sm text-gray-500 mt-1">
           Hosted by {event.clubName}
         </p>
+        
+        {/* Register Now Button for Upcoming Events */}
+        {event.category === 'Upcoming' && (
+          <button className="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-500 transition duration-300">
+            Register Now
+          </button>
+        )}
       </div>
     </div>
   );

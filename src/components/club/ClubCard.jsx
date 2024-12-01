@@ -2,7 +2,7 @@ import {  Users, Calendar, Mail, MapPin } from "lucide-react";
 
 const ClubCard = ({ club }) => {
   return (
-    <div className="bg-white rounded-xl shadow-lg transition-transform transform hover:scale-105 hover:shadow-xl">
+    <div className="bg-white rounded-xl shadow-lg transition-transform transform hover:scale-105 hover:shadow-xl overflow-hidden">
       {/* Club Header */}
       <div className="relative h-48 bg-gradient-to-r from-indigo-500 to-purple-600 p-6 rounded-t-xl">
         <div className="absolute inset-0 bg-black/20" />
