@@ -39,7 +39,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="my-32 mx-auto max-w-2xl text-center">
+        <div className="mt-32 mx-auto max-w-2xl text-center">
           <h2 className="text-base font-semibold leading-7 text-indigo-600">
             Everything You Need
           </h2>
