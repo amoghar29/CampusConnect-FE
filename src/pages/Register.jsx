@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
-import RegistrationSuccess from '../components/registrationComponents/RegistrationSuccess';
-import RegistrationFailure from '../components/registrationComponents/RegistrationFailure';
-import RegistrationForm from '../components/registrationComponents/RegistrationForm';
+import RegistrationSuccess from '../components/registration/RegistrationSuccess';
+import RegistrationFailure from '../components/registration/RegistrationFailure';
+import RegistrationForm from '../components/registration/RegistrationForm';
 const BACKEND_URL = "http://localhost:4000";
 export default function Register() {
   const [email, setEmail] = useState('');

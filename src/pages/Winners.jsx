@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import Header from '../components/Header';
-import { Search, Trophy, Users, Calendar } from 'lucide-react';
+import { Search } from 'lucide-react';
+import WinnerCard from '../components/winners/winnerCard';
+import GradientBackground from '../components/common/GradientBackground';
 
 export default function Winners() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,15 +42,11 @@ export default function Winners() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Header />
+
       
       {/* Hero Section */}
       <div className="relative isolate px-6 pt-14 lg:px-8">
-        {/* Gradient Background */}
-        <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-          <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" />
-        </div>
-
+          <GradientBackground/>
         <div className="mx-auto max-w-7xl py-32 sm:py-40">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -102,69 +99,7 @@ export default function Winners() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="grid grid-cols-1 gap-8">
           {winners.map((event) => (
-            <div key={event.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-              {/* Event Header */}
-              <div className="relative h-48 sm:h-64">
-                <img
-                  src={event.image}
-                  alt={event.eventName}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Trophy className="h-5 w-5" />
-                    <span className="text-sm font-medium">{event.category}</span>
-                  </div>
-                  <h3 className="text-2xl font-bold">{event.eventName}</h3>
-                  <div className="mt-2 flex items-center gap-4 text-sm">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      {event.date}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users className="h-4 w-4" />
-                      {event.club}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Winners List */}
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {event.winners.map((winner) => (
-                    <div 
-                      key={winner.position} 
-                      className="relative bg-gray-50 rounded-lg p-6 border border-gray-100"
-                    >
-                      {/* Position Badge */}
-                      <div className={`absolute -top-3 left-6 px-3 py-1 rounded-full text-white text-sm font-semibold ${
-                        winner.position === 1 ? 'bg-yellow-500' :
-                        winner.position === 2 ? 'bg-gray-400' :
-                        'bg-orange-500'
-                      }`}>
-                        {winner.position === 1 ? '1st Place' :
-                         winner.position === 2 ? '2nd Place' :
-                         '3rd Place'}
-                      </div>
-
-                      <div className="mt-4">
-                        <h4 className="text-lg font-semibold text-gray-900">{winner.team}</h4>
-                        <div className="mt-2 space-y-1">
-                          {winner.members.map((member, index) => (
-                            <p key={index} className="text-sm text-gray-600">{member}</p>
-                          ))}
-                        </div>
-                        <div className="mt-4 text-indigo-600 font-semibold">
-                          Prize: {winner.prize}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <WinnerCard key={event.id} event={event} />
           ))}
         </div>
       </div>

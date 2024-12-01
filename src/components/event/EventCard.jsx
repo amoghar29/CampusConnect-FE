@@ -17,13 +17,18 @@ export default function EventCard({ event }) {
         )}
       </div>
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900">
-          {event.title}
-        </h3>
-        <p className="text-sm text-gray-500 mt-1">
-          Hosted by {event.clubName}
-        </p>
+        <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
+        <p className="text-sm text-gray-500 mt-1">Hosted by {event.clubName}</p>
+
+        {/* Register Now Button for Upcoming Events */}
+        
+        <button 
+          className={`mt-4 w-full py-2 rounded-lg transition duration-300 ${event.category === "Upcoming" ? "bg-indigo-600 text-white hover:bg-indigo-500" : "bg-gray-400 text-gray-200 cursor-not-allowed"}`} 
+          disabled={event.category !== "Upcoming"}
+        >
+          {event.category === "Upcoming" ? "Register Now" : "Registration Closed"}
+        </button>
       </div>
     </div>
   );
-} 
+}
