@@ -1,26 +1,56 @@
-import { useState } from "react";
+import { useState } from 'react';
 import { Search, Calendar, Filter } from 'lucide-react';
-import Header from "../components/Header";
-import GradientBackground from "../components/common/GradientBackground";
-import EventCard from "../components/event/EventCard";
+import Header from '../components/Header';
 
-export default function Event() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+const EventsListing = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
   const [showFilters, setShowFilters] = useState(false);
 
   // Sample events data
-  const events = [
-    { id: 1, title: 'Tech Workshop', date: 'Oct 02', image: '/api/placeholder/600/400', price: '₹20 Onwards', category: 'Upcoming', clubName: 'Tech Club' },
-    { id: 2, title: 'Photography Session', date: 'Aug 09', image: '/api/placeholder/600/400', price: '₹10 Onwards', category: 'Upcoming', clubName: 'Photography Club' },
-    { id: 3, title: 'Art Exhibition', date: 'Sep 15', image: '/api/placeholder/600/400', price: 'Free', category: 'Past', clubName: 'Art Club' },
-    { id: 4, title: 'Coding Bootcamp', date: 'Nov 05', image: '/api/placeholder/600/400', price: '₹50 Onwards', category: 'Upcoming', clubName: 'Coding Club' },
-    { id: 5, title: 'Music Fest', date: 'Dec 12', image: '/api/placeholder/600/400', price: '₹30 Onwards', category: 'Upcoming', clubName: 'Music Club' },
-    { id: 6, title: 'Dance Workshop', date: 'Jan 20', image: '/api/placeholder/600/400', price: '₹15 Onwards', category: 'Past', clubName: 'Dance Club' },
-    { id: 7, title: 'Science Fair', date: 'Feb 10', image: '/api/placeholder/600/400', price: 'Free', category: 'Upcoming', clubName: 'Science Club' },
-    { id: 8, title: 'Literature Meet', date: 'Mar 18', image: '/api/placeholder/600/400', price: '₹25 Onwards', category: 'Upcoming', clubName: 'Literature Club' },
-    { id: 9, title: 'Robotics Challenge', date: 'Apr 22', image: '/api/placeholder/600/400', price: '₹40 Onwards', category: 'Upcoming', clubName: 'Robotics Club' },
-    { id: 10, title: 'Cooking Class', date: 'May 30', image: '/api/placeholder/600/400', price: '₹35 Onwards', category: 'Upcoming', clubName: 'Culinary Club' }
+  const sampleEvents = [
+    {
+      id: 1,
+      title: 'Tech Workshop',
+      date: 'Oct 02',
+      image: '/api/placeholder/600/400',
+      price: '₹20 Onwards',
+      category: 'upcoming',
+      clubName: 'Tech Club'
+    }, {
+      id: 1,
+      title: 'Tech Workshop',
+      date: 'Oct 02',
+      image: '/api/placeholder/600/400',
+      price: '₹20 Onwards',
+      category: 'upcoming',
+      clubName: 'Tech Club'
+    }, {
+      id: 1,
+      title: 'Tech Workshop',
+      date: 'Oct 02',
+      image: '/api/placeholder/600/400',
+      price: '₹20 Onwards',
+      category: 'upcoming',
+      clubName: 'Tech Club'
+    }, {
+      id: 1,
+      title: 'Tech Workshop',
+      date: 'Oct 02',
+      image: '/api/placeholder/600/400',
+      price: '₹20 Onwards',
+      category: 'upcoming',
+      clubName: 'Tech Club'
+    },
+    {
+      id: 2,
+      title: 'Photography Session',
+      date: 'Aug 09',
+      image: '/api/placeholder/600/400',
+      price: '₹10 Onwards',
+      category: 'upcoming',
+      clubName: 'Photography Club'
+    }
   ];
 
   const categories = ['Upcoming', 'Ongoing', 'This week'];
@@ -31,16 +61,20 @@ export default function Event() {
       
       {/* Hero Section */}
       <div className="relative isolate px-4 sm:px-[10%] pt-14">
-        <GradientBackground position="top" />
+        {/* Gradient Background */}
+        <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+          <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" />
+        </div>
+
         <div className="mx-auto max-w-5xl py-24 sm:py-32">
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">
               Discover Campus Events
             </h1>
-            <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-8 text-gray-600">
+            <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-8 text-gray-600 px-4">
               Find and join exciting events happening across your campus
             </p>
-
+            
             {/* Search Bar - Mobile */}
             <div className="mt-6 sm:hidden px-4">
               <div className="flex flex-col gap-3">
@@ -71,6 +105,7 @@ export default function Event() {
                     <Filter className="h-5 w-5 text-gray-400" />
                   </button>
                 </div>
+                {/* Mobile Search Button */}
                 <button 
                   className="w-full bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-500 transition duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
                   onClick={() => {
@@ -134,9 +169,16 @@ export default function Event() {
           </div>
         </div>
 
+        {/* Mobile Filters (if needed) */}
+        {showFilters && (
+          <div className="sm:hidden mb-6 p-4 bg-gray-50 rounded-lg">
+            {/* Add your filter options here */}
+          </div>
+        )}
+
         {/* Events Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {events.map((event) => (
+          {sampleEvents.map((event) => (
             <div 
               key={event.id} 
               className="group relative bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105"
@@ -171,4 +213,6 @@ export default function Event() {
       </div>
     </div>
   );
-}
+};
+
+export default EventsListing;

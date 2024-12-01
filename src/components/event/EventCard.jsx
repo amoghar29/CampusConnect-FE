@@ -16,7 +16,7 @@ export default function EventCard({ event }) {
           </div>
         )}
       </div>
-      <div className="p-4">
+      <div className="p-4 bg-">
         <h3 className="text-lg font-semibold text-gray-900">
           {event.title}
         </h3>

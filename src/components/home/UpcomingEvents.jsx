@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRightIcon } from "lucide-react";
-import EventCard from "../eventComponents/EventCard";
+import EventCard from "../event/EventCard";
 
 export default function UpcomingEvents() {
   const events = [
@@ -55,14 +55,14 @@ export default function UpcomingEvents() {
   const displayEvents = events.slice(0, 6);
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 px-4  bg-gray-50 rounded-xl">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h2 className="text-3xl font-bold text-gray-900">Upcoming Events</h2>
             <p className="text-gray-600">Don't miss out on these exciting upcoming events</p>
           </div>
-          <Link to="/events" className="text-indigo-600 hover:text-indigo-700 font-medium flex items-center">
+          <Link to="/explore-events" className="text-indigo-600 hover:text-indigo-700 font-medium flex items-center">
             View all events 
             <ArrowRightIcon className="ml-2 h-4 w-4" />
           </Link>

@@ -8,6 +8,7 @@ import PostEvent from '../AdminPages/PostEvent'
 import Feedback from '../pages/Feedback';
 import Winners from '../pages/Winners'
 import Suggestions from '../pages/Suggestions'
+import EventsListing from '../pages/test';
 export default function Router() {
   return (
     <Routes>
@@ -21,6 +22,7 @@ export default function Router() {
       <Route path="/admin/post-event" element={<PostEvent />} />
       <Route path="/winners" element={<Winners/>}/>
       <Route path="/suggestions" element={<Suggestions/>}/>
+      <Route path="/test" element = {<EventsListing/>}/>
     </Routes>
   );
 }
