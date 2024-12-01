@@ -9,8 +9,11 @@ import Feedback from '../pages/Feedback';
 import Winners from '../pages/Winners'
 import Suggestions from '../pages/Suggestions'
 import EventsListing from '../pages/test';
+import Header from '../components/Header';
 export default function Router() {
   return (
+    <div className='App'>
+      <Header/>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
@@ -24,5 +27,7 @@ export default function Router() {
       <Route path="/suggestions" element={<Suggestions/>}/>
       <Route path="/test" element = {<EventsListing/>}/>
     </Routes>
+    </div>
+    
   );
 }

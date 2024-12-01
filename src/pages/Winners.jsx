@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import Header from '../components/Header';
-import { Search, Trophy, Users, Calendar } from 'lucide-react';
-import WinnerCard from '../components/winners/WinnerCard';
+import { Search } from 'lucide-react';
+import WinnerCard from '../components/winners/winnerCard';
 import GradientBackground from '../components/common/GradientBackground';
 
 export default function Winners() {
@@ -43,7 +42,7 @@ export default function Winners() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Header />
+
       
       {/* Hero Section */}
       <div className="relative isolate px-6 pt-14 lg:px-8">

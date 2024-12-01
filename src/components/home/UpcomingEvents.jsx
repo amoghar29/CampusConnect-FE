@@ -10,7 +10,7 @@ export default function UpcomingEvents() {
       date: 'Oct 02',
       image: '/api/placeholder/600/400',
       price: '₹20 Onwards',
-      category: 'upcoming',
+      category: 'Upcoming',
       clubName: 'Tech Club'
     },
     {
@@ -19,7 +19,7 @@ export default function UpcomingEvents() {
       date: 'Oct 02',
       image: '/api/placeholder/600/400',
       price: '₹20 Onwards',
-      category: 'upcoming',
+      category: 'Upcoming',
       clubName: 'Tech Club'
     },
     {
@@ -28,7 +28,7 @@ export default function UpcomingEvents() {
       date: 'Oct 02',
       image: '/api/placeholder/600/400',
       price: '₹20 Onwards',
-      category: 'upcoming',
+      category: 'Upcoming',
       clubName: 'Tech Club'
     },
     {
@@ -37,7 +37,7 @@ export default function UpcomingEvents() {
       date: 'Oct 02',
       image: '/api/placeholder/600/400',
       price: '₹20 Onwards',
-      category: 'upcoming',
+      category: 'Upcoming',
       clubName: 'Tech Club'
     },
     {
@@ -46,7 +46,7 @@ export default function UpcomingEvents() {
       date: 'Aug 09',
       image: '/api/placeholder/600/400',
       price: '₹10 Onwards',
-      category: 'upcoming',
+      category: 'Upcoming',
       clubName: 'Photography Club'
     }
   ];

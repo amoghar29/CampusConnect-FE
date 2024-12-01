@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "../components/Header";
 import { Search} from "lucide-react";
 import GradientBackground from "../components/common/GradientBackground";
 import ClubCard from '../components/club/ClubCard'; 
@@ -43,8 +42,6 @@ export default function Club() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Header />
-
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <GradientBackground position="top"/>
         {/* Hero Section */}
@@ -68,7 +65,11 @@ export default function Club() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full rounded-lg border border-gray-200 bg-white py-4 pl-12 pr-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-300"
                 />
+                
               </div>
+              <button className="mx-6 bg-indigo-600 text-white px-8 py-4 rounded-lg hover:bg-indigo-500 transition duration-300 transform hover:scale-105 shadow-lg">
+                Search
+              </button>
             </div>
           </div>
         </div>

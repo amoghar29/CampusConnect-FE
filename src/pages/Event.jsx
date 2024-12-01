@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Search, Calendar, Filter } from "lucide-react";
-import Header from "../components/Header";
 import GradientBackground from "../components/common/GradientBackground";
 import EventCard from "../components/event/EventCard";
 
@@ -107,7 +106,6 @@ export default function Event() {
 
   return (
     <div className="bg-white">
-      <Header />
 
       {/* Hero Section */}
       <div className="relative isolate px-4 sm:px-[10%] pt-14">
@@ -134,7 +132,6 @@ export default function Event() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-                <div className="flex gap-2"></div>
                 <button
                   className="w-full bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-500 transition duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
                   onClick={() => {
@@ -197,40 +194,12 @@ export default function Event() {
         {/* Events Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {events.map((event) => (
-            <div
-              key={event.id}
-              className="group relative bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105"
-            >
-              <div className="relative h-48 sm:h-64 w-full overflow-hidden">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className="h-full w-full object-cover object-center"
-                />
-                <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full text-sm font-medium shadow-md">
-                  {event.date}
-                </div>
-                <div className="absolute bottom-4 right-4 bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-medium shadow-md">
-                  {event.price}
-                </div>
-              </div>
-              <div className="p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                  {event.title}
-                </h3>
-                <p className="text-sm text-gray-600">
-                  Hosted by {event.clubName}
-                </p>
-              </div>
-            </div>
+            <EventCard key={event.id} event={event} />
           ))}
         </div>
       </div>
 
-      {/* Bottom Gradient */}
-      <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" />
-      </div>
+      <GradientBackground position="bottom"/>
     </div>
   );
 }

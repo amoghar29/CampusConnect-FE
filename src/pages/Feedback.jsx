@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Header from '../components/Header';
 import {  Send, Smile, Frown, Meh } from 'lucide-react';
 
 export default function Feedback() {
@@ -29,7 +28,6 @@ export default function Feedback() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Header />
 
       <div className="relative isolate px-6 pt-14 lg:px-8">
         {/* Gradient Background */}
