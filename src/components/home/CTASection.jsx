@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ctaImage2 from "../../assets/ctaImage2.jpeg";
 
 export default function CTASection() {
   return (
@@ -15,30 +16,32 @@ export default function CTASection() {
               Discover clubs that match your interests and connect with
               like-minded peers. Start your journey today!
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-              <Link
-                to="/clubs"
-                className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                Browse Clubs
-              </Link>
+            <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start mb-12">
+              <div className="">
+                <Link
+                  to="/clubs"
+                  className="rounded-md bg-white w-full max-w-xs px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  Browse Clubs
+                </Link>
+              </div>
               <Link
                 to="/events"
-                className="text-sm font-semibold leading-6 text-white"
+                className="rounded-md  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 View Events <span aria-hidden="true">→</span>
               </Link>
             </div>
           </div>
-          <div className="relative mt-16 h-80 lg:mt-8">
+          <div className="lg:flex-shrink-0 flex justify-center items-center">
             <img
-              className="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10"
-              src="/api/placeholder/1824/1080"
-              alt="App screenshot"
+              src={ctaImage2}
+              alt="Engaged students"
+              className="rounded-lg border border-gray-300 shadow-lg sm: w-96 h-84 mb-8 "
             />
           </div>
         </div>
       </div>
     </div>
   );
-} 
+}
