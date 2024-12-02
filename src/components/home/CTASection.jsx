@@ -25,12 +25,14 @@ export default function CTASection() {
                   Browse Clubs
                 </Link>
               </div>
-              <Link
-                to="/events"
-                className="rounded-md  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                View Events <span aria-hidden="true">→</span>
-              </Link>
+              <div className="">
+                <Link
+                  to="/explore-events"
+                  className="rounded-md bg-white w-full max-w-xs px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  View Events <span aria-hidden="true">→</span>
+                </Link>
+              </div>
             </div>
           </div>
           <div className="lg:flex-shrink-0 flex justify-center items-center">
