@@ -102,7 +102,7 @@ export default function Event() {
     },
   ];
 
-  const categories = ["Upcoming", "Ongoing", "This week"];
+  const categories = ["Upcoming", "Past"];
 
   return (
     <div className="bg-white">
@@ -176,14 +176,14 @@ export default function Event() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Categories */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-            Popular Events
+          <h2 className="text-3xl sm:text-3xl font-bold text-gray-900">
+            Events
           </h2>
           <div className="flex flex-wrap gap-2 sm:gap-4">
             {categories.map((category) => (
               <button
                 key={category}
-                className="px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-300"
+                className="px-4 py-1.5 rounded-full text-md font-medium bg-gray-100 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-300"
               >
                 {category}
               </button>
