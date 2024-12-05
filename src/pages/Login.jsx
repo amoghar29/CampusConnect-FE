@@ -2,12 +2,17 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
+
 export default function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+
   async function login(e) {
     e.preventDefault();
+    setError("");
+
     try {
       const response = await axios.post(
         `${BACKEND_URL}/admin/signin`,
@@ -17,16 +22,32 @@ export default function Login() {
           withCredentials: true,
         }
       );
+      
       if (response.status === 200) {
         navigate("/home");
       }
-      // console.log(response.data);
     } catch (error) {
-      // console.error("Login error:", error);
+      if (error.response) {
+        switch (error.response.status) {
+          case 401:
+            setError("Incorrect email or password");
+            break;
+          case 404:
+            setError("User not found");
+            break;
+          default:
+            setError("An error occurred. Please try again.");
+        }
+      } else if (error.request) {
+        setError("Unable to connect to the server. Please check your internet connection.");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
     }
   }
+
   return (
-    <div className="bg-gray-100 text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0  ">
+    <div className="bg-gray-100 text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
       <div className="relative mt-12 w-full max-w-lg sm:mt-10">
         <div className="relative -mb-px h-px w-full bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
         <div className="mx-5 border border-gray-300 shadow-lg rounded-lg bg-white p-6">
@@ -38,6 +59,13 @@ export default function Login() {
               Welcome back, enter your credentials to continue.
             </p>
           </div>
+          
+          {error && (
+            <div className="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <span className="block sm:inline">{error}</span>
+            </div>
+          )}
+          
           <div className="pt-4">
             <form onSubmit={login}>
               <div>
@@ -75,9 +103,6 @@ export default function Login() {
                     />
                   </div>
                 </div>
-              </div>
-              <div className="mt-4 flex items-center justify-between">
-                {/* <Link className="text-sm font-medium text-gray-600 underline" to="/forgot-password">Forgot password?</Link> */}
               </div>
               <div className="mt-4 flex flex-col items-center justify-center gap-y-2 sm:flex-row sm:gap-x-2 ">
                 <button
