@@ -3,7 +3,6 @@ import Features from "../components/home/Features";
 import UpcomingEvents from "../components/home/UpcomingEvents";
 import CTASection from "../components/home/CTASection";
 import GradientBackground from "../components/common/GradientBackground";
-import WinnerHighlight from "../components/home/winner";
 
 export default function Home() {
   return (

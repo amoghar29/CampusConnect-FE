@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Search, Calendar, Filter } from "lucide-react";
+import { useState,useEffect } from "react";
+import { Search,} from "lucide-react";
 import GradientBackground from "../components/common/GradientBackground";
 import EventCard from "../components/event/EventCard";
 
