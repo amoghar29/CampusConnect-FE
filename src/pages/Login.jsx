@@ -1,28 +1,28 @@
-import axios from 'axios';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-const BACKEND_URL = "";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+const BACKEND_URL = "https://campusconnect-be.onrender.com";
 export default function Login() {
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
   async function login(e) {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/login`,
+        `${BACKEND_URL}/admin/signin`,
         { email, password },
         {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
       if (response.status === 200) {
-        navigate('/home');
+        navigate("/home");
       }
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
-      console.error('Login error:', error);
+      // console.error("Login error:", error);
     }
   }
   return (
@@ -31,7 +31,9 @@ export default function Login() {
         <div className="relative -mb-px h-px w-full bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
         <div className="mx-5 border border-gray-300 shadow-lg rounded-lg bg-white p-6">
           <div className="flex flex-col text-center">
-            <h1 className="text-2xl font-semibold leading-7 tracking-tight text-black">Club Login</h1>
+            <h1 className="text-2xl font-semibold leading-7 tracking-tight text-black">
+              Club Login
+            </h1>
             <p className="mt-2 text-lg font-medium text-gray-600">
               Welcome back, enter your credentials to continue.
             </p>
@@ -79,7 +81,7 @@ export default function Login() {
               </div>
               <div className="mt-4 flex flex-col items-center justify-center gap-y-2 sm:flex-row sm:gap-x-2 ">
                 <button
-                  className="font-semibold bg-indigo-600 text-white hover:bg-indigo-500 transition duration-300 inline-flex items-center justify-center rounded-md text-sm h-10 w-full max-w-xs px-4 py-2"
+                  className="font-semibold bg-indigo-600 text-white hover:bg-indigo-500 transition duration-300 inline-flex items-center justify-center rounded-md text-sm h-10 w-full px-4 py-2"
                   type="submit"
                 >
                   Log in
