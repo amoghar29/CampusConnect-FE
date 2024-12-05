@@ -3,6 +3,7 @@ import axios from "axios";
 import RegistrationSuccess from "../components/registration/RegistrationSuccess";
 import RegistrationFailure from "../components/registration/RegistrationFailure";
 import RegistrationForm from "../components/registration/RegistrationForm";
+import GradientBackground from "../components/common/GradientBackground";
 
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
@@ -54,7 +55,9 @@ export default function Register() {
       <div className="flex min-h-screen items-center justify-center bg-gray-100">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-700">Processing your registration...</p>
+          <p className="text-xl text-gray-700">
+            Processing your registration...
+          </p>
         </div>
       </div>
     );
@@ -62,19 +65,13 @@ export default function Register() {
 
   // Success Screen
   if (registrationSuccess) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <RegistrationSuccess />
-      </div>
-    );
+    return <RegistrationSuccess />;
   }
 
   // Failure Screen
   if (registrationError) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
         <RegistrationFailure onTryAgain={handleTryAgain} />
-      </div>
     );
   }
 
