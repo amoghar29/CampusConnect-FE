@@ -196,7 +196,7 @@ export default function Event() {
     if (view === "upcoming") return eventDate >= currentDate;
     if (view === "past") return eventDate < currentDate;
     return true;
-  }).sort((a, b) => new Date(b.date) - new Date(a.date));;
+  }).sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <div className="bg-white">
