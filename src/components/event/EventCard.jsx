@@ -1,4 +1,4 @@
-export default function EventCard({ event }) {
+export default function EventCard({ event,isRegistrationOpen }) {
   return (
     <div className="group relative bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] overflow-hidden">
       <div className="relative h-48 sm:h-64 w-full overflow-hidden">
@@ -23,10 +23,10 @@ export default function EventCard({ event }) {
         {/* Register Now Button for Upcoming Events */}
         
         <button 
-          className={`mt-4 w-full py-2 rounded-lg transition duration-300 ${event.category === "Upcoming" ? "bg-indigo-600 text-white hover:bg-indigo-500" : "bg-gray-400 text-gray-200 cursor-not-allowed"}`} 
-          disabled={event.category !== "Upcoming"}
+          className={`mt-4 w-full py-2 rounded-lg transition duration-300 ${isRegistrationOpen ? "bg-indigo-600 text-white hover:bg-indigo-500" : "bg-gray-400 text-gray-200 cursor-not-allowed"}`} 
+          disabled={!isRegistrationOpen}
         >
-          {event.category === "Upcoming" ? "Register Now" : "Registration Closed"}
+          {isRegistrationOpen ? "Register Now" : "Registration Closed"}
         </button>
       </div>
     </div>
