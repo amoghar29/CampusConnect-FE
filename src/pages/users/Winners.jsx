@@ -2,11 +2,9 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import WinnerCard from "../../components/winners/winnerCard";
 import GradientBackground from "../../components/common/GradientBackground";
-import FilterButton from "../../components/common/filterButton";
 export default function Winners() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState("2024");
-  const [view,setView] = useState("all");
   // Sample winners data
   const winners = [
     {
