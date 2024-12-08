@@ -5,7 +5,7 @@ import EventCard from "../../components/event/EventCard";
 import FilterButton from "../../components/common/FilterButton";
 
 export default function Event() {
-  const [view, setView] = useState("all");
+  const [view, setView] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const currentDate = new Date();
@@ -194,8 +194,8 @@ export default function Event() {
   const filteredEvents = events
     .filter((event) => {
       const eventDate = new Date(event.date);
-      if (view === "upcoming") return eventDate >= currentDate;
-      if (view === "past") return eventDate < currentDate;
+      if (view === "Upcoming") return eventDate >= currentDate;
+      if (view === "Past") return eventDate < currentDate;
       return true;
     })
     .sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -275,9 +275,9 @@ export default function Event() {
             Events
           </h2>
           <div className="flex flex-wrap gap-2 sm:gap-4">
-            <FilterButton name="All" view={view} setView={"all"} />
-            <FilterButton name="Upcoming" view={view} setView={"upcoming"} />
-            <FilterButton name="Past" view={view} setView={"past"} />
+            <FilterButton name="All" view={view} setView={setView} />
+            <FilterButton name="Upcoming" view={view} setView={setView} />
+            <FilterButton name="Past" view={view} setView={setView} />
           </div>
         </div>
 
