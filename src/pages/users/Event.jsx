@@ -275,9 +275,9 @@ export default function Event() {
             Events
           </h2>
           <div className="flex flex-wrap gap-2 sm:gap-4">
-            <FilterButton name="All" view={view} setView={setView} />
-            <FilterButton name="Upcoming" view={view} setView={setView} />
-            <FilterButton name="Past" view={view} setView={setView} />
+            <FilterButton name="All" view={view} setView={"all"} />
+            <FilterButton name="Upcoming" view={view} setView={"upcoming"} />
+            <FilterButton name="Past" view={view} setView={"past"} />
           </div>
         </div>
 
