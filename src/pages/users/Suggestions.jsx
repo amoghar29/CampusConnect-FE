@@ -68,9 +68,9 @@ export default function Suggestions() {
           <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" />
         </div>
 
-        <div className="mx-auto max-w-3xl py-16 sm:py-24">
+        <div className="mx-auto max-w-3xl sm:py-4">
           <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-5xl">
               Suggest an Event
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import RegistrationSuccess from "../components/registration/RegistrationSuccess";
-import RegistrationFailure from "../components/registration/RegistrationFailure";
-import RegistrationForm from "../components/registration/RegistrationForm";
-import GradientBackground from "../components/common/GradientBackground";
+import RegistrationSuccess from "../../components/registration/RegistrationSuccess";
+import RegistrationFailure from "../../components/registration/RegistrationFailure";
+import RegistrationForm from "../../components/registration/RegistrationForm";
+import GradientBackground from "../../components/common/GradientBackground";
 
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
@@ -23,7 +23,7 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/admin/signup`,
+        `${BACKEND_URL}/register`,
         { email, password, clubName },
         {
           headers: { "Content-Type": "application/json" },
@@ -70,14 +70,13 @@ export default function Register() {
 
   // Failure Screen
   if (registrationError) {
-    return (
-        <RegistrationFailure onTryAgain={handleTryAgain} />
-    );
+    return <RegistrationFailure onTryAgain={handleTryAgain} />;
   }
 
   // Default Registration Form
   return (
-    <div className="bg-gray-100 text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
+    <div className=" text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
+    <GradientBackground position="top"/>
       <div className="relative mt-12 w-full max-w-lg sm:mt-10">
         <div className="relative -mb-px h-px w-full bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
         <div className="mx-5 border border-gray-300 shadow-lg rounded-lg bg-white p-8">

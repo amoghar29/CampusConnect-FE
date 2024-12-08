@@ -1,4 +1,4 @@
-import {  Users, Calendar, Mail, MapPin } from "lucide-react";
+import {  Users, Mail, MapPin } from "lucide-react";
 
 const ClubCard = ({ club }) => {
   return (
@@ -40,10 +40,7 @@ const ClubCard = ({ club }) => {
             <MapPin className="h-5 w-5" />
             <span>{club.location}</span>
           </div>
-          <div className="flex items-center gap-2 text-gray-600">
-            <Calendar className="h-5 w-5" />
-            <span>{club.upcomingEvents} Upcoming Events</span>
-          </div>
+          
         </div>
 
         {/* Achievements */}

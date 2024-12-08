@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Search} from "lucide-react";
-import GradientBackground from "../components/common/GradientBackground";
-import ClubCard from '../components/club/ClubCard'; 
+import { Search } from "lucide-react";
+import GradientBackground from "../../components/common/GradientBackground";
+import ClubCard from "../../components/club/ClubCard";
 
 export default function Club() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,7 +18,7 @@ export default function Club() {
       email: "tech.club@college.edu",
       contact: "+91 98765 43210",
       location: "Lab Complex, 2nd Floor",
-      upcomingEvents: 3,
+
       achievements: ["Best Technical Club 2023", "National Hackathon Winners"],
     },
     {
@@ -31,7 +31,7 @@ export default function Club() {
       email: "photo.club@college.edu",
       contact: "+91 98765 43211",
       location: "Arts Building, Room 105",
-      upcomingEvents: 2,
+
       achievements: [
         "Best Cultural Club 2023",
         "State Photography Contest Winners",
@@ -43,9 +43,9 @@ export default function Club() {
   return (
     <div className="bg-white min-h-screen">
       <div className="relative isolate px-6 pt-14 lg:px-8">
-        <GradientBackground position="top"/>
+        <GradientBackground position="top" />
         {/* Hero Section */}
-        <div className="mx-auto max-w-7xl py-32 sm:py-40">
+        <div className="mx-auto max-w-7xl py-4 sm:py-">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Campus Clubs
@@ -65,7 +65,6 @@ export default function Club() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full rounded-lg border border-gray-200 bg-white py-4 pl-12 pr-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-300"
                 />
-                
               </div>
               <button className="mx-6 bg-indigo-600 text-white px-8 py-4 rounded-lg hover:bg-indigo-500 transition duration-300 transform hover:scale-105 shadow-lg">
                 Search
@@ -75,7 +74,7 @@ export default function Club() {
         </div>
 
         {/* Clubs Grid */}
-        <div className="mx-auto max-w-7xl pb-20">
+        <div className="mx-auto max-w-7xl pb-20 py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {clubs.map((club) => (
               <ClubCard key={club.id} club={club} />
@@ -83,7 +82,6 @@ export default function Club() {
           </div>
         </div>
 
-        <GradientBackground position="bottom"/>
       </div>
     </div>
   );

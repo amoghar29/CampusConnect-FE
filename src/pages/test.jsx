@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Search, Calendar, Filter } from 'lucide-react';
-import Header from '../components/Header';
+import Header from '../components/common/Header';
 
 const EventsListing = () => {
   const [searchQuery, setSearchQuery] = useState('');

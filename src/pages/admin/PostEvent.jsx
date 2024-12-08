@@ -9,8 +9,10 @@ import {
   PenTool,
   Coins,
   Image as ImageIcon,
-  ChevronRight
+  ChevronRight,
+  Calendar
 } from 'lucide-react';
+import GradientBackground from '../../components/common/GradientBackground';
 
 const EventCreationForm = () => {
   const [eventData, setEventData] = useState({
@@ -86,10 +88,7 @@ const EventCreationForm = () => {
     <div className="bg-white min-h-screen p-6">
       <div className="max-w-4xl mx-auto">
         <div className="relative isolate">
-          {/* Background decoration */}
-          <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-            <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" />
-          </div>
+          <GradientBackground position='top'/>
 
           {/* Main Form Card */}
           <div className="mt-8 border border-gray-300 shadow-lg rounded-lg bg-white overflow-hidden">
@@ -146,11 +145,11 @@ const EventCreationForm = () => {
                 </div>
               </div>
 
-              {/* Basic Info Section */}
+              {/* EVent Info Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-lg font-semibold text-gray-900">
                   <FileText className="h-5 w-5 text-indigo-500" />
-                  <h3>Basic Information</h3>
+                  <h3>Event Information</h3>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -189,24 +188,18 @@ const EventCreationForm = () => {
                   {/* Time Selection */}
                   <div className="col-span-2 md:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Clock className="inline h-4 w-4 mr-2 text-gray-400" />
-                      Date & Time
+                      <Calendar className="inline h-4 w-4 mr-2 text-gray-400" />
+                      Date 
                     </label>
                     <div className="grid grid-cols-2 gap-4">
                       <input
                         type="datetime-local"
-                        name="startTime"
+                        name="date"
                         value={eventData.startTime}
                         onChange={handleChange}
                         className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
                       />
-                      <input
-                        type="datetime-local"
-                        name="endTime"
-                        value={eventData.endTime}
-                        onChange={handleChange}
-                        className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                      />
+                      
                     </div>
                   </div>
                 </div>
@@ -313,9 +306,7 @@ const EventCreationForm = () => {
           </div>
 
           {/* Bottom decoration */}
-          <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-            <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" />
-          </div>
+          <GradientBackground position='bottom'/>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GradientBackground from "../../components/common/GradientBackground";
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
 export default function Login() {
@@ -15,7 +16,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/admin/signin`,
+        `${BACKEND_URL}/login`,
         { email, password },
         {
           headers: { "Content-Type": "application/json" },
@@ -47,10 +48,13 @@ export default function Login() {
   }
 
   return (
-    <div className="bg-gray-100 text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
+    <div className=" text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
+      <GradientBackground position="top"/>
       <div className="relative mt-12 w-full max-w-lg sm:mt-10">
         <div className="relative -mb-px h-px w-full bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
+        
         <div className="mx-5 border border-gray-300 shadow-lg rounded-lg bg-white p-6">
+        
           <div className="flex flex-col text-center">
             <h1 className="text-2xl font-semibold leading-7 tracking-tight text-black">
               Club Login
@@ -116,6 +120,7 @@ export default function Login() {
           </div>
         </div>
       </div>
+
     </div>
   );
 }
