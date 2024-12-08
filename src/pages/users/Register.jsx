@@ -23,7 +23,7 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/admin/register`,
+        `${BACKEND_URL}/register`,
         { email, password, clubName },
         {
           headers: { "Content-Type": "application/json" },
