@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import Features from "../components/home/Features";
-import UpcomingEvents from "../components/home/UpcomingEvents";
-import CTASection from "../components/home/CTASection";
-import GradientBackground from "../components/common/GradientBackground";
+import Features from "../../components/home/Features";
+import UpcomingEvents from "../../components/home/UpcomingEvents";
+import CTASection from "../../components/home/CTASection";
+import GradientBackground from "../../components/common/GradientBackground";
 
 export default function Home() {
   return (
@@ -11,9 +11,9 @@ export default function Home() {
         {/* Hero Section with Background Gradient */}
         <div className="relative isolate pt-14">
           <GradientBackground position="top" />
-          <div className="py-16 sm:py-20 lg:py-24">
+          <div className="py- sm:py-20 lg:py-24">
             <div className="text-center">
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                 Your Gateway to Campus Life
               </h1>
               <p className="mt-4 mx-auto max-w-2xl text-lg leading-relaxed text-gray-600/80">
@@ -42,7 +42,7 @@ export default function Home() {
           <h2 className="text-base font-semibold leading-7 text-indigo-600">
             Everything You Need
           </h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <p className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             All Your Campus Activities in One Place
           </p>
         </div>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import GradientBackground from "../components/common/GradientBackground";
-import EventCard from "../components/event/EventCard";
+import GradientBackground from "../../components/common/GradientBackground";
+import EventCard from "../../components/event/EventCard";
+import FilterButton from "../../components/common/FilterButton";
 
 export default function Event() {
   const [view, setView] = useState("all");
@@ -189,21 +190,22 @@ export default function Event() {
       clubName: "Design Club",
     },
   ];
-  
-  
-  const filteredEvents = events.filter((event) => {
-    const eventDate = new Date(event.date);
-    if (view === "upcoming") return eventDate >= currentDate;
-    if (view === "past") return eventDate < currentDate;
-    return true;
-  }).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const filteredEvents = events
+    .filter((event) => {
+      const eventDate = new Date(event.date);
+      if (view === "upcoming") return eventDate >= currentDate;
+      if (view === "past") return eventDate < currentDate;
+      return true;
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
-    <div className="bg-white">
+    <div className="">
+      <GradientBackground position="top" />
       {/* Hero Section */}
       <div className="relative isolate px-4 sm:px-[10%] pt-14">
-        <GradientBackground position="top" />
-        <div className="mx-auto max-w-5xl py-24 sm:py-32">
+        <div className="mx-auto max-w-5xl py-24 sm:py-4">
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">
               Discover Campus Events
@@ -273,25 +275,9 @@ export default function Event() {
             Events
           </h2>
           <div className="flex flex-wrap gap-2 sm:gap-4">
-            <button
-            className={`px-4 py-1.5 rounded-full text-md font-medium ${view === "all" ? "bg-indigo-50 text-indigo-600 " : "bg-gray-100 text-gray-600"} transition-colors duration-300`}
-            onClick={() => setView("all")}
-            >
-              {"All"}
-            </button>
-
-            <button
-            className={`px-4 py-1.5 rounded-full text-md font-medium ${view === "upcoming" ? "bg-indigo-50 text-indigo-600 " : "bg-gray-100 text-gray-600"} transition-colors duration-300`}
-            onClick={() => setView("upcoming")}
-            >
-              {"Upcoming"}
-            </button>
-            <button
-            className={`px-4 py-1.5 rounded-full text-md font-medium ${view === "past" ? "bg-indigo-50 text-indigo-600 " : "bg-gray-100 text-gray-600"} transition-colors duration-300`}
-            onClick={() => setView("past")}
-            >
-              {"Past"}
-            </button>
+            <FilterButton name="All" view={view} setView={setView} />
+            <FilterButton name="Upcoming" view={view} setView={setView} />
+            <FilterButton name="Past" view={view} setView={setView} />
           </div>
         </div>
 
@@ -299,15 +285,19 @@ export default function Event() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {filteredEvents.map((event) => {
             const isRegistrationOpen = new Date(event.date) > currentDate; // Determine if registration is open
-            return(
-            <EventCard
-              key={event.id}
-              event={event}
-              isRegistrationOpen={isRegistrationOpen}
-            />);
+            return (
+              <EventCard
+                key={event.id}
+                event={event}
+                isRegistrationOpen={isRegistrationOpen}
+              />
+            );
           })}
         </div>
+        
       </div>
+
     </div>
+    
   );
 }
