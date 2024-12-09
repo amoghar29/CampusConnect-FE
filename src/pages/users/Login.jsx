@@ -2,17 +2,20 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GradientBackground from "../../components/common/GradientBackground";
+import Loading from "../../components/common/Loading";
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
 export default function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function login(e) {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -23,7 +26,7 @@ export default function Login() {
           withCredentials: true,
         }
       );
-      
+
       if (response.status === 200) {
         navigate("/home");
       }
@@ -40,21 +43,27 @@ export default function Login() {
             setError("An error occurred. Please try again.");
         }
       } else if (error.request) {
-        setError("Unable to connect to the server. Please check your internet connection.");
+        setError(
+          "Unable to connect to the server. Please check your internet connection."
+        );
       } else {
         setError("An unexpected error occurred. Please try again.");
       }
+    } finally {
+      setLoading(false);
     }
+  }
+  if (loading) {
+    return <Loading message={""} loading={loading} />;
   }
 
   return (
-    <div className=" text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
-      <GradientBackground position="top"/>
+    <div className=" text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:pt-16">
+      <GradientBackground position="top" />
       <div className="relative mt-12 w-full max-w-lg sm:mt-10">
         <div className="relative -mb-px h-px w-full bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
-        
+
         <div className="mx-5 border border-gray-300 shadow-lg rounded-lg bg-white p-6">
-        
           <div className="flex flex-col text-center">
             <h1 className="text-2xl font-semibold leading-7 tracking-tight text-black">
               Club Login
@@ -63,13 +72,16 @@ export default function Login() {
               Welcome back, enter your credentials to continue.
             </p>
           </div>
-          
+
           {error && (
-            <div className="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <div
+              className="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
               <span className="block sm:inline">{error}</span>
             </div>
           )}
-          
+
           <div className="pt-4">
             <form onSubmit={login}>
               <div>
@@ -120,7 +132,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

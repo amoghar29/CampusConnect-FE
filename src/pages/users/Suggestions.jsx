@@ -1,31 +1,34 @@
-import { useState } from 'react';
-import { Send, Calendar, Users, Clock } from 'lucide-react';
-
+import axios from "axios";
+const BACKEND_URL = "https://campus-connect-be.vercel.app";
+import { useState } from "react";
+import { Send, Users, Clock } from "lucide-react";
+import { SuccessCard } from "../../components/common/SuccessCard";
+import { FailureCard } from "../../components/common/FailureCard";
 export default function Suggestions() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    clubName: '',
-    eventTitle: '',
-    eventDescription: '',
-    expectedParticipants: '',
-    preferredDuration: '',
-    additionalNotes: '',
-    branch: '',
-    department: '',
-    timeDuration: '',
+    name: "",
+    email: "",
+    phone: "",
+    clubName: "",
+    eventTitle: "",
+    eventDescription: "",
+    expectedParticipants: "",
+    expectedDuration: "",
+    additionalNotes: "",
+    branch: "",
+    semester: "",
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [submittedSuccess, setSubmittedSuccess] = useState(false);
+  const [submittedFailure, setSubmittedFailure] = useState(false);
 
   const clubs = [
-    { id: 1, name: 'Tech Club' },
-    { id: 2, name: 'Cultural Club' },
-    { id: 3, name: 'Sports Club' },
-    { id: 4, name: 'Photography Club' },
-    { id: 5, name: 'Literary Club' },
-    { id: 6, name: 'Music Club' },
+    { id: 1, name: "Tech Club" },
+    { id: 2, name: "Cultural Club" },
+    { id: 3, name: "Sports Club" },
+    { id: 4, name: "Photography Club" },
+    { id: 5, name: "Literary Club" },
+    { id: 6, name: "Music Club" },
   ];
 
   const handleChange = (e) => {
@@ -36,34 +39,49 @@ export default function Suggestions() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
-
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        clubName: '',
-        eventTitle: '',
-        eventDescription: '',
-        expectedParticipants: '',
-        preferredDuration: '',
-        additionalNotes: '',
-        branch: '',
-        department: '',
-        timeDuration: '',
-      });
-    }, 3000);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/suggestion`, formData);
+      if (response.status === 201) {
+        setSubmittedSuccess(true);
+      }
+    } catch (error) {
+      console.error("Submission failed:", error);
+      setSubmittedFailure(true);
+    }
   };
 
+  const handleTryAgain = () => {
+    setFormData("");
+    setSubmittedFailure(false);
+    setSubmittedSuccess(false);
+  };
+  if (submittedSuccess) {
+    return (
+      <SuccessCard
+        title={"Success"}
+        message={`Suggestion submitted successfully. We will get back to you soon`}
+        buttonValue={"Home page"}
+        redirect={"/home"}
+      />
+    );
+  }
+  if (submittedFailure) {
+    return (
+      <FailureCard
+        title={"Failure"}
+        message={"Failed to submit suggestion."}
+        buttonValue={"Try Again"}
+        redirect={"/suggestions"}
+        handleTryAgain={handleTryAgain}
+      />
+    );
+  }
   return (
     <div className="bg-white">
       {/* Hero Section with Background Gradient */}
-      <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className="relative isolate px-6 pt-8 lg:px-8">
         <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
           <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" />
         </div>
@@ -83,17 +101,6 @@ export default function Suggestions() {
 
       {/* Form Section */}
       <div className="relative px-6 pb-24 lg:px-8">
-        {submitted && (
-          <div className="absolute top-0 left-0 right-0 bg-indigo-50 text-indigo-700 p-4 rounded-md mx-auto max-w-3xl mb-6">
-            <div className="flex items-center justify-center gap-2">
-              <Calendar className="h-5 w-5" />
-              <p className="text-sm font-medium">
-                Your event suggestion has been submitted successfully!
-              </p>
-            </div>
-          </div>
-        )}
-
         <form
           onSubmit={handleSubmit}
           className="mx-auto max-w-3xl space-y-12 bg-white p-8 rounded-2xl shadow-lg border border-gray-100"
@@ -156,26 +163,38 @@ export default function Suggestions() {
               </div>
               <div className="space-y-2">
                 <label
-                  htmlFor="clubName"
+                  htmlFor="name"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Select Club
+                  Branch
                 </label>
-                <select
-                  name="clubName"
-                  id="clubName"
+                <input
+                  type="text"
+                  name="branch"
+                  id="branch"
                   required
-                  value={formData.clubName}
+                  value={formData.branch}
                   onChange={handleChange}
                   className="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="semester"
+                  type="number"
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  <option value="">Select a club</option>
-                  {clubs.map((club) => (
-                    <option key={club.id} value={club.name}>
-                      {club.name}
-                    </option>
-                  ))}
-                </select>
+                  Current Semester
+                </label>
+                <input
+                  type="number"
+                  name="semester"
+                  id="semester"
+                  required
+                  value={formData.semester}
+                  onChange={handleChange}
+                  className="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
+                />
               </div>
             </div>
           </div>
@@ -185,7 +204,29 @@ export default function Suggestions() {
             <h2 className="text-2xl font-semibold text-gray-900">
               Event Details
             </h2>
-
+            <div className="space-y-2">
+              <label
+                htmlFor="clubName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Select Club
+              </label>
+              <select
+                name="clubName"
+                id="clubName"
+                required
+                value={formData.clubName}
+                onChange={handleChange}
+                className="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
+              >
+                <option value="">Select a club</option>
+                {clubs.map((club) => (
+                  <option key={club.id} value={club.name}>
+                    {club.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="space-y-6">
               <div className="space-y-2">
                 <label
@@ -255,10 +296,10 @@ export default function Suggestions() {
                     <Clock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                     <input
                       type="number"
-                      name="timeDuration"
-                      id="timeDuration"
+                      name="expectedDuration"
+                      id="expectedDuration"
                       required
-                      value={formData.timeDuration}
+                      value={formData.expectedDuration}
                       onChange={handleChange}
                       className="block w-full rounded-lg border border-gray-300 pl-10 pr-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
                     />
@@ -297,11 +338,6 @@ export default function Suggestions() {
             </button>
           </div>
         </form>
-      </div>
-
-      {/* Bottom Gradient */}
-      <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" />
       </div>
     </div>
   );
