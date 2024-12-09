@@ -2,15 +2,17 @@ import axios from "axios";
 import { useState } from "react";
 import { Send, Smile, Frown, Meh } from "lucide-react";
 import GradientBackground from "../../components/common/GradientBackground";
-const BACKEND_URL = "https://campus-connect-be.vercel.app";
+const BACKEND_URL = "https://campusconnect-be.onrender.com";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
+import Loading from "../../components/common/Loading";
 export default function Feedback() {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [submitFeedbackSuccess, setSubmitFeedbackSuccess] = useState(false);
   const [submitFeedbackError, setSubmitFeedbackError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const categories = [
     "Event Organization",
@@ -28,6 +30,7 @@ export default function Feedback() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(`${BACKEND_URL}/feedback`, {
         rating,
@@ -40,15 +43,25 @@ export default function Feedback() {
       }
     } catch (error) {
       setSubmitFeedbackError(true);
+    } finally {
+      setLoading(false);
     }
   };
   const handleTryAgain = () => {
-    setRating;
+    setRating("");
     setFeedback("");
     setSelectedCategory("");
     setSubmitFeedbackError(false);
     setSubmitFeedbackSuccess(false);
   };
+  if (loading) {
+    return (
+      <Loading
+        message={"Submitting your valueable feedback"}
+        loading={loading}
+      />
+    );
+  }
   if (submitFeedbackSuccess) {
     return (
       <SuccessCard
@@ -65,7 +78,7 @@ export default function Feedback() {
         title={"Failure"}
         message={"Failed to submit feedback."}
         buttonValue={"Try Again"}
-        redirect={"/register"}
+        redirect={"/feedback"}
         handleTryAgain={handleTryAgain}
       />
     );
