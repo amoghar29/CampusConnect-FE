@@ -30,7 +30,7 @@ export default function Feedback() {
   return (
     <div className="bg-white min-h-screen">
     
-      <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className="relative isolate px-6 pt-8 lg:px-8">
         {/* Gradient Background */}
         <GradientBackground position='top'/>
 

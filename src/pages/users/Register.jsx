@@ -1,10 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-import RegistrationSuccess from "../../components/registration/RegistrationSuccess";
-import RegistrationFailure from "../../components/registration/RegistrationFailure";
+// import RegistrationSuccess from "../../components/registration/RegistrationSuccess";
+// import RegistrationFailure from "../../components/registration/RegistrationFailure";
 import RegistrationForm from "../../components/registration/RegistrationForm";
 import GradientBackground from "../../components/common/GradientBackground";
-
+import Loading from "../../components/common/Loading";
+import { SuccessCard } from "../../components/common/SuccessCard";
+import { FailureCard } from "../../components/common/FailureCard";
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
 export default function Register() {
@@ -52,31 +54,41 @@ export default function Register() {
   // Loading Screen
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-700">
-            Processing your registration...
-          </p>
-        </div>
-      </div>
+      <Loading message={"Processing your registration..."} loading={loading} />
     );
   }
 
   // Success Screen
   if (registrationSuccess) {
-    return <RegistrationSuccess />;
+    return (
+      <SuccessCard
+        title="Registration Successful!"
+        message="Click below to login."
+        buttonValue={"Login"}
+        redirect={"/login"}
+      />
+    );
   }
 
   // Failure Screen
   if (registrationError) {
-    return <RegistrationFailure onTryAgain={handleTryAgain} />;
+    return (
+      <FailureCard
+        title={"Registration Failed!"}
+        message={
+          "Oops! There was an issue with your registration. Please try again."
+        }
+        buttonValue={"Try Again"}
+        redirect={"/register"}
+        handleTryAgain={handleTryAgain}
+      />
+    );
   }
 
   // Default Registration Form
   return (
-    <div className=" text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
-    <GradientBackground position="top"/>
+    <div className=" text-gray-900 flex min-h-screen flex-col items-center pt-16  sm:pt-6">
+      <GradientBackground position="top" />
       <div className="relative mt-12 w-full max-w-lg sm:mt-10">
         <div className="relative -mb-px h-px w-full bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
         <div className="mx-5 border border-gray-300 shadow-lg rounded-lg bg-white p-8">
