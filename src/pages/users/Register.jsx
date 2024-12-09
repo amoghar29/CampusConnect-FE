@@ -5,7 +5,7 @@ import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
-const BACKEND_URL = "https://campus-connect-be.vercel.app";
+const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
 export default function Register() {
   const [email, setEmail] = useState("");

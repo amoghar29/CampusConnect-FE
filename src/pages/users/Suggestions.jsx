@@ -1,9 +1,10 @@
 import axios from "axios";
-const BACKEND_URL = "https://campus-connect-be.vercel.app";
+const BACKEND_URL = "https://campusconnect-be.onrender.com";
 import { useState } from "react";
 import { Send, Users, Clock } from "lucide-react";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
+import Loading from "../../components/common/Loading";
 export default function Suggestions() {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,7 +22,7 @@ export default function Suggestions() {
 
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const clubs = [
     { id: 1, name: "Tech Club" },
     { id: 2, name: "Cultural Club" },
@@ -41,6 +42,7 @@ export default function Suggestions() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(`${BACKEND_URL}/suggestion`, formData);
       if (response.status === 201) {
@@ -49,9 +51,15 @@ export default function Suggestions() {
     } catch (error) {
       console.error("Submission failed:", error);
       setSubmittedFailure(true);
+    } finally {
+      setLoading(false);
     }
   };
-
+  if (loading) {
+    return (
+      <Loading message={"Submitting your suggestion ...."} loading={loading} />
+    );
+  }
   const handleTryAgain = () => {
     setFormData("");
     setSubmittedFailure(false);
