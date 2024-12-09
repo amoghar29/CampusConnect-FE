@@ -1,42 +1,84 @@
-import { useState } from 'react';
-import {  Send, Smile, Frown, Meh } from 'lucide-react';
-import GradientBackground from '../../components/common/GradientBackground';
-
+import axios from "axios";
+import { useState } from "react";
+import { Send, Smile, Frown, Meh } from "lucide-react";
+import GradientBackground from "../../components/common/GradientBackground";
+const BACKEND_URL = "https://campus-connect-be.vercel.app";
+import { SuccessCard } from "../../components/common/SuccessCard";
+import { FailureCard } from "../../components/common/FailureCard";
 export default function Feedback() {
   const [rating, setRating] = useState(0);
-  const [feedback, setFeedback] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [feedback, setFeedback] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [submitFeedbackSuccess, setSubmitFeedbackSuccess] = useState(false);
+  const [submitFeedbackError, setSubmitFeedbackError] = useState(false);
 
   const categories = [
-    'Event Organization',
-    'Website Experience',
-    'Club Management',
-    'Technical Issues',
-    'Other'
+    "Event Organization",
+    "Website Experience",
+    "Club Management",
+    "Technical Issues",
+    "Other",
   ];
 
   const moods = [
-    { icon: Frown, label: 'Unsatisfied', value: 1 },
-    { icon: Meh, label: 'Neutral', value: 3 },
-    { icon: Smile, label: 'Satisfied', value: 5 }
+    { icon: Frown, label: "Unsatisfied", value: 1 },
+    { icon: Meh, label: "Neutral", value: 3 },
+    { icon: Smile, label: "Satisfied", value: 5 },
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ rating, feedback, selectedCategory });
-    // Handle submission logic here
-  };
+    try {
+      const response = await axios.post(`${BACKEND_URL}/feedback`, {
+        rating,
+        feedback,
+        selectedCategory,
+      });
 
+      if (response.status === 201) {
+        setSubmitFeedbackSuccess(true);
+      }
+    } catch (error) {
+      setSubmitFeedbackError(true);
+    }
+  };
+  const handleTryAgain = () => {
+    setRating;
+    setFeedback("");
+    setSelectedCategory("");
+    setSubmitFeedbackError(false);
+    setSubmitFeedbackSuccess(false);
+  };
+  if (submitFeedbackSuccess) {
+    return (
+      <SuccessCard
+        title={"Success"}
+        message={"Feedback submitted successfully"}
+        buttonValue={"Home page"}
+        redirect={"/home"}
+      />
+    );
+  }
+  if (submitFeedbackError) {
+    return (
+      <FailureCard
+        title={"Failure"}
+        message={"Failed to submit feedback."}
+        buttonValue={"Try Again"}
+        redirect={"/register"}
+        handleTryAgain={handleTryAgain}
+      />
+    );
+  }
   return (
     <div className="bg-white min-h-screen">
-    
       <div className="relative isolate px-6 pt-8 lg:px-8">
         {/* Gradient Background */}
-        <GradientBackground position='top'/>
+        <GradientBackground position="top" />
 
         <div className="mx-auto max-w-2xl py-32 sm:py-2">
           <div className="relative -mb-px h-px w-full bg-gradient-to-r from-transparent via-purple-600 to-transparent" />
-          
+
           <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -50,8 +92,10 @@ export default function Feedback() {
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Mood Selection */}
               <div className="space-y-4">
-                <label className="block text-sm font-medium text-gray-700">How was your experience?</label>
-                <div className="flex justify-center gap-8">
+                <label className="block text-sm font-medium text-gray-700">
+                  How was your experience?
+                </label>
+                <div className="flex justify-center gap-8 flex-wrap">
                   {moods.map(({ icon: Icon, label, value }) => (
                     <button
                       key={label}
@@ -59,11 +103,11 @@ export default function Feedback() {
                       onClick={() => setRating(value)}
                       className={`flex flex-col items-center p-4 rounded-lg transition-all ${
                         rating === value
-                          ? 'bg-indigo-50 text-indigo-600 ring-2 ring-indigo-600'
-                          : 'hover:bg-gray-50'
+                          ? "bg-indigo-50 text-indigo-600 ring-2 ring-indigo-600"
+                          : "hover:bg-gray-50"
                       }`}
                     >
-                      <Icon className="h-8 w-8 mb-2" />
+                      <Icon className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 mb-2" />
                       <span className="text-sm font-medium">{label}</span>
                     </button>
                   ))}
@@ -83,8 +127,8 @@ export default function Feedback() {
                       onClick={() => setSelectedCategory(category)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                         selectedCategory === category
-                          ? 'bg-indigo-600 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? "bg-indigo-600 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                       }`}
                     >
                       {category}
@@ -120,8 +164,6 @@ export default function Feedback() {
             </form>
           </div>
         </div>
-
-
       </div>
     </div>
   );

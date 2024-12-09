@@ -1,13 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
-// import RegistrationSuccess from "../../components/registration/RegistrationSuccess";
-// import RegistrationFailure from "../../components/registration/RegistrationFailure";
 import RegistrationForm from "../../components/registration/RegistrationForm";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
-const BACKEND_URL = "https://campusconnect-be.onrender.com";
+const BACKEND_URL = "https://campus-connect-be.vercel.app";
 
 export default function Register() {
   const [email, setEmail] = useState("");
