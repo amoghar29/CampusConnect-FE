@@ -9,7 +9,7 @@ const navigation = [
   { name: "Explore Events", to: "/explore-events" },
   { name: "Winners", to: "/winners" }, // Added Winners to navigation
   { name: "Feedback", to: "/feedback" },
-  { name: "Suggestions", to: "/suggestions" },
+  { name: "Suggestions", to: "/suggestion" },
 ];
 
 export default function Header() {
