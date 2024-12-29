@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Login from '../pages/users/Login';
-import Register from '../pages/users/Register';
+import Signup from '../pages/users/Signup';
 import Home from '../pages/users/Home';
 import Event from '../pages/users/Event';
 import Club from '../pages/users/Club';
@@ -10,7 +10,6 @@ import Winners from '../pages/users/Winners'
 import Suggestions from '../pages/users/Suggestions'
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer'
-
 export default function Router() {
   return (
     <div className='App'>
@@ -19,7 +18,7 @@ export default function Router() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />     
           <Route path="/explore-events" element={<Event />} /> 
           <Route path="/clubs" element={<Club />} />
@@ -27,7 +26,6 @@ export default function Router() {
           <Route path="/admin/post-event" element={<PostEvent />} />
           <Route path="/winners" element={<Winners/>}/>
           <Route path="/suggestion" element={<Suggestions/>}/>
-
         </Routes>
       </div>
       <Footer/>

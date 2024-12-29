@@ -1,11 +1,12 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Send, Smile, Frown, Meh } from "lucide-react";
 import GradientBackground from "../../components/common/GradientBackground";
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
 import Loading from "../../components/common/Loading";
+
 export default function Feedback() {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
@@ -13,6 +14,8 @@ export default function Feedback() {
   const [submitFeedbackSuccess, setSubmitFeedbackSuccess] = useState(false);
   const [submitFeedbackError, setSubmitFeedbackError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [eventTitle, setEventTitle] = useState("");
+  const [hostingClub, setHostingClub] = useState("");
 
   const categories = [
     "Event Organization",
@@ -28,6 +31,8 @@ export default function Feedback() {
     { icon: Smile, label: "Satisfied", value: 5 },
   ];
 
+  const hostingClubs = ["Club A", "Club B", "Club C"];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -36,6 +41,8 @@ export default function Feedback() {
         rating,
         feedback,
         selectedCategory,
+        eventTitle,
+        hostingClub: hostingClub,
       });
 
       if (response.status === 201) {
@@ -47,6 +54,7 @@ export default function Feedback() {
       setLoading(false);
     }
   };
+
   const handleTryAgain = () => {
     setRating("");
     setFeedback("");
@@ -54,14 +62,16 @@ export default function Feedback() {
     setSubmitFeedbackError(false);
     setSubmitFeedbackSuccess(false);
   };
+
   if (loading) {
     return (
       <Loading
-        message={"Submitting your valueable feedback"}
+        message={"Submitting your valuable feedback"}
         loading={loading}
       />
     );
   }
+
   if (submitFeedbackSuccess) {
     return (
       <SuccessCard
@@ -72,6 +82,7 @@ export default function Feedback() {
       />
     );
   }
+
   if (submitFeedbackError) {
     return (
       <FailureCard
@@ -83,10 +94,10 @@ export default function Feedback() {
       />
     );
   }
+
   return (
     <div className="bg-white min-h-screen">
       <div className="relative isolate px-6 pt-8 lg:px-8">
-        {/* Gradient Background */}
         <GradientBackground position="top" />
 
         <div className="mx-auto max-w-2xl py-32 sm:py-2">
@@ -148,6 +159,39 @@ export default function Feedback() {
                     </button>
                   ))}
                 </div>
+              </div>
+
+              {/* Event Title Input */}
+              <div className="space-y-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Event Title
+                </label>
+                <input
+                  type="text"
+                  value={eventTitle}
+                  onChange={(e) => setEventTitle(e.target.value)}
+                  className="w-full rounded-lg border border-gray-400 focus:border-indigo-600 focus:ring focus:ring-indigo-300/30 px-4 py-2.5"
+                  placeholder="Enter the event title..."
+                />
+              </div>
+
+              {/* Hosting Club Dropdown */}
+              <div className="space-y-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Select Hosting Club
+                </label>
+                <select
+                  value={hostingClub}
+                  onChange={(e) => setHostingClub(e.target.value)}
+                  className="w-full rounded-lg border border-gray-400 focus:border-indigo-600 focus:ring focus:ring-indigo-300/30 px-4 py-2.5"
+                >
+                  <option value="">Select a club</option>
+                  {hostingClubs.map((club) => (
+                    <option key={club} value={club}>
+                      {club}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* Feedback Text */}

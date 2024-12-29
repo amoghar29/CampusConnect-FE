@@ -1,21 +1,21 @@
 import { useState } from "react";
 import axios from "axios";
-import RegistrationForm from "../../components/registration/RegistrationForm";
+import SignupForm from "../../components/signup/SignupForm";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
-export default function Register() {
+export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [clubName, setClubName] = useState("");
+  const [confirmPassword,setConfirmPassword] = useState("");
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [registrationError, setRegistrationError] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  async function register(e) {
+  async function signup(e) {
     e.preventDefault();
     setLoading(true);
     setRegistrationSuccess(false);
@@ -23,8 +23,8 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/register`,
-        { email, password, clubName },
+        `${BACKEND_URL}/signup`,
+        { email, password, confirmPassword },
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -44,7 +44,7 @@ export default function Register() {
   const handleTryAgain = () => {
     setEmail("");
     setPassword("");
-    setClubName("");
+    setConfirmPassword("");
     setRegistrationSuccess(false);
     setRegistrationError(false);
   };
@@ -77,7 +77,7 @@ export default function Register() {
           "Oops! There was an issue with your registration. Please try again."
         }
         buttonValue={"Try Again"}
-        redirect={"/register"}
+        redirect={"/signup"}
         handleTryAgain={handleTryAgain}
       />
     );
@@ -96,14 +96,13 @@ export default function Register() {
           <p className="mt-2 text-lg font-medium text-gray-600 text-center">
             Create an account to get started.
           </p>
-          <RegistrationForm
+          <SignupForm
             email={email}
             password={password}
-            clubName={clubName}
             setEmail={setEmail}
             setPassword={setPassword}
-            setClubName={setClubName}
-            register={register}
+            setConfirmPassword={setConfirmPassword}
+            signup={signup}
           />
         </div>
       </div>
