@@ -2,43 +2,49 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import GradientBackground from "../../components/common/GradientBackground";
 import ClubCard from "../../components/club/ClubCard";
-
+import useFetchData from "../../customHooks/fetchData";
+import Loading from "../../components/common/Loading";
 export default function Club() {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Sample clubs data
-  const clubs = [
-    {
-      id: 1,
-      name: "Tech Club",
-      logo: "/club-logos/tech.png", // Replace with actual logo paths
-      description: "Fostering innovation and technical excellence",
-      category: "Technical",
-      memberCount: "120+",
-      email: "tech.club@college.edu",
-      contact: "+91 98765 43210",
-      location: "Lab Complex, 2nd Floor",
+  // const clubs = [
+  //   {
+  //     id: 1,
+  //     name: "Tech Club",
+  //     logo: "/club-logos/tech.png", // Replace with actual logo paths
+  //     description: "Fostering innovation and technical excellence",
+  //     category: "Technical",
+  //     memberCount: "120+",
+  //     email: "tech.club@college.edu",
+  //     contact: "+91 98765 43210",
+  //     location: "Lab Complex, 2nd Floor",
 
-      achievements: ["Best Technical Club 2023", "National Hackathon Winners"],
-    },
-    {
-      id: 2,
-      name: "Photography Club",
-      logo: "/club-logos/photo.png",
-      description: "Capturing moments, creating memories",
-      category: "Cultural",
-      memberCount: "75+",
-      email: "photo.club@college.edu",
-      contact: "+91 98765 43211",
-      location: "Arts Building, Room 105",
+  //     achievements: ["Best Technical Club 2023", "National Hackathon Winners"],
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Photography Club",
+  //     logo: "/club-logos/photo.png",
+  //     description: "Capturing moments, creating memories",
+  //     category: "Cultural",
+  //     memberCount: "75+",
+  //     email: "photo.club@college.edu",
+  //     contact: "+91 98765 43211",
+  //     location: "Arts Building, Room 105",
 
-      achievements: [
-        "Best Cultural Club 2023",
-        "State Photography Contest Winners",
-      ],
-    },
-    // Add more clubs as needed
-  ];
+  //     achievements: [
+  //       "Best Cultural Club 2023",
+  //       "State Photography Contest Winners",
+  //     ],
+  //   },
+  //   // Add more clubs as needed
+  // ];
+  const { loading, data: clubs, error } = useFetchData("club");
+
+  // Add loading and error handling
+  if (loading) return <Loading/>;
+  if (error) return <div>Error fetching clubs: {error.message}</div>;
 
   return (
     <div className="bg-white min-h-screen">
@@ -81,7 +87,6 @@ export default function Club() {
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
