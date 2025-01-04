@@ -14,6 +14,9 @@ import {
   ChevronRight,
   Calendar,
 } from "lucide-react";
+import FormContainer from "../../components/form/FormContainer";
+import FormInput from "../../components/form/FormInput";
+import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
 
 const EventCreationForm = () => {
@@ -137,6 +140,7 @@ const EventCreationForm = () => {
       setLoading(false);
     }
   };
+
   if (submittedSuccess) {
     return (
       <SuccessCard
@@ -159,247 +163,176 @@ const EventCreationForm = () => {
   }
 
   return (
-    <div className="bg-white min-h-screen p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="relative isolate">
-          <GradientBackground position="top" />
+    <FormContainer
+      title="Create New Event"
+      subtitle="Fill in the details to create your event"
+    >
+      <GradientBackground position="top" />
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Event Info Section */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
+            <FileText className="h-4 w-4 text-indigo-500" />
+            <h3>Event Information</h3>
+          </div>
 
-          {/* Main Form Card */}
-          <div className="mt-8 border border-gray-300 shadow-lg rounded-lg bg-white overflow-hidden">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-white">
-              <h2 className="text-2xl font-semibold">Create New Event</h2>
-              <p className="text-indigo-100 mt-2">
-                Fill in the details to create your event
-              </p>
-            </div>
+          <FormInput
+            label="Event Name"
+            name="title"
+            value={eventData.title}
+            onChange={handleChange}
+            placeholder="Enter event name"
+            icon={PenTool}
+          />
 
-            <form onSubmit={handleSubmit} className="p-8 space-y-6">
-              {/* Event Info Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
-                  <FileText className="h-4 w-4 text-indigo-500" />
-                  <h3>Event Information</h3>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormInput
+              label="Hosting Club"
+              name="clubName"
+              value={eventData.clubName}
+              onChange={handleChange}
+              placeholder="Enter club name"
+              icon={Building2}
+            />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Event Name */}
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <PenTool className="inline h-4 w-4 mr-2 text-gray-400" />
-                      Event Name
-                    </label>
-                    <input
-                      type="text"
-                      name="title"
-                      value={eventData.title}
-                      onChange={handleChange}
-                      className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                      placeholder="Enter event name"
-                    />
-                  </div>
+            <FormInput
+              label="Date"
+              type="date"
+              name="date"
+              value={eventData.startTime.split("T")[0]}
+              onChange={handleChange}
+              icon={Calendar}
+            />
 
-                  {/* Hosting Club, Date, and Time in one line */}
-                  <div className="flex gap-4">
-                    <div className="flex-grow">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        <Building2 className="inline h-4 w-4 mr-2 text-gray-400" />
-                        Hosting Club
-                      </label>
-                      <input
-                        type="text"
-                        name="clubName"
-                        value={eventData.clubName}
-                        onChange={handleChange}
-                        className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                        placeholder="Enter club name"
-                      />
-                    </div>
+            <FormInput
+              label="Time"
+              type="time"
+              name="time"
+              value={eventData.startTime.split("T")[1]}
+              onChange={handleChange}
+              icon={Calendar}
+            />
+          </div>
 
-                    <div className="w-1/4">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        <Calendar className="inline h-4 w-4 mr-2 text-gray-400" />
-                        Date
-                      </label>
-                      <input
-                        type="date"
-                        name="date"
-                        value={eventData.startTime.split("T")[0]}
-                        onChange={handleChange}
-                        className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                      />
-                    </div>
+          <FormInput
+            label="Event Location"
+            name="location"
+            value={eventData.location}
+            onChange={handleChange}
+            placeholder="Offline location or virtual link"
+            icon={MapPin}
+          />
 
-                    <div className="w-1/4">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        <Calendar className="inline h-4 w-4 mr-2 text-gray-400" />
-                        Time
-                      </label>
-                      <input
-                        type="time"
-                        name="time"
-                        value={eventData.startTime.split("T")[1]}
-                        onChange={handleChange}
-                        className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                      />
-                    </div>
-                  </div>
-                </div>
-                {/* Location */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <MapPin className="inline h-4 w-4 mr-2 text-gray-400" />
-                    Event Location
-                  </label>
-                  <input
-                    type="text"
-                    name="location"
-                    value={eventData.location}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                    placeholder="Offline location or virtual link"
-                  />
-                </div>
+          <FormTextArea
+            label="Description"
+            name="description"
+            value={eventData.description}
+            onChange={handleChange}
+            placeholder="Add event description"
+          />
+        </div>
 
-                {/* Description */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <FileText className="inline h-4 w-4 mr-2 text-gray-400" />
-                    Description
-                  </label>
-                  <textarea
-                    name="description"
-                    value={eventData.description}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                    placeholder="Add event description"
-                  />
-                </div>
-              </div>
-
-              {/* Image Upload Section */}
-              <div className="mb-8">
-                <div
-                  className={`relative border-2 border-dashed rounded-lg p-6 transition-all
-                    ${
-                      dragActive
-                        ? "border-indigo-500 bg-indigo-50"
-                        : "border-gray-300 hover:border-indigo-400"
-                    }`}
-                  onDragEnter={handleDrag}
-                  onDragLeave={handleDrag}
-                  onDragOver={handleDrag}
-                  onDrop={handleDrop}
-                >
-                  {imagePreview ? (
-                    <div className="relative">
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        className="w-full h-48 object-cover rounded-lg"
-                      />
-                      <button
-                        type="button"
-                        onClick={removeImage}
-                        className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                      >
-                        <X size={20} />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
-                      <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                        <label className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                          <span>Upload event banner</span>
-                          <input
-                            type="file"
-                            className="sr-only"
-                            onChange={handleImageChange}
-                            accept="image/*"
-                          />
-                        </label>
-                        <p className="pl-1">or drag and drop</p>
-                      </div>
-                      <p className="text-xs leading-5 text-gray-600">
-                        PNG, JPG, GIF up to 10MB
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Event Options */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
-                  <Users className="h-4 w-4 text-indigo-500" />
-                  <h3>Event Options</h3>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Users className="inline h-4 w-4 mr-2 text-gray-400" />
-                      Eligibility
-                    </label>
-                    <input
-                      type="text"
-                      name="eligibility"
-                      value={eventData.eligibility}
-                      onChange={handleChange}
-                      className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                      placeholder="Specify eligibility"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Coins className="inline h-4 w-4 mr-2 text-gray-400" />
-                      Registration Fee
-                    </label>
-                    <input
-                      type="text"
-                      name="registrationFee"
-                      value={eventData.registrationFee}
-                      onChange={handleChange}
-                      className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                      placeholder="Enter fee"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Users className="inline h-4 w-4 mr-2 text-gray-400" />
-                      Team Size
-                    </label>
-                    <input
-                      type="text"
-                      name="teamSize"
-                      value={eventData.teamSize}
-                      onChange={handleChange}
-                      className="w-full rounded-lg border border-gray-400 focus:border-purple-600 px-4 py-2.5 focus:ring focus:ring-purple-300/30"
-                      placeholder="Specify team size"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <div className="pt-6">
+        {/* Image Upload Section */}
+        <div className="mb-8">
+          <div
+            className={`relative border-2 border-dashed rounded-lg p-6 transition-all
+              ${
+                dragActive
+                  ? "border-indigo-500 bg-indigo-50"
+                  : "border-gray-300 hover:border-indigo-400"
+              }`}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+          >
+            {imagePreview ? (
+              <div className="relative">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-full h-48 object-cover rounded-lg"
+                />
                 <button
-                  type="submit"
-                  className="w-full flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:from-indigo-500 hover:to-purple-500 transition duration-300"
+                  type="button"
+                  onClick={removeImage}
+                  className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
                 >
-                  Create Event
-                  <ChevronRight className="h-4 w-4" />
+                  <X size={20} />
                 </button>
               </div>
-            </form>
+            ) : (
+              <div className="text-center">
+                <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
+                <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                  <label className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                    <span>Upload event banner</span>
+                    <input
+                      type="file"
+                      className="sr-only"
+                      onChange={handleImageChange}
+                      accept="image/*"
+                    />
+                  </label>
+                  <p className="pl-1">or drag and drop</p>
+                </div>
+                <p className="text-xs leading-5 text-gray-600">
+                  PNG, JPG, GIF up to 10MB
+                </p>
+              </div>
+            )}
           </div>
         </div>
-      </div>
-    </div>
+
+        {/* Event Options */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
+            <Users className="h-4 w-4 text-indigo-500" />
+            <h3>Event Options</h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FormInput
+              label="Eligibility"
+              name="eligibility"
+              value={eventData.eligibility}
+              onChange={handleChange}
+              placeholder="Specify eligibility"
+              icon={Users}
+            />
+
+            <FormInput
+              label="Registration Fee"
+              name="registrationFee"
+              value={eventData.registrationFee}
+              onChange={handleChange}
+              placeholder="Enter fee"
+              icon={Coins}
+            />
+
+            <FormInput
+              label="Team Size"
+              name="teamSize"
+              value={eventData.teamSize}
+              onChange={handleChange}
+              placeholder="Specify team size"
+              icon={Users}
+            />
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <div className="pt-6">
+          <button
+            type="submit"
+            className="w-full flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:from-indigo-500 hover:to-purple-500 transition duration-300"
+          >
+            Create Event
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      </form>
+    </FormContainer>
   );
 };
 
