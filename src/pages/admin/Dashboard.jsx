@@ -7,7 +7,7 @@ import SuggestionsSection from "../../components/dashboard/suggestion";
 import FeedbackSection from "../../components/dashboard/feedback";
 import EventsSection from "../../components/dashboard/Events";
 import ProfileSection from "../../components/dashboard/Profile";
-const AdminDashboard1 = () => {
+const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("events");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -143,4 +143,4 @@ const AdminDashboard1 = () => {
   );
 };
 
-export default AdminDashboard1;
+export default AdminDashboard;
