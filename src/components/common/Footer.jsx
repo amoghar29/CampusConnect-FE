@@ -1,28 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
-  Mail, 
-  Calendar, 
-  Users, 
-  MessageCircle 
-} from 'lucide-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Mail,
+  Calendar,
+  Users,
+  MessageCircle,
+} from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white mt-16">
+    <footer className="bg-gray-900 text-white z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Mission */}
           <div className="col-span-1">
-            <h2 className="text-2xl font-bold text-white mb-4">Campus Connect</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Campus Connect
+            </h2>
             <p className="text-gray-400 mb-4">
-              Bridging the gap between students and campus activities. Discover, engage, and connect with your college community.
+              Bridging the gap between students and campus activities. Discover,
+              engage, and connect with your college community.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white">
@@ -42,7 +45,9 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Quick Links
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/clubs" className="text-gray-400 hover:text-white">
@@ -50,7 +55,10 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/explore-events" className="text-gray-400 hover:text-white">
+                <Link
+                  to="/explore-events"
+                  className="text-gray-400 hover:text-white"
+                >
                   Upcoming Events
                 </Link>
               </li>
@@ -88,7 +96,9 @@ const Footer = () => {
 
           {/* Contact */}
           <div className="col-span-1">
-            <h3 className="text-lg font-semibold text-white mb-4">Contact Us</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">
+              Contact Us
+            </h3>
             <div className="space-y-2">
               <p className="text-gray-400 flex items-center">
                 <Mail className="h-4 w-4 mr-2 text-indigo-500" />
@@ -107,10 +117,16 @@ const Footer = () => {
             © {currentYear} Campus Connect. All rights reserved.
           </p>
           <div className="mt-2 space-x-4">
-            <Link to="/privacy" className="text-sm text-gray-400 hover:text-white">
+            <Link
+              to="/privacy"
+              className="text-sm text-gray-400 hover:text-white"
+            >
               Privacy Policy
             </Link>
-            <Link to="/terms" className="text-sm text-gray-400 hover:text-white">
+            <Link
+              to="/terms"
+              className="text-sm text-gray-400 hover:text-white"
+            >
               Terms of Service
             </Link>
           </div>

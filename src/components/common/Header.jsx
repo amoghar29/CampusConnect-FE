@@ -7,13 +7,23 @@ const navigation = [
   { name: "Home", to: "/home" },
   { name: "Clubs", to: "/clubs" },
   { name: "Explore Events", to: "/explore-events" },
-  { name: "Winners", to: "/winners" }, // Added Winners to navigation
+  { name: "Winners", to: "/winners" },
   { name: "Feedback", to: "/feedback" },
   { name: "Suggestions", to: "/suggestion" },
 ];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isLoggedIn = false; // Replace with actual login state
+
+  const filteredNavigation = isLoggedIn
+    ? [
+        ...navigation.filter(
+          (item) => item.name !== "Feedback" && item.name !== "Suggestions"
+        ),
+        { name: "Dashboard", to: "/admin/dashboard" },
+      ]
+    : navigation;
 
   return (
     <header className="absolute inset-x-0 top-0 z-50">
@@ -44,7 +54,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:gap-x-12">
-            {navigation.map((item) => (
+            {filteredNavigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.to}
@@ -55,14 +65,20 @@ export default function Header() {
             ))}
           </div>
 
-          {/* Login Button (Desktop only) */}
+          {/* Login/Logout Button (Desktop only) */}
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link
-              to="/login"
-              className="text-base font-semibold leading-6 text-gray-900 hover:scale-105"
-            >
-              Club Login <span aria-hidden="true">&rarr;</span>
-            </Link>
+            {isLoggedIn ? (
+              <button className="text-base font-semibold leading-6 text-gray-900 hover:scale-105 ">
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/signin"
+                className="text-base font-semibold leading-6 text-gray-900 hover:scale-105"
+              >
+                Club Login <span aria-hidden="true">&rarr;</span>
+              </Link>
+            )}
           </div>
         </div>
       </nav>
@@ -91,7 +107,7 @@ export default function Header() {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                {navigation.map((item) => (
+                {filteredNavigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.to}
@@ -101,14 +117,25 @@ export default function Header() {
                     {item.name}
                   </Link>
                 ))}
-                {/* Mobile-only Login Link */}
-                <Link
-                  to="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 transition duration-300 transform hover:scale-105"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Club Login <span aria-hidden="true">&rarr;</span>
-                </Link>
+                {/* Mobile-only Login/Logout Link */}
+                {isLoggedIn ? (
+                  <button
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 transition duration-300 transform hover:scale-105"
+                    onClick={() => {
+                      /* handle logout logic */
+                    }}
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 transition duration-300 transform hover:scale-105"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Club Login <span aria-hidden="true">&rarr;</span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
