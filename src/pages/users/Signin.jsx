@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
-const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
-export default function Login() {
+// Create axios instance with proper configuration
+export default function Signin() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -19,46 +19,31 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/login`,
-        { email, password },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        "http://localhost:4000/api/auth/signin",
+        { email, password }, // Data object
+        { withCredentials: true } // Configuration object
       );
 
-      if (response.status === 200) {
-        navigate("/home");
+      if (response.status === 201) {
+        navigate("/admin/dashboard");
       }
     } catch (error) {
-      if (error.response) {
-        switch (error.response.status) {
-          case 401:
-            setError("Incorrect email or password");
-            break;
-          case 404:
-            setError("User not found");
-            break;
-          default:
-            setError("An error occurred. Please try again.");
-        }
-      } else if (error.request) {
-        setError(
-          "Unable to connect to the server. Please check your internet connection."
-        );
-      } else {
-        setError("An unexpected error occurred. Please try again.");
-      }
+      console.error("Error during sign-in:", error);
+      // Optionally, show an error message to the user
+      alert(
+        "Sign-in failed. Please check your credentials or try again later."
+      );
     } finally {
       setLoading(false);
     }
   }
+
   if (loading) {
     return <Loading message={""} loading={loading} />;
   }
 
   return (
-    <div className=" text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:pt-16">
+    <div className="text-gray-900 flex min-h-screen flex-col items-center pt-16 sm:pt-16">
       <GradientBackground position="top" />
       <div className="relative mt-12 w-full max-w-lg sm:mt-10">
         <div className="relative -mb-px h-px w-full bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>

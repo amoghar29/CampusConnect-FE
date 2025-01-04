@@ -5,12 +5,12 @@ import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
-const BACKEND_URL = "https://campusconnect-be.onrender.com";
+const BACKEND_URL = " http://localhost:4000/api/auth";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword,setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [registrationError, setRegistrationError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ export default function Signup() {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setRegistrationSuccess(true);
       }
     } catch (error) {
@@ -61,9 +61,9 @@ export default function Signup() {
     return (
       <SuccessCard
         title="Registration Successful!"
-        message="Click below to login."
-        buttonValue={"Login"}
-        redirect={"/login"}
+        message="Click below to signin."
+        buttonValue={"signin"}
+        redirect={"/signin"}
       />
     );
   }
