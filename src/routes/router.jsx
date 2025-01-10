@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "../utils/protectedROutes";
 import Signin from "../pages/users/Signin";
 import Signup from "../pages/users/Signup";
 import Home from "../pages/users/Home";
@@ -11,13 +12,21 @@ import Suggestions from "../pages/users/Suggestions";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import RegisterClub from "../pages/admin/RegisterClub";
+import NewDashboard from "../pages/admin/NewDashboard";
+import ProfileSection from "../components/dashboard/Profile";
+import EventsSection from "../components/dashboard/Events";
+import FeedbackSection from "../components/dashboard/Feedback";
+import SuggestionsSection from "../components/dashboard/Suggestion";
+import UpdateWinnerSection from "../components/dashboard/UpdateWinner";
 import AdminDashboard from "../pages/admin/Dashboard";
+
 export default function Router() {
   return (
     <div className="App">
       <Header />
       <div className="content" style={{ marginTop: "80px" }}>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
@@ -27,9 +36,26 @@ export default function Router() {
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/winners" element={<Winners />} />
           <Route path="/suggestion" element={<Suggestions />} />
-          <Route path="/admin/post-event" element={<PostEvent />} />
-          <Route path="/admin/register-club" element={<RegisterClub />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+          {/* remove in prod */}
+          <Route path="/test" element={<AdminDashboard />} />
+
+          {/* Admin Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/admin">
+              <Route path="post-event" element={<PostEvent />} />
+              <Route path="register-club" element={<RegisterClub />} />
+
+              <Route path="dashboard" element={<NewDashboard />}>
+                <Route index element={<Navigate to="events" replace />} />
+                <Route path="profile" element={<ProfileSection />} />
+                <Route path="events" element={<EventsSection />} />
+                <Route path="feedback" element={<FeedbackSection />} />
+                <Route path="suggestions" element={<SuggestionsSection />} />
+                <Route path="update-winner" element={<UpdateWinnerSection />} />
+              </Route>
+            </Route>
+          </Route>
         </Routes>
       </div>
       <Footer />
