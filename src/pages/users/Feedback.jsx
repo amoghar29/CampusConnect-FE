@@ -24,10 +24,7 @@ export default function Feedback() {
   const [hostingClub, setHostingClub] = useState("");
   const {
     submitForm,
-    loading: customLoading,
-    response,
-    error,
-  } = useSubmitForm();
+    } = useSubmitForm();
 
   const categories = [
     "Event Organization",
@@ -100,7 +97,6 @@ export default function Feedback() {
         title={"Failure"}
         message={"Failed to submit feedback."}
         buttonValue={"Try Again"}
-        redirect={"/feedback"}
         handleTryAgain={handleTryAgain}
       />
     );

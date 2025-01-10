@@ -98,7 +98,6 @@ export default function Suggestions() {
         title="Failure"
         message="Failed to submit suggestion."
         buttonValue="Try Again"
-        redirect="/suggestions"
         handleTryAgain={handleTryAgain}
       />
     );

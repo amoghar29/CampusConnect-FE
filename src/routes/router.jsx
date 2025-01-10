@@ -18,7 +18,6 @@ import EventsSection from "../components/dashboard/Events";
 import FeedbackSection from "../components/dashboard/Feedback";
 import SuggestionsSection from "../components/dashboard/Suggestion";
 import UpdateWinnerSection from "../components/dashboard/UpdateWinner";
-import AdminDashboard from "../pages/admin/Dashboard";
 
 export default function Router() {
   return (
@@ -37,8 +36,6 @@ export default function Router() {
           <Route path="/winners" element={<Winners />} />
           <Route path="/suggestion" element={<Suggestions />} />
 
-          {/* remove in prod */}
-          <Route path="/test" element={<AdminDashboard />} />
 
           {/* Admin Routes */}
           <Route element={<ProtectedRoute />}>

@@ -8,7 +8,7 @@ const useSubmitForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const submitForm = useCallback(async (url, data, headers = {}) => {
+  const submitForm = useCallback(async (url, data = {}) => {
     setLoading(true);
     setError(null);
 
