@@ -1,5 +1,19 @@
 // SuggestionsSection.js
-export default function SuggestionsSection({ suggestions }) {
+export default function SuggestionsSection() {
+  const suggestions = [
+    {
+      id: 1,
+      text: "Add online payment system",
+      date: "2025-01-01",
+      status: "pending",
+    },
+    {
+      id: 2,
+      text: "Include event categories",
+      date: "2025-01-02",
+      status: "resolved",
+    },
+  ];
   return (
 <div className="bg-white rounded-lg py-8 p-6 border border-gray-250">
 <div className="flex justify-between items-center mb-6 ">

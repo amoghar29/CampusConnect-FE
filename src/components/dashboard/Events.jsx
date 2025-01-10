@@ -31,7 +31,22 @@ function EventCard({ event, onEdit, onDelete }) {
 }
 
 // EventsSection.js
-export default function EventsSection({ events }) {
+export default function EventsSection() {
+  const events = [
+    {
+      id: 1,
+      title: "Tech Symposium 2025",
+      date: "2025-02-15",
+      status: "active",
+    },
+    { id: 2, title: "Cultural Fest", date: "2025-03-01", status: "upcoming" },
+    {
+      id: 3,
+      title: "Coding Competition",
+      date: "2025-01-20",
+      status: "completed",
+    },
+  ];
   const upcomingEvents = events.filter((event) => event.status === "upcoming");
   const pastEvents = events.filter((event) => event.status === "completed");
 

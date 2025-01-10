@@ -1,5 +1,21 @@
 // FeedbackSection.js
-export default function FeedbackSection({ feedback }) {
+export default function FeedbackSection() {
+  const feedback = [
+    {
+      id: 1,
+      event: "Tech Symposium",
+      feedback: "Great organization!",
+      user: "John Doe",
+      date: "2025-01-02",
+    },
+    {
+      id: 2,
+      event: "Cultural Fest",
+      feedback: "Amazing performances",
+      user: "Jane Smith",
+      date: "2025-01-03",
+    },
+  ];
   return (
     <div className="bg-white rounded-lg py-8 p-6 border border-gray-250">
       <h2 className="text-xl font-semibold mb-6">Event Feedback</h2>
