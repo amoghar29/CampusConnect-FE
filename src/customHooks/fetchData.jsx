@@ -11,7 +11,9 @@ const useFetchData = (url) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/${url}`);
+        const response = await axios.get(`${BACKEND_URL}/${url}`,{
+          withCredentials: true,
+        });
         setData(response.data); // Axios automatically parses JSON, use response.data
         setLoading(false);
       } catch (err) {
