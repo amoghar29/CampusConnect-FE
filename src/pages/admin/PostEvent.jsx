@@ -18,12 +18,13 @@ import FormContainer from "../../components/form/FormContainer";
 import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
-
+import Loading from "../../components/common/Loading";
+import useSubmitForm from "../../customHooks/submitForm";
 const EventCreationForm = () => {
   const [eventData, setEventData] = useState({
     title: "",
     clubName: "",
-    startTime: "",
+    startDate: "",
     endTime: "",
     location: "",
     description: "",
@@ -33,7 +34,6 @@ const EventCreationForm = () => {
   });
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const [imagePreview, setImagePreview] = useState(null);
   const [dragActive, setDragActive] = useState(false);
@@ -102,44 +102,30 @@ const EventCreationForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const { submitForm, loading, error } = useSubmitForm();
+  const handleEventSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
+    // Convert startDate to a Date object
+    const formattedEventData = {
+      ...eventData,
+      startDate: new Date(eventData.startDate), // Convert to Date object
+    };
 
     try {
-      const formData = new FormData();
-
-      // Add all event data to FormData
-      Object.keys(eventData).forEach((key) => {
-        if (key === "banner") {
-          if (eventData[key]) {
-            formData.append("banner", eventData[key]);
-          }
-        } else {
-          formData.append(key, eventData[key]);
-        }
-      });
-
-      const response = await axios.post(
-        "http://localhost:4000/api/admin/TechClub/post-event",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
+      const response = await submitForm("admin/post-event", formattedEventData);
       if (response.status === 201) {
         setSubmittedSuccess(true);
       }
-    } catch (error) {
-      console.error("Submission failed:", error);
+    } catch (err) {
+      console.error("Event submission failed:", err);
       setSubmittedFailure(true);
-    } finally {
-      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loading message={"Submitting Form..."} loading={loading} />;
+  }
 
   if (submittedSuccess) {
     return (
@@ -157,7 +143,7 @@ const EventCreationForm = () => {
         title={"Failure"}
         message={"Failed to submit suggestion."}
         buttonValue={"Try Again"}
-        redirect={"/admin/post-event"}
+        redirect={"/admin/TechClub/post-event"}
       />
     );
   }
@@ -168,7 +154,7 @@ const EventCreationForm = () => {
       subtitle="Fill in the details to create your event"
     >
       <GradientBackground position="top" />
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleEventSubmit} className="space-y-6">
         {/* Event Info Section */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
@@ -198,8 +184,8 @@ const EventCreationForm = () => {
             <FormInput
               label="Date"
               type="date"
-              name="date"
-              value={eventData.startTime.split("T")[0]}
+              name="startDate"
+              value={eventData.startDate.split("T")[0] || ""}
               onChange={handleChange}
               icon={Calendar}
             />
@@ -207,8 +193,10 @@ const EventCreationForm = () => {
             <FormInput
               label="Time"
               type="time"
-              name="time"
-              value={eventData.startTime.split("T")[1]}
+              name="startTime"
+              value={
+                eventData.startTime ? eventData.startTime.split("T")[1] : ""
+              }
               onChange={handleChange}
               icon={Calendar}
             />
