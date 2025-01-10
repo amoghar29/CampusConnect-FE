@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState ,useContext} from "react";
 import { Link } from "react-router-dom";
+import { authContext } from "../../context/authContext";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+
+import { useNavigate } from 'react-router-dom';
 
 const navigation = [
   { name: "Home", to: "/home" },
@@ -13,10 +16,16 @@ const navigation = [
 ];
 
 export default function Header() {
+  const navigate = useNavigate();
+  const { isAuthenticated,setIsAuthenticated,logout  } = useContext(authContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isLoggedIn = false; // Replace with actual login state
-
-  const filteredNavigation = isLoggedIn
+  function handleLogout() {
+    logout();
+    setMobileMenuOpen(false);
+    setIsAuthenticated(false)
+    navigate("/signin");
+  }
+  const filteredNavigation = isAuthenticated
     ? [
         ...navigation.filter(
           (item) => item.name !== "Feedback" && item.name !== "Suggestions"
@@ -67,8 +76,10 @@ export default function Header() {
 
           {/* Login/Logout Button (Desktop only) */}
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            {isLoggedIn ? (
-              <button className="text-base font-semibold leading-6 text-gray-900 hover:scale-105 ">
+            {isAuthenticated ? (
+              <button 
+              onClick={handleLogout}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
                 Logout
               </button>
             ) : (
@@ -118,18 +129,16 @@ export default function Header() {
                   </Link>
                 ))}
                 {/* Mobile-only Login/Logout Link */}
-                {isLoggedIn ? (
+                {isAuthenticated ? (
                   <button
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 transition duration-300 transform hover:scale-105"
-                    onClick={() => {
-                      /* handle logout logic */
-                    }}
+                    onClick={logout}
                   >
                     Logout
                   </button>
                 ) : (
                   <Link
-                    to="/login"
+                    to="/signin"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 transition duration-300 transform hover:scale-105"
                     onClick={() => setMobileMenuOpen(false)}
                   >
