@@ -9,6 +9,7 @@ import FormTextArea from "../../components/form/FormTextArea";
 import FormSelect from "../../components/form/FormSelect";
 import FormInput from "../../components/form/FormInput";
 import GradientBackground from "../../components/common/GradientBackground";
+import useSubmitForm from "../../customHooks/submitForm";
 
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
@@ -21,6 +22,12 @@ export default function Feedback() {
   const [loading, setLoading] = useState(false);
   const [eventTitle, setEventTitle] = useState("");
   const [hostingClub, setHostingClub] = useState("");
+  const {
+    submitForm,
+    loading: customLoading,
+    response,
+    error,
+  } = useSubmitForm();
 
   const categories = [
     "Event Organization",
@@ -42,15 +49,14 @@ export default function Feedback() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(`${BACKEND_URL}/feedback`, {
+      const response = await submitForm("feedback", {
         rating,
         feedback,
         selectedCategory,
         eventTitle,
-        hostingClub: hostingClub,
+        hostingClub,
       });
-
-      if (response.status === 201) {
+      if (response) {
         setSubmitFeedbackSuccess(true);
       }
     } catch (error) {
@@ -105,7 +111,7 @@ export default function Feedback() {
       title="We Value Your Feedback"
       subtitle="Help us improve your campus experience"
     >
-    <GradientBackground position="top"/>
+      <GradientBackground position="top" />
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Mood Selection */}
         <div className="space-y-4">
@@ -181,7 +187,6 @@ export default function Feedback() {
           </button>
         </div>
       </form>
-
     </FormContainer>
   );
 }

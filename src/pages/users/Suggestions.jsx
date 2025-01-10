@@ -9,17 +9,19 @@ import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
 import FormSelect from "../../components/form/FormSelect";
 import GradientBackground from "../../components/common/GradientBackground";
+import useSubmitForm from "../../customHooks/submitForm";
+
 const BACKEND_URL = "https://campusconnect-be.onrender.com";
 
 export default function Suggestions() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
+    userFullname: "",
+    userEmail: "",
+    userPhoneNumber: "",
     clubName: "",
-    eventTitle: "",
-    eventDescription: "",
-    expectedParticipants: "",
+    suggestedEventTitle: "",
+    suggestedEventDescription: "",
+    expectedHeadCount: "",
     expectedDuration: "",
     additionalNotes: "",
     branch: "",
@@ -28,7 +30,7 @@ export default function Suggestions() {
 
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { submitForm, loading } = useSubmitForm();
   const clubs = [
     { value: "Tech Club", label: "Tech Club" },
     { value: "Cultural Club", label: "Cultural Club" },
@@ -39,31 +41,40 @@ export default function Suggestions() {
   ];
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Correctly destructuring name
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value, // Using name to update the correct field
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      const response = await axios.post(`${BACKEND_URL}/suggestion`, formData);
-      if (response.status === 201) {
+      const response = await submitForm("suggestion", formData);
+      if (response) {
         setSubmittedSuccess(true);
       }
     } catch (error) {
       console.error("Submission failed:", error);
       setSubmittedFailure(true);
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleTryAgain = () => {
-    setFormData("");
+    setFormData({
+      userFullname: "",
+      userEmail: "",
+      userPhoneNumber: "",
+      clubName: "",
+      suggestedEventTitle: "",
+      suggestedEventDescription: "",
+      expectedHeadCount: "",
+      expectedDuration: "",
+      additionalNotes: "",
+      branch: "",
+      semester: "",
+    });
     setSubmittedFailure(false);
     setSubmittedSuccess(false);
   };
@@ -97,7 +108,7 @@ export default function Suggestions() {
       title="Suggest an Event"
       subtitle="Have an exciting event idea? Share it with us and let's make it happen together!"
     >
-        <GradientBackground position="top"/>
+      <GradientBackground position="top" />
 
       <form onSubmit={handleSubmit} className="space-y-12">
         {/* Personal Details */}
@@ -108,24 +119,24 @@ export default function Suggestions() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <FormInput
               label="Full Name"
-              name="name"
-              value={formData.name}
+              name="userFullname" // Ensure this matches the state
+              value={formData.userFullname}
               onChange={handleChange}
               required
             />
             <FormInput
               label="Email Address"
               type="email"
-              name="email"
-              value={formData.email}
+              name="userEmail" // Ensure this matches the state
+              value={formData.userEmail}
               onChange={handleChange}
               required
             />
             <FormInput
               label="Phone Number"
               type="tel"
-              name="phone"
-              value={formData.phone}
+              name="userPhoneNumber" // Ensure this matches the state
+              value={formData.userPhoneNumber}
               onChange={handleChange}
             />
             <FormInput
@@ -163,16 +174,16 @@ export default function Suggestions() {
 
           <FormInput
             label="Event Title"
-            name="eventTitle"
-            value={formData.eventTitle}
+            name="suggestedEventTitle" // Ensure this matches the state
+            value={formData.suggestedEventTitle}
             onChange={handleChange}
             required
           />
 
           <FormTextArea
             label="Event Description"
-            name="eventDescription"
-            value={formData.eventDescription}
+            name="suggestedEventDescription" // Ensure this matches the state
+            value={formData.suggestedEventDescription}
             onChange={handleChange}
             required
             placeholder="Please describe your event idea in detail..."
@@ -182,15 +193,15 @@ export default function Suggestions() {
             <FormInput
               label="Expected Participants"
               type="number"
-              name="expectedParticipants"
-              value={formData.expectedParticipants}
+              name="expectedHeadCount" // Ensure this matches the state
+              value={formData.expectedHeadCount}
               onChange={handleChange}
               icon={Users}
             />
             <FormInput
               label="Duration (hours)"
               type="number"
-              name="expectedDuration"
+              name="expectedDuration" // Ensure this matches the state
               value={formData.expectedDuration}
               onChange={handleChange}
               required
