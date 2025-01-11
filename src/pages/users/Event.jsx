@@ -121,7 +121,7 @@ export default function Event() {
               const isRegistrationOpen = new Date(event.date) > currentDate;
               return (
                 <EventCard
-                  key={event.id}
+                  key={event._id}
                   event={event}
                   isRegistrationOpen={isRegistrationOpen}
                 />

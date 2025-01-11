@@ -12,5 +12,5 @@ export default function Loading({ message, loading }) {
       </div>
     );
   }
-  return null; // Return null if not loading
+  return null; 
 }

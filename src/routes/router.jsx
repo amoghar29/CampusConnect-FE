@@ -18,6 +18,7 @@ import EventsSection from "../components/dashboard/Events";
 import FeedbackSection from "../components/dashboard/Feedback";
 import SuggestionsSection from "../components/dashboard/Suggestion";
 import UpdateWinnerSection from "../components/dashboard/UpdateWinner";
+import NotFound from "../components/common/NotFoundCard";
 
 export default function Router() {
   return (
@@ -36,7 +37,6 @@ export default function Router() {
           <Route path="/winners" element={<Winners />} />
           <Route path="/suggestion" element={<Suggestions />} />
 
-
           {/* Admin Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/admin">
@@ -53,6 +53,9 @@ export default function Router() {
               </Route>
             </Route>
           </Route>
+
+          {/* 404 Not Found Route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <Footer />

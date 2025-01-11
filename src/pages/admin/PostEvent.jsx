@@ -19,22 +19,24 @@ import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
-import useSubmitForm from "../../customHooks/submitForm";
+
 const EventCreationForm = () => {
   const [eventData, setEventData] = useState({
     title: "",
     clubName: "",
     startDate: "",
-    endTime: "",
+    startTime: "",
     location: "",
     description: "",
     eligibility: "",
     registrationFee: "",
     teamSize: "",
+    banner: null,
   });
+
+  const [loading, setLoading] = useState(false);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
-
   const [imagePreview, setImagePreview] = useState(null);
   const [dragActive, setDragActive] = useState(false);
 
@@ -82,6 +84,10 @@ const EventCreationForm = () => {
 
     const file = e.dataTransfer.files?.[0];
     if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size exceeds 5MB");
+        return;
+      }
       setEventData((prev) => ({
         ...prev,
         banner: file,
@@ -102,24 +108,41 @@ const EventCreationForm = () => {
     }));
   };
 
-  const { submitForm, loading, error } = useSubmitForm();
   const handleEventSubmit = async (e) => {
     e.preventDefault();
-
-    // Convert startDate to a Date object
-    const formattedEventData = {
-      ...eventData,
-      startDate: new Date(eventData.startDate), // Convert to Date object
-    };
+    setLoading(true);
 
     try {
-      const response = await submitForm("admin/post-event", formattedEventData);
-      if (response.status === 201) {
+      const formData = new FormData();
+      Object.keys(eventData).forEach((key) => {
+        if (key === "banner" && eventData[key]) {
+          formData.append("banner", eventData[key]);
+        } else if (eventData[key]) {
+          formData.append(key, eventData[key]);
+        }
+      });
+
+      const response = await axios.post(
+        "http://localhost:4000/api/admin/post-event",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
         setSubmittedSuccess(true);
+      } else {
+        throw new Error("Failed to create event");
       }
-    } catch (err) {
-      console.error("Event submission failed:", err);
+    } catch (error) {
+      console.error("Error creating event:", error);
       setSubmittedFailure(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -137,13 +160,14 @@ const EventCreationForm = () => {
       />
     );
   }
+
   if (submittedFailure) {
     return (
       <FailureCard
         title={"Failure"}
         message={"Failed to submit suggestion."}
         buttonValue={"Try Again"}
-        redirect={"/admin/TechClub/post-event"}
+        handleTryAgain={() => setSubmittedFailure(false)}
       />
     );
   }
@@ -169,6 +193,7 @@ const EventCreationForm = () => {
             onChange={handleChange}
             placeholder="Enter event name"
             icon={PenTool}
+            required
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -179,15 +204,19 @@ const EventCreationForm = () => {
               onChange={handleChange}
               placeholder="Enter club name"
               icon={Building2}
+              required
             />
 
             <FormInput
               label="Date"
               type="date"
               name="startDate"
-              value={eventData.startDate.split("T")[0] || ""}
+              value={
+                eventData.startDate ? new Date(eventData.startDate).toISOString().split("T")[0] : ""
+              }
               onChange={handleChange}
               icon={Calendar}
+              required
             />
 
             <FormInput
@@ -199,6 +228,7 @@ const EventCreationForm = () => {
               }
               onChange={handleChange}
               icon={Calendar}
+              required
             />
           </div>
 
@@ -209,6 +239,7 @@ const EventCreationForm = () => {
             onChange={handleChange}
             placeholder="Offline location or virtual link"
             icon={MapPin}
+            required
           />
 
           <FormTextArea
@@ -217,6 +248,7 @@ const EventCreationForm = () => {
             value={eventData.description}
             onChange={handleChange}
             placeholder="Add event description"
+            required
           />
         </div>
 

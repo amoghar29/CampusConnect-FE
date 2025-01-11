@@ -4,14 +4,15 @@ import GradientBackground from "../../components/common/GradientBackground";
 import ClubCard from "../../components/club/ClubCard";
 import useFetchData from "../../customHooks/fetchData";
 import Loading from "../../components/common/Loading";
+import { FailureCard } from "../../components/common/FailureCard";
 export default function Club() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { loading, data: clubs, error } = useFetchData("club");
 
   // Add loading and error handling
-  if (loading) return <Loading/>;
-  if (error) return <div>Error fetching clubs: {error.message}</div>;
+  if (loading) return <Loading message="Loading..." />;
+  if (error) return <FailureCard message="Failed to fetch clubs" />;
 
   return (
     <div className="bg-white min-h-screen">
@@ -50,7 +51,7 @@ export default function Club() {
         <div className="mx-auto max-w-7xl pb-20 py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {clubs.map((club) => (
-              <ClubCard key={club.id} club={club} />
+              <ClubCard key={club._id} club={club} />
             ))}
           </div>
         </div>

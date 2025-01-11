@@ -1,4 +1,12 @@
 export default function EventCard({ event, isRegistrationOpen }) {
+  function formatDateToDDMMYYYY(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
   return (
     <div className="group relative bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] overflow-hidden">
       <div className="relative h-48 sm:h-64 w-full overflow-hidden">
@@ -8,7 +16,7 @@ export default function EventCard({ event, isRegistrationOpen }) {
           className="h-full w-full sm:h-360 sm:w-360 object-cover"
         />
         <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
-          {new Date(event.date).toLocaleDateString()}
+          {event.startDate ? formatDateToDDMMYYYY(event.startDate): "Date"}
         </div>
         {event.registrationFee && (
           <div className="absolute bottom-4 right-4 bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm font-medium">
