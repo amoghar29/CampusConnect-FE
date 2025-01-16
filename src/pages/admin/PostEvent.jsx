@@ -23,7 +23,6 @@ import Loading from "../../components/common/Loading";
 const EventCreationForm = () => {
   const [eventData, setEventData] = useState({
     title: "",
-    clubName: "",
     startDate: "",
     startTime: "",
     location: "",
@@ -197,16 +196,6 @@ const EventCreationForm = () => {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormInput
-              label="Hosting Club"
-              name="clubName"
-              value={eventData.clubName}
-              onChange={handleChange}
-              placeholder="Enter club name"
-              icon={Building2}
-              required
-            />
-
             <FormInput
               label="Date"
               type="date"

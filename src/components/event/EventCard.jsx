@@ -16,7 +16,7 @@ export default function EventCard({ event, isRegistrationOpen }) {
           className="h-full w-full sm:h-360 sm:w-360 object-cover"
         />
         <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
-          {event.startDate ? formatDateToDDMMYYYY(event.startDate): "Date"}
+          {event.startDate ? formatDateToDDMMYYYY(event.startDate) : "Date"}
         </div>
         {event.registrationFee && (
           <div className="absolute bottom-4 right-4 bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm font-medium">
@@ -26,10 +26,17 @@ export default function EventCard({ event, isRegistrationOpen }) {
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
-        <p className="text-sm text-gray-500 mt-1">Hosted by {event.clubName}</p>
-        <p className="text-sm text-gray-500 mt-1">Location: {event.location}</p>
-        <p className="text-sm text-gray-500 mt-1">
-          Start Time: {event.startTime}
+        <p className="text-sm text-gray-600 mt-1">
+          <span className="text-gray-700 font-medium	">Hosted by :</span>{" "}
+          {event.hostingClubName}
+        </p>
+        <p className="text-sm text-gray-600 mt-1">
+          <span className="text-gray-700 font-medium	">Location:</span>{" "}
+          {event.location}
+        </p>
+        <p className="text-sm text-gray-600 mt-1">
+          <span className="text-gray-700 font-medium	">Start Time:</span>{" "}
+          {event.startTime}
         </p>
 
         {/* Register Now Button for Upcoming Events */}

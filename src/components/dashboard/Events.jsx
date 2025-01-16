@@ -1,25 +1,49 @@
-// EventCard.js
 import { Edit2, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
-function EventCard({ event, onEdit, onDelete }) {
+import { Link, useNavigate } from "react-router-dom";
+import useFetchData from "../../customHooks/fetchData";
+import Loading from "../common/Loading";
+import { FailureCard } from "../common/FailureCard";
+import { SuccessCard } from "../common/SuccessCard";
+import axios from "axios";
+import { useState } from "react";
+const backendUrl = "http://localhost:4000";
+const EventCard = ({ event, handleDelete }) => {
+  const navigate = useNavigate();
+  const handleEdit = (eventId) => {
+    navigate(`/admin/events/${eventId}`);
+  };
+  function formatDateToDDMMYYYY(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-lg border border-indigo-500  p-6 hover:shadow-lg transition-shadow">
       <div className="flex justify-between items-start">
-        <div>
+        <div className="space-y-2">
           <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
-          <p className="text-sm text-gray-500 mt-1">{event.date}</p>
+          <div className="space-y-1">
+            <p className="text-sm text-gray-500">
+              <span className="font-medium">Event Date:</span>{" "}
+              {formatDateToDDMMYYYY(event.startDate)}
+            </p>
+          </div>
         </div>
       </div>
+
       <div className="mt-4 flex gap-2">
         <button
-          onClick={() => onEdit(event)}
+          onClick={() => handleEdit(event._id)}
           className="flex items-center gap-1 px-3 py-2 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
         >
           <Edit2 className="h-4 w-4" />
           Edit
         </button>
         <button
-          onClick={() => onDelete(event.id)}
+          onClick={() => handleDelete(event._id)}
           className="flex items-center gap-1 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
         >
           <Trash2 className="h-4 w-4" />
@@ -28,44 +52,68 @@ function EventCard({ event, onEdit, onDelete }) {
       </div>
     </div>
   );
-}
+};
 
-// EventsSection.js
 export default function EventsSection() {
-  const events = [
-    {
-      id: 1,
-      title: "Tech Symposium 2025",
-      date: "2025-02-15",
-      status: "active",
-    },
-    { id: 2, title: "Cultural Fest", date: "2025-03-01", status: "upcoming" },
-    {
-      id: 3,
-      title: "Coding Competition",
-      date: "2025-01-20",
-      status: "completed",
-    },
-  ];
-  const upcomingEvents = events.filter((event) => event.status === "upcoming");
-  const pastEvents = events.filter((event) => event.status === "completed");
+  const [deleteEventStatus, setDeleteEventStatus] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const {
+    loading,
+    data: events = [],
+    error,
+  } = useFetchData("admin/events", refreshTrigger);
+  const currentdate = new Date();
 
-  const handleEdit = (event) => {
-    // Handle edit logic
-    console.log("Editing event:", event);
+  const upcomingEvents = events
+    ? events.filter((event) => new Date(event.startDate) >= currentdate)
+    : [];
+  const pastEvents = Array.isArray(events)
+    ? events.filter((event) => new Date(event.startDate) < currentdate)
+    : [];
+
+  const handleDelete = async (eventId) => {
+    try {
+      const response = await axios.delete(
+        `${backendUrl}/api/admin/events/${eventId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        setDeleteEventStatus(true);
+      }
+    } catch (error) {
+      setDeleteEventStatus(false);
+    }
+  };
+  const resetDeleteStatus = () => {
+    setRefreshTrigger(!refreshTrigger);
+    setDeleteEventStatus(null);
   };
 
-  const handleDelete = (eventId) => {
-    // Handle delete logic
-    console.log("Deleting event:", eventId);
-  };
-
+  if (loading) return <Loading message="Fetching events..." />;
+  if (deleteEventStatus === true)
+    return (
+      <SuccessCard
+        message={"Event deleted successfully"}
+        buttonValue={"events"}
+        redirect={"/explore-events"}
+      />
+    );
+  if (deleteEventStatus === false)
+    return (
+      <FailureCard
+        message={"Failed to delete events"}
+        buttonValue={"events"}
+        handleTryAgain={resetDeleteStatus}
+      />
+    );
   return (
     <div className="bg-white rounded-lg py-8 p-6 border border-gray-250">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-semibold">List of all events</h2>
         <Link
-          to={"/admin/post-event"}
+          to="/admin/post-event"
           className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
         >
           Create New Event
@@ -78,10 +126,9 @@ export default function EventsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {upcomingEvents.map((event) => (
             <EventCard
-              key={event.id}
+              key={event._id}
               event={event}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
+              handleDelete={handleDelete}
             />
           ))}
         </div>
@@ -92,12 +139,7 @@ export default function EventsSection() {
         <h3 className="text-lg font-medium mb-4">Past Events</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {pastEvents.map((event) => (
-            <EventCard
-              key={event.id}
-              event={event}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
+            <EventCard key={event._id} event={event} onDelete={handleDelete} />
           ))}
         </div>
       </div>

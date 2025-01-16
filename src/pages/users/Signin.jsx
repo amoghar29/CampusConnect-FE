@@ -30,14 +30,19 @@ export default function Signin() {
         { withCredentials: true }
       );
 
+      console.log("Response:", response);
+
       if (response.status === 200) {
-        const token = response.data.access_token; 
-        login(token); 
+        const token = response.data.access_token;
+        login(token);
         navigate("/admin/dashboard/events");
       }
+
     } catch (error) {
       console.error("Error during sign-in:", error);
-      setError(error.response?.data?.message || "Sign-in failed. Please try again.");
+      setError(
+        error.response?.data?.message || "Sign-in failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }

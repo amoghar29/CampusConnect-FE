@@ -42,7 +42,7 @@ export default function Event() {
             </p>
 
             {/* Search Bar - Mobile */}
-            <div className="mt-6 sm:hidden px-4">
+            {/* <div className="mt-6 sm:hidden px-4">
               <div className="flex flex-col gap-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
@@ -68,10 +68,10 @@ export default function Event() {
                   <span>Search Events</span>
                 </button>
               </div>
-            </div>
+            </div> */}
 
             {/* Search Bar - Desktop */}
-            <div className="hidden sm:flex mt-10 items-center justify-center gap-4 px-4">
+            {/* <div className="hidden sm:flex mt-10 items-center justify-center gap-4 px-4">
               <div className="relative flex-1 max-w-2xl">
                 <div className="flex items-center bg-white rounded-lg shadow-lg border border-gray-200">
                   <div className="flex-1 flex items-center border-r border-gray-200">
@@ -89,7 +89,7 @@ export default function Event() {
               <button className="bg-indigo-600 text-white px-8 py-4 rounded-lg hover:bg-indigo-500 transition duration-300 transform hover:scale-105 shadow-lg">
                 Search
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -41,11 +41,6 @@ export default function Sidebar({ currentPath }) {
       icon: Lightbulb,
       path: "/admin/dashboard/suggestions",
     },
-    {
-      name: "Update Winner",
-      icon: PlusCircle,
-      path: "/admin/dashboard/update-winner",
-    },
   ];
 
   return (

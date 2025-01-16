@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { ArrowRightIcon } from "lucide-react";
 import EventCard from "../event/EventCard";
 import useFetchData from "../../customHooks/fetchData";
+import Loading from "../common/Loading";
+import {FailureCard} from "../common/FailureCard";
 export default function UpcomingEvents() {
   const { loading, data: events, error } = useFetchData("events");
-
-  const currentDate = new Date();
 
   // Only show first 3 upcoming events if events is defined
   const UpcomingEvents = events
@@ -15,6 +15,8 @@ export default function UpcomingEvents() {
         .slice(0, 3)
     : []; // Return an empty array if events is not defined
 
+  if (loading) return <Loading message="Loading events..." />;
+  if (error) return <FailureCard message={error} />;
   return (
     <section className="py-8 px-4  bg-gray-50 rounded-xl">
       <div className="container mx-auto px-4">

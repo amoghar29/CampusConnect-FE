@@ -8,7 +8,7 @@ const useSubmitForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const submitForm = useCallback(async (url, data = {}) => {
+  const submitForm = useCallback(async (type = "post", url, data = {}) => {
     setLoading(true);
     setError(null);
 
@@ -24,10 +24,10 @@ const useSubmitForm = () => {
         }
       });
 
-      const response = await axios.post(`${BACKEND_URL}/${url}`, formData, {
+      const response = await axios[type](`${BACKEND_URL}/${url}`, formData, {
         headers: {
           "Content-Type": "application/json",
-          },
+        },
         withCredentials: true,
       });
 

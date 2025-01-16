@@ -3,7 +3,7 @@ import axios from "axios";
 
 const BACKEND_URL = "http://localhost:4000/api";
 
-const useFetchData = (url) => {
+const useFetchData = (url,refreshTrigger) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ const useFetchData = (url) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/${url}`,{
+        const response = await axios.get(`${BACKEND_URL}/${url}`, {
           withCredentials: true,
         });
         setData(response.data); // Axios automatically parses JSON, use response.data
@@ -22,7 +22,7 @@ const useFetchData = (url) => {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshTrigger]);
 
   return { loading, data, error };
 };
