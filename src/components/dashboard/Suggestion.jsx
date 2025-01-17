@@ -3,7 +3,11 @@ import Loading from "../common/Loading";
 import { FailureCard } from "../common/FailureCard";
 
 export default function SuggestionsSection() {
-  const { loading, data: suggestions, error } = useFetchData("admin/suggestions");
+  const {
+    loading,
+    data: suggestions,
+    error,
+  } = useFetchData("admin/suggestions");
 
   if (loading) return <Loading message="Fetching suggestions..." />;
   if (error) return <FailureCard message={error} />;
@@ -38,22 +42,32 @@ export default function SuggestionsSection() {
             {suggestions?.map((item) => (
               <tr key={item._id} className="hover:bg-gray-50">
                 <td className="px-6 py-4">
-                  <div className="text-sm font-medium text-gray-900">{item.userFullname}</div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {item.userFullname}
+                  </div>
                 </td>
                 <td className="px-6 py-4">
                   <div className="text-sm text-gray-500">{item.userEmail}</div>
-                  <div className="text-sm text-gray-500">{item.userPhoneNumber}</div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm font-medium text-gray-900">{item.suggestedEventTitle}</div>
-                  <div className="text-sm text-gray-500">{item.suggestedEventDescription}</div>
-                </td>
-                <td className="px-6 py-4">
                   <div className="text-sm text-gray-500">
-                    <span className="font-medium">Expected Count:</span> {item.expectedHeadCount}
+                    {item.userPhoneNumber}
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="text-sm font-medium text-gray-900">
+                    {item.suggestedEventTitle}
                   </div>
                   <div className="text-sm text-gray-500">
-                    <span className="font-medium">Duration:</span> {item.eventDuration} hrs
+                    {item.suggestedEventDescription}
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="text-sm text-gray-500">
+                    <span className="font-medium">Expected Count:</span>{" "}
+                    {item.expectedHeadCount}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    <span className="font-medium">Duration:</span>{" "}
+                    {item.eventDuration} hrs
                   </div>
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-500">
@@ -66,5 +80,4 @@ export default function SuggestionsSection() {
       </div>
     </div>
   );
-};
-
+}
