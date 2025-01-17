@@ -6,7 +6,6 @@ export const authContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -21,16 +20,14 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         console.error("Token verification failed:", error);
         setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     verifyToken();
   }, []);
 
   const login = (token) => {
-    Cookies.set("access_token", token, { expires: 1, path: "/" }); // Ensure path is set
+    Cookies.set("access_token", token, { expires: 1, path: "/" }); 
     setIsAuthenticated(true);
   };
 
@@ -47,10 +44,6 @@ export const AuthProvider = ({ children }) => {
       console.error("Logout failed:", error);
     }
   };
-
-  if (loading) {
-    return <div>Loading...</div>; // Prevent rendering the app until authentication is verified
-  }
 
   return (
     <authContext.Provider
