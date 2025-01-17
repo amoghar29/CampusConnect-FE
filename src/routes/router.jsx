@@ -6,7 +6,7 @@ import Home from "../pages/users/Home";
 import Event from "../pages/users/Event";
 import Club from "../pages/users/Club";
 import PostEvent from "../pages/admin/PostEvent";
-import Feedback from "../pages/users/Feedback";
+import Feedback from "../pages/users/UserFeedback";
 // import Winners from "../pages/users/Winners";
 import Suggestions from "../pages/users/Suggestions";
 import Header from "../components/common/Header";
