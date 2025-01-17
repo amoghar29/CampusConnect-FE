@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const authContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -10,12 +10,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/auth/verify",
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${BACKEND_URL}/auth/verify`, {
+          withCredentials: true,
+        });
         if (response.status === 200) {
           setIsAuthenticated(true);
         } else {
@@ -34,18 +31,17 @@ export const AuthProvider = ({ children }) => {
 
   const login = (token) => {
     Cookies.set("access_token", token, { expires: 1, path: "/" }); // Ensure path is set
-    console.log("Token set in cookies:", token); // Log the token
     setIsAuthenticated(true);
   };
 
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:4000/api/auth/signout",
+        `${BACKEND_URL}/auth/signout`,
         {},
         { withCredentials: true }
       );
-      Cookies.remove("access_token"); // This is optional since the cookie is httpOnly
+      Cookies.remove("access_token");
       setIsAuthenticated(false);
     } catch (error) {
       console.error("Logout failed:", error);
