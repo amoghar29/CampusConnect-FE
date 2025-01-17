@@ -11,15 +11,17 @@ export default function Event() {
 
   // Calculate filtered events even during loading to maintain layout
   const filteredEvents = loading
-    ? [...Array(3)].map((_, index) => null) // Create array of 6 null items for skeleton loading
-    : events
+    ? [...Array(3)].map((_, index) => null) // Create array of 3 null items for skeleton loading
+    : events && Array.isArray(events) // Check if events is not null and is an array
+    ? events
         .filter((event) => {
           const eventDate = new Date(event.startDate);
           if (view === "Upcoming") return eventDate >= currentDate;
           if (view === "Past") return eventDate < currentDate;
           return true;
         })
-        .sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+        .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
+    : []; // Default to an empty array if events is null or not an array
 
   return (
     <div className="">
