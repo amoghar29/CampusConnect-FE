@@ -53,5 +53,4 @@ const FeedbackSection = () => {
     </div>
   );
 };
-
 export default FeedbackSection;

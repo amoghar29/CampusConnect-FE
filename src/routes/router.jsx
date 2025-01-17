@@ -15,7 +15,7 @@ import RegisterClub from "../pages/admin/RegisterClub";
 import NewDashboard from "../pages/admin/NewDashboard";
 import ProfileSection from "../components/dashboard/Profile";
 import EventsSection from "../components/dashboard/Events";
-import FeedbackSection from "../components/dashboard/Feedback";
+import FeedbackSection from "../components/dashboard/DashboardFeedback";
 import SuggestionsSection from "../components/dashboard/Suggestion";
 import NotFound from "../components/common/NotFoundCard";
 import EditEventForm from "../components/dashboard/EditEvents";
