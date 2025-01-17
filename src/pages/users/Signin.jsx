@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { authContext } from "../../context/authContext";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Signin() {
   const { login } = useContext(authContext); // Use login method from context
@@ -25,7 +26,7 @@ export default function Signin() {
     }
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/auth/signin",
+        `${BACKEND_URL}/auth/signin`,
         { email, password },
         { withCredentials: true }
       );

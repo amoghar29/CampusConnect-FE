@@ -43,7 +43,7 @@ const ProfileSection = () => {
     aboutUs: "",
     membershipFee: "",
     socialMedia: {
-      facebook: "",
+      linkedIn: "",
       twitter: "",
       instagram: "",
     },
@@ -64,7 +64,7 @@ const ProfileSection = () => {
         aboutUs: initialData.aboutUs || "",
         membershipFee: initialData.membershipFee || "",
         socialMedia: {
-          facebook: initialData.socialMedia?.facebook || "",
+          linkedIn: initialData.socialMedia?.linkedIn || "",
           twitter: initialData.socialMedia?.twitter || "",
           instagram: initialData.socialMedia?.instagram || "",
         },
@@ -88,7 +88,6 @@ const ProfileSection = () => {
     const file = e.target.files[0];
     if (file) {
       setLogoFile(file);
-      // Create preview URL for the selected image
       const previewUrl = URL.createObjectURL(file);
       setLogoPreview(previewUrl);
     }
@@ -106,7 +105,6 @@ const ProfileSection = () => {
           .filter((item) => item.trim()),
       };
 
-      // Add logo file to form data if it exists
       if (logoFile) {
         formattedData.logo = logoFile;
       }
@@ -121,7 +119,6 @@ const ProfileSection = () => {
         setIsEditing(false);
       }
 
-      // Clean up preview URL
       if (logoPreview) {
         URL.revokeObjectURL(logoPreview);
         setLogoPreview(null);
@@ -143,7 +140,7 @@ const ProfileSection = () => {
       aboutUs: initialData.aboutUs || "",
       membershipFee: initialData.membershipFee || "",
       socialMedia: {
-        facebook: initialData.socialMedia?.facebook || "",
+        linkedIn: initialData.socialMedia?.linkedIn || "",
         twitter: initialData.socialMedia?.twitter || "",
         instagram: initialData.socialMedia?.instagram || "",
       },
@@ -199,16 +196,18 @@ const ProfileSection = () => {
   if (error) {
     return <div>Error loading club details</div>;
   }
+  if (successMessage) {
+    return (
+      <SuccessCard
+        message={successMessage}
+        redirect={"/admin/dashboard/profile"}
+        buttonValue={"Go back"}
+      />
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg py-8 p-6 border border-gray-250">
-      {successMessage && (
-        <SuccessCard
-          message={successMessage}
-          redirect={"/admin/dashboard/profile"}
-          buttonValue={"Go back"}
-        />
-      )}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Profile Settings</h2>
         {!isEditing && (
@@ -312,9 +311,9 @@ const ProfileSection = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <FormInput
-              label="Facebook"
-              name="socialMedia.facebook"
-              value={formData.socialMedia.facebook}
+              label="linkedIn"
+              name="socialMedia.linkedIn"
+              value={formData.socialMedia.linkedIn}
               onChange={handleChange}
               icon={Link}
               disabled={!isEditing}

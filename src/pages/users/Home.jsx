@@ -5,12 +5,14 @@ import CTASection from "../../components/home/CTASection";
 import GradientBackground from "../../components/common/GradientBackground";
 
 export default function Home() {
+
+
   return (
-    <div className="bg-white">
+    <div className="">
+      <GradientBackground position="top" />
+
       <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section with Background Gradient */}
         <div className="relative isolate pt-14">
-          <GradientBackground position="top" />
           <div className="py- sm:py-20 lg:py-24">
             <div className="text-center">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">

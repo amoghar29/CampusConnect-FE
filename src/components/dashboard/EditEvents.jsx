@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
 import {
   MapPin,
   FileText,
   Users,
-  X,
-  Building2,
+  X,  
   PenTool,
   Coins,
   Image as ImageIcon,
@@ -22,8 +20,10 @@ import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
 import useSubmitForm from "../../customHooks/submitForm";
-const backendUrl = "http://localhost:4000";
+import useFetchData from "../../customHooks/fetchData";
+
 const EditEventForm = () => {
+  const { eventId } = useParams();
   const [eventData, setEventData] = useState({
     title: "",
     clubName: "",
@@ -40,57 +40,46 @@ const EditEventForm = () => {
     thirdPlace: "",
     eventImage: null,
   });
-  const { eventId } = useParams();
-  const [loading, setLoading] = useState(true);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
   const [bannerPreview, setBannerPreview] = useState(null);
   const [eventImagePreview, setEventImagePreview] = useState(null);
   const [dragActive, setDragActive] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const { loading: submitting, response, error, submitForm } = useSubmitForm();
+  const { loading: submitting, submitForm } = useSubmitForm();
+  const {
+    loading: fetching,
+    data: fetchedEventData,
+    refetch: fetchEventData,
+  } = useFetchData(`events/${eventId}`, submittedSuccess);
 
   useEffect(() => {
-    const fetchEventData = async () => {
-      try {
-        const response = await axios.get(
-          `${backendUrl}/api/events/${eventId}`,
-          { withCredentials: true }
-        );
-        const event = response.data;
+    if (fetchedEventData) {
+      setEventData({
+        ...fetchedEventData,
+        startDate: fetchedEventData.startDate
+          ? new Date(fetchedEventData.startDate).toISOString().split("T")[0]
+          : "",
+        startTime: fetchedEventData.startTime || "",
+        banner: fetchedEventData.banner,
+        eventImage: fetchedEventData.eventImage,
+      });
 
-        setEventData({
-          ...event,
-          startDate: event.startDate
-            ? new Date(event.startDate).toISOString().split("T")[0]
-            : "",
-          startTime: event.startTime || "",
-          banner: event.banner,
-          eventImage: event.eventImage,
-        });
-
-        if (event.bannerUrl) {
-          setBannerPreview(event.bannerUrl);
-        }
-        if (event.eventImageUrl) {
-          setEventImagePreview(event.eventImageUrl);
-        }
-      } catch (error) {
-        console.error("Error fetching event:", error);
-        setSubmittedFailure(true);
-      } finally {
-        setLoading(false);
+      if (fetchedEventData.bannerUrl) {
+        setBannerPreview(fetchedEventData.bannerUrl);
       }
-    };
-
-    fetchEventData();
-  }, [eventId]);
+      if (fetchedEventData.eventImageUrl) {
+        setEventImagePreview(fetchedEventData.eventImageUrl);
+      }
+    }
+  }, [fetchedEventData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value || "",
     }));
   };
 
@@ -171,8 +160,14 @@ const EditEventForm = () => {
         `admin/events/update-event/${eventId}`,
         formData
       );
-      if (result) {
+
+      console.log("Response:", result);
+
+      if (result && result.status === 200) {
+        fetchEventData();
         setSubmittedSuccess(true);
+      } else {
+        setSubmittedFailure(true);
       }
     } catch (error) {
       console.error("Error updating event:", error);
@@ -182,7 +177,7 @@ const EditEventForm = () => {
     }
   };
 
-  if (loading) {
+  if (loading || fetching || submitting) {
     return <Loading message={"Loading Event Data..."} loading={loading} />;
   }
 
@@ -436,7 +431,6 @@ const EditEventForm = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
         <div className="pt-6">
           <button
             type="submit"

@@ -7,13 +7,12 @@ import {FailureCard} from "../common/FailureCard";
 export default function UpcomingEvents() {
   const { loading, data: events, error } = useFetchData("events");
 
-  // Only show first 3 upcoming events if events is defined
   const UpcomingEvents = events
     ? events
         .filter((event) => event)
         .sort((a, b) => new Date(a.date) - new Date(b.date)) // Sort ascending (closest dates first)
         .slice(0, 3)
-    : []; // Return an empty array if events is not defined
+    : []; 
 
   if (loading) return <Loading message="Loading events..." />;
   if (error) return <FailureCard message={error} />;
@@ -40,19 +39,11 @@ export default function UpcomingEvents() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {UpcomingEvents.map((event) => (
-            <EventCard key={event.id} event={event} isRegistrationOpen={true} />
+            <EventCard key={event._id} event={event} isRegistrationOpen={true} />
           ))}
         </div>
       </div>
-      {/* View All Button inside the grey grid section */}
-      <div className="mt-8 text-center">
-        <Link
-          to="/explore-events"
-          className="rounded-md bg-indigo-600 px-16 py-3 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          View All
-        </Link>
-      </div>
+      
     </section>
   );
 }

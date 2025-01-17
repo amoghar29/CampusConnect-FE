@@ -4,7 +4,6 @@ import {
   Calendar,
   MessageCircle,
   Lightbulb,
-  PlusCircle,
 } from "lucide-react";
 
 function Route({ name, icon: Icon, isActive, path }) {

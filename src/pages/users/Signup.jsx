@@ -5,7 +5,7 @@ import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
-const BACKEND_URL = " http://localhost:4000/api/auth";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -23,7 +23,7 @@ export default function Signup() {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/signup`,
+        `${BACKEND_URL}/auth/signup`,
         { email, password, confirmPassword },
         {
           headers: { "Content-Type": "application/json" },

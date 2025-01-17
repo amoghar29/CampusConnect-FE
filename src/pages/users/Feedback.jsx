@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Send, Smile, Frown, Meh } from "lucide-react";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
@@ -11,7 +11,7 @@ import FormInput from "../../components/form/FormInput";
 import GradientBackground from "../../components/common/GradientBackground";
 import useSubmitForm from "../../customHooks/submitForm";
 
-const BACKEND_URL = "https://campusconnect-be.onrender.com";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Feedback() {
   const [rating, setRating] = useState(0);
@@ -22,9 +22,8 @@ export default function Feedback() {
   const [loading, setLoading] = useState(false);
   const [eventTitle, setEventTitle] = useState("");
   const [hostingClub, setHostingClub] = useState("");
-  const {
-    submitForm,
-    } = useSubmitForm();
+  const [clubs, setClubs] = useState([]);
+  const { response, error, submitForm } = useSubmitForm();
 
   const categories = [
     "Event Organization",
@@ -40,13 +39,28 @@ export default function Feedback() {
     { icon: Smile, label: "Satisfied", value: 5 },
   ];
 
-  const hostingClubs = ["Club A", "Club B", "Club C"];
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/clubs/allClubNames`);
+        const clubOptions = response.data.map((club) => ({
+          label: club.clubName,
+          value: club._id,
+        }));
+        setClubs(clubOptions);
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      }
+    };
+
+    fetchClubs();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await submitForm("feedback", {
+      const response = await submitForm("post", "feedbacks", {
         rating,
         feedback,
         selectedCategory,
@@ -160,7 +174,11 @@ export default function Feedback() {
           name="hostingClub"
           value={hostingClub}
           onChange={(e) => setHostingClub(e.target.value)}
-          options={hostingClubs.map((club) => ({ value: club, label: club }))}
+          options={clubs.map((club) => ({
+            value: club.value,
+            label: club.label,
+          }))}
+          required
         />
 
         {/* Feedback Text */}

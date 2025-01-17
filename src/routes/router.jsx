@@ -7,7 +7,7 @@ import Event from "../pages/users/Event";
 import Club from "../pages/users/Club";
 import PostEvent from "../pages/admin/PostEvent";
 import Feedback from "../pages/users/Feedback";
-import Winners from "../pages/users/Winners";
+// import Winners from "../pages/users/Winners";
 import Suggestions from "../pages/users/Suggestions";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
@@ -17,8 +17,8 @@ import ProfileSection from "../components/dashboard/Profile";
 import EventsSection from "../components/dashboard/Events";
 import FeedbackSection from "../components/dashboard/Feedback";
 import SuggestionsSection from "../components/dashboard/Suggestion";
-import UpdateWinnerSection from "../components/dashboard/UpdateWinner";
 import NotFound from "../components/common/NotFoundCard";
+import EditEventForm from "../components/dashboard/EditEvents";
 
 export default function Router() {
   return (
@@ -33,8 +33,9 @@ export default function Router() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/explore-events" element={<Event />} />
           <Route path="/clubs" element={<Club />} />
+
           <Route path="/feedback" element={<Feedback />} />
-          <Route path="/winners" element={<Winners />} />
+          {/* <Route path="/winners" element={<Winners />} /> */}
           <Route path="/suggestion" element={<Suggestions />} />
 
           {/* Admin Routes */}
@@ -42,6 +43,7 @@ export default function Router() {
             <Route path="/admin">
               <Route path="post-event" element={<PostEvent />} />
               <Route path="register-club" element={<RegisterClub />} />
+              <Route path="events/:eventId" element={<EditEventForm/>}/>
 
               <Route path="dashboard" element={<NewDashboard />}>
                 <Route index element={<Navigate to="events" replace />} />
@@ -49,7 +51,6 @@ export default function Router() {
                 <Route path="events" element={<EventsSection />} />
                 <Route path="feedback" element={<FeedbackSection />} />
                 <Route path="suggestions" element={<SuggestionsSection />} />
-                <Route path="update-winner" element={<UpdateWinnerSection />} />
               </Route>
             </Route>
           </Route>

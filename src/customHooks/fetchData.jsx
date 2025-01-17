@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const BACKEND_URL = "http://localhost:4000/api";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const useFetchData = (url,refreshTrigger) => {
   const [data, setData] = useState(null);

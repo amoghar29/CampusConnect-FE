@@ -11,16 +11,18 @@ import {
   Calendar,
   Image as ImageIcon,
   ChevronRight,
-  Facebook,
+  Linkedin,
   Twitter,
   Instagram,
   X,
   DollarSign,
-} from "lucide-react";
+  } from "lucide-react";
 import FormContainer from "../../components/form/FormContainer";
 import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
+
+// import useSubmitForm from "../../customHooks/submitForm";
 
 const RegisterClub = () => {
   const [clubData, setClubData] = useState({
@@ -32,7 +34,7 @@ const RegisterClub = () => {
     email: "",
     phoneNumber: "",
     socialMedia: {
-      facebook: "",
+      linkedIn: "",
       twitter: "",
       instagram: "",
     },
@@ -134,7 +136,6 @@ const RegisterClub = () => {
     try {
       const formData = new FormData();
 
-      // Add all club data to FormData
       Object.entries(clubData).forEach(([key, value]) => {
         if (key === "logo") {
           if (value) formData.append("logo", value);
@@ -155,6 +156,7 @@ const RegisterClub = () => {
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         }
       );
 
@@ -186,7 +188,7 @@ const RegisterClub = () => {
         title="Failure"
         message="Failed to register club"
         buttonValue="Try Again"
-        redirect="/admin/register-club"
+        handleTryAgain={() => setSubmittedFailure(false)}
       />
     );
   }
@@ -272,13 +274,13 @@ const RegisterClub = () => {
                     <p className="pl-1">or drag and drop</p>
                   </div>
                   <p className="text-xs leading-5 text-gray-600">
-                    PNG, JPG, GIF up to 5MB
+                    PNG up to 2MB
                   </p>
                 </div>
               )}
             </div>
           </div>
-        </div>
+        </div>    
 
         {/* Leadership Information */}
         <div className="space-y-4">
@@ -340,12 +342,12 @@ const RegisterClub = () => {
           {/* Social Media Links */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormInput
-              label="Facebook"
-              name="socialMedia.facebook"
-              value={clubData.socialMedia.facebook}
+              label="linkedIn"
+              name="socialMedia.linkedIn"
+              value={clubData.socialMedia.linkedIn}
               onChange={handleChange}
-              placeholder="Facebook URL"
-              icon={Facebook}
+              placeholder="linkedIn URL"
+              icon={Linkedin}
             />
 
             <FormInput

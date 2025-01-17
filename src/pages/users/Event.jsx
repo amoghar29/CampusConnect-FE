@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
 import GradientBackground from "../../components/common/GradientBackground";
 import EventCard from "../../components/event/EventCard";
 import FilterButton from "../../components/common/FilterButton";
@@ -7,25 +6,20 @@ import useFetchData from "../../customHooks/fetchData";
 
 export default function Event() {
   const [view, setView] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
   const currentDate = new Date();
-
-  // Add this to fetch events
   const { loading, data: events, error } = useFetchData("events");
 
-  // Modify the filteredEvents to handle loading and error states
-  const filteredEvents =
-    loading || error
-      ? []
-      : events
-          .filter((event) => {
-            const eventDate = new Date(event.date);
-            if (view === "Upcoming") return eventDate >= currentDate;
-            if (view === "Past") return eventDate < currentDate;
-            return true;
-          })
-          .sort((a, b) => new Date(b.date) - new Date(a.date));
+  // Calculate filtered events even during loading to maintain layout
+  const filteredEvents = loading
+    ? [...Array(3)].map((_, index) => null) // Create array of 6 null items for skeleton loading
+    : events
+        .filter((event) => {
+          const eventDate = new Date(event.startDate);
+          if (view === "Upcoming") return eventDate >= currentDate;
+          if (view === "Past") return eventDate < currentDate;
+          return true;
+        })
+        .sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
 
   return (
     <div className="">
@@ -109,26 +103,30 @@ export default function Event() {
         </div>
 
         {/* Events Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {loading ? (
-            <p>Loading events...</p>
-          ) : error ? (
+        {error ? (
+          <div className="flex justify-center items-center min-h-[400px]">
             <p>Error loading events: {error.message}</p>
-          ) : filteredEvents.length === 0 ? (
-            <p>No events found</p>
-          ) : (
-            filteredEvents.map((event) => {
-              const isRegistrationOpen = new Date(event.date) > currentDate;
-              return (
-                <EventCard
-                  key={event._id}
-                  event={event}
-                  isRegistrationOpen={isRegistrationOpen}
-                />
-              );
-            })
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            {filteredEvents.length === 0 && !loading ? (
+              <p>No events found</p>
+            ) : (
+              filteredEvents.map((event, index) => {
+                const isRegistrationOpen = event
+                  ? new Date(event.startDate) > currentDate
+                  : false;
+                return (
+                  <EventCard
+                    key={index}
+                    event={event}
+                    isRegistrationOpen={isRegistrationOpen}
+                  />
+                );
+              })
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

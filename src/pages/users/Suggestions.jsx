@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Send, Users, Clock } from "lucide-react";
 import { SuccessCard } from "../../components/common/SuccessCard";
@@ -10,15 +10,14 @@ import FormTextArea from "../../components/form/FormTextArea";
 import FormSelect from "../../components/form/FormSelect";
 import GradientBackground from "../../components/common/GradientBackground";
 import useSubmitForm from "../../customHooks/submitForm";
-
-const BACKEND_URL = "https://campusconnect-be.onrender.com";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Suggestions() {
   const [formData, setFormData] = useState({
     userFullname: "",
     userEmail: "",
     userPhoneNumber: "",
-    clubName: "",
+    clubId: "",
     suggestedEventTitle: "",
     suggestedEventDescription: "",
     expectedHeadCount: "",
@@ -31,27 +30,39 @@ export default function Suggestions() {
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
   const { submitForm, loading } = useSubmitForm();
-  const clubs = [
-    { value: "Tech Club", label: "Tech Club" },
-    { value: "Cultural Club", label: "Cultural Club" },
-    { value: "Sports Club", label: "Sports Club" },
-    { value: "Photography Club", label: "Photography Club" },
-    { value: "Literary Club", label: "Literary Club" },
-    { value: "Music Club", label: "Music Club" },
-  ];
+  const [clubs, setClubs] = useState([]);
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/clubs/allClubNames`);
+        const clubOptions = response.data.map((club) => ({
+          label: club.clubName,
+          value: club._id,
+        }));
+        setClubs(clubOptions);
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      }
+    };
+
+    fetchClubs();
+  }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target; // Correctly destructuring name
+    const { name, value } = e.target;
+
+    const selectedClub = clubs.find((club) => club.value === value);
     setFormData((prev) => ({
       ...prev,
-      [name]: value, // Using name to update the correct field
+      [name]: selectedClub ? selectedClub.value : value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await submitForm("suggestion", formData);
+      const response = await submitForm("post", "/suggestions", formData);
       if (response) {
         setSubmittedSuccess(true);
       }
@@ -66,7 +77,7 @@ export default function Suggestions() {
       userFullname: "",
       userEmail: "",
       userPhoneNumber: "",
-      clubName: "",
+      clubId: "",
       suggestedEventTitle: "",
       suggestedEventDescription: "",
       expectedHeadCount: "",
@@ -118,7 +129,7 @@ export default function Suggestions() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <FormInput
               label="Full Name"
-              name="userFullname" // Ensure this matches the state
+              name="userFullname"
               value={formData.userFullname}
               onChange={handleChange}
               required
@@ -126,7 +137,7 @@ export default function Suggestions() {
             <FormInput
               label="Email Address"
               type="email"
-              name="userEmail" // Ensure this matches the state
+              name="userEmail"
               value={formData.userEmail}
               onChange={handleChange}
               required
@@ -134,7 +145,7 @@ export default function Suggestions() {
             <FormInput
               label="Phone Number"
               type="tel"
-              name="userPhoneNumber" // Ensure this matches the state
+              name="userPhoneNumber"
               value={formData.userPhoneNumber}
               onChange={handleChange}
             />
@@ -163,17 +174,20 @@ export default function Suggestions() {
           </h2>
 
           <FormSelect
-            label="Select Club"
-            name="clubName"
-            value={formData.clubName}
+            label="Select Hosting Club"
+            name="clubId"
+            value={formData.clubId}
             onChange={handleChange}
-            options={clubs}
+            options={clubs.map((club) => ({
+              value: club.value,
+              label: club.label,
+            }))}
             required
           />
 
           <FormInput
             label="Event Title"
-            name="suggestedEventTitle" // Ensure this matches the state
+            name="suggestedEventTitle"
             value={formData.suggestedEventTitle}
             onChange={handleChange}
             required
@@ -181,7 +195,7 @@ export default function Suggestions() {
 
           <FormTextArea
             label="Event Description"
-            name="suggestedEventDescription" // Ensure this matches the state
+            name="suggestedEventDescription"
             value={formData.suggestedEventDescription}
             onChange={handleChange}
             required
@@ -192,7 +206,7 @@ export default function Suggestions() {
             <FormInput
               label="Expected Participants"
               type="number"
-              name="expectedHeadCount" // Ensure this matches the state
+              name="expectedHeadCount"
               value={formData.expectedHeadCount}
               onChange={handleChange}
               icon={Users}
@@ -200,7 +214,7 @@ export default function Suggestions() {
             <FormInput
               label="Duration (hours)"
               type="number"
-              name="expectedDuration" // Ensure this matches the state
+              name="expectedDuration"
               value={formData.expectedDuration}
               onChange={handleChange}
               required

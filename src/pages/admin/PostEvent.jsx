@@ -7,7 +7,6 @@ import {
   FileText,
   Users,
   X,
-  Building2,
   PenTool,
   Coins,
   Image as ImageIcon,
@@ -19,7 +18,7 @@ import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const EventCreationForm = () => {
   const [eventData, setEventData] = useState({
     title: "",
@@ -31,6 +30,7 @@ const EventCreationForm = () => {
     registrationFee: "",
     teamSize: "",
     banner: null,
+    formLink: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -122,7 +122,7 @@ const EventCreationForm = () => {
       });
 
       const response = await axios.post(
-        "http://localhost:4000/api/admin/post-event",
+        `${BACKEND_URL}/admin/post-event`,
         formData,
         {
           headers: {
@@ -201,7 +201,9 @@ const EventCreationForm = () => {
               type="date"
               name="startDate"
               value={
-                eventData.startDate ? new Date(eventData.startDate).toISOString().split("T")[0] : ""
+                eventData.startDate
+                  ? new Date(eventData.startDate).toISOString().split("T")[0]
+                  : ""
               }
               onChange={handleChange}
               icon={Calendar}
@@ -299,6 +301,15 @@ const EventCreationForm = () => {
             <Users className="h-4 w-4 text-indigo-500" />
             <h3>Event Options</h3>
           </div>
+
+          <FormInput
+            label="Registration Form Link"
+            name="formLink"
+            value={eventData.formLink}
+            onChange={handleChange}
+            placeholder="Enter registration form link"
+            icon={ChevronRight}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormInput

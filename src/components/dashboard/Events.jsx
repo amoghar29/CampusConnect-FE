@@ -6,7 +6,7 @@ import { FailureCard } from "../common/FailureCard";
 import { SuccessCard } from "../common/SuccessCard";
 import axios from "axios";
 import { useState } from "react";
-const backendUrl = "http://localhost:4000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const EventCard = ({ event, handleDelete }) => {
   const navigate = useNavigate();
   const handleEdit = (eventId) => {
@@ -21,7 +21,7 @@ const EventCard = ({ event, handleDelete }) => {
     return `${day}-${month}-${year}`;
   }
   return (
-    <div className="bg-white rounded-lg border border-indigo-500  p-6 hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-lg border-2 border-[#111827] p-6 hover:shadow-lg transition-shadow">
       <div className="flex justify-between items-start">
         <div className="space-y-2">
           <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
@@ -74,7 +74,7 @@ export default function EventsSection() {
   const handleDelete = async (eventId) => {
     try {
       const response = await axios.delete(
-        `${backendUrl}/api/admin/events/${eventId}`,
+        `${BACKEND_URL}/api/admin/events/${eventId}`,
         {
           withCredentials: true,
         }

@@ -6,7 +6,7 @@ const ProtectedRoute = () => {
     const {isAuthenticated} = useContext(authContext);
     const user= isAuthenticated
     if(isAuthenticated === undefined){
-        return <Loading message="PLease wait..." loading={true} />
+        return <Loading message="Please wait..." loading={true} />
     }
     return user ? <Outlet /> : <Navigate to="/signin" />
 
