@@ -2,13 +2,31 @@ import { useState } from "react";
 import { Users, Mail, Phone, Calendar, Award, IndianRupee } from "lucide-react";
 
 const ClubCard = ({ club }) => {
+  // Helper function to validate achievements
+  const getValidAchievements = (achievements) => {
+    if (!Array.isArray(achievements)) return [];
+    return achievements.filter(
+      (achievement) =>
+        typeof achievement === "string" &&
+        achievement.trim() !== "" &&
+        achievement !== "bla"
+    );
+  };
+
+  const validAchievements = getValidAchievements(club.achievements);
+
+  const [showFullAbout, setShowFullAbout] = useState(false);
+
+  const aboutText = club.aboutUs.split(" ");
+  const isLongAbout = aboutText.length > 30;
+
   return (
     <div className="max-w-6xl mx-auto bg-[#1f2937] rounded-xl overflow-hidden shadow-xl">
-      <div className="flex flex-col md:flex-row p-6 gap-8">
+      <div className="flex flex-col md:flex-row p-4 gap-1">
         {/* Left Section with Logo and About */}
         <div className="flex-1">
           {/* Club Header */}
-          <div className="flex items-center gap-6 mb-6">
+          <div className="flex items-center gap-6 mb-3">
             <img
               src={club.logo || "/default-club-logo.png"}
               alt={`${club.clubName} logo`}
@@ -27,23 +45,38 @@ const ClubCard = ({ club }) => {
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-white mb-2">About Us</h2>
             <p className="text-gray-300 text-sm leading-relaxed">
-              {club.aboutUs}
+              {showFullAbout
+                ? club.aboutUs
+                : aboutText.slice(0, 30).join(" ") + (isLongAbout ? "..." : "")}
+              {isLongAbout && (
+                <span
+                  className="text-indigo-400 cursor-pointer"
+                  onClick={() => setShowFullAbout(!showFullAbout)}
+                >
+                  {" "}
+                  {showFullAbout ? "Read Less" : "Read More"}
+                </span>
+              )}
             </p>
           </div>
 
           {/* Achievements Section */}
-          {club.achievements && club.achievements.length > 0 && (
-            <div>
-              <div className="flex items-center gap-2 mb-3">
+          {validAchievements.length > 0 && (
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-2">
                 <Award size={16} className="text-indigo-400" />
                 <h2 className="text-lg font-semibold text-white">
                   Achievements
                 </h2>
               </div>
-              <ul className="list-disc list-inside space-y-1">
-                {club.achievements.map((achievement, index) => (
-                  <li key={index} className="text-gray-300 text-sm">
-                    {achievement}
+              <ul className="space-y-1">
+                {validAchievements.slice(0, 1).map((achievement, index) => (
+                  <li
+                    key={index}
+                    className="flex items-start gap-2 text-gray-300 text-sm"
+                  >
+                    <span className="text-indigo-400 mt-1">•</span>
+                    <span className="flex-1">{achievement}</span>
                   </li>
                 ))}
               </ul>
@@ -52,19 +85,19 @@ const ClubCard = ({ club }) => {
         </div>
 
         {/* Right Section - Stats and Contact */}
-        <div className="md:w-64 space-y-6">
-          <div className="bg-[#111827] p-4 rounded-lg">
-            <div className="flex items-center gap-2 mb-1">
-              <Users size={18} className="text-indigo-400" />
-              <p className="text-2xl font-bold text-white">
+        <div className="md:w-64 space-y-4">
+          <div className="bg-[#111827] p-2 rounded-lg">
+            <div className="flex items-center gap-1 mb-1">
+              <Users size={16} className="text-indigo-400" />
+              <p className="text-xl font-bold text-white">
                 {club.totalMembers}
               </p>
             </div>
             <p className="text-indigo-400 text-sm">Members</p>
           </div>
 
-          <div className="bg-[#111827] p-4 rounded-lg">
-            <p className="text-2xl font-bold text-white flex items-center">
+          <div className="bg-[#111827] p-2 rounded-lg">
+            <p className="text-xl font-bold text-white flex items-center">
               <IndianRupee className="mr-1" />
               {club.membershipFee}
             </p>
@@ -89,7 +122,7 @@ const ClubCard = ({ club }) => {
             </div>
           </div>
 
-          <button className="w-full px-4 py-2.5 bg-indigo-600 text-white rounded-lg font-semibold text-sm">
+          <button className="w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white rounded-lg font-semibold text-sm">
             Join Now
           </button>
         </div>
