@@ -1,10 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
-import SignupForm from "../../components/signup/SignupForm";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
+import FormInput from "../../components/form/FormInput";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Signup() {
@@ -49,14 +49,12 @@ export default function Signup() {
     setRegistrationError(false);
   };
 
-  // Loading Screen
   if (loading) {
     return (
       <Loading message={"Processing your registration..."} loading={loading} />
     );
   }
 
-  // Success Screen
   if (registrationSuccess) {
     return (
       <SuccessCard
@@ -68,7 +66,6 @@ export default function Signup() {
     );
   }
 
-  // Failure Screen
   if (registrationError) {
     return (
       <FailureCard
@@ -83,7 +80,6 @@ export default function Signup() {
     );
   }
 
-  // Default Registration Form
   return (
     <div className=" text-gray-900 flex min-h-screen flex-col items-center pt-16  sm:pt-6">
       <GradientBackground position="top" />
@@ -96,14 +92,38 @@ export default function Signup() {
           <p className="mt-2 text-lg font-medium text-gray-600 text-center">
             Create an account to get started.
           </p>
-          <SignupForm
-            email={email}
-            password={password}
-            setEmail={setEmail}
-            setPassword={setPassword}
-            setConfirmPassword={setConfirmPassword}
-            signup={signup}
-          />
+          <form onSubmit={signup}>
+            <FormInput
+              label="Email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+            />
+            <FormInput
+              label="Password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <FormInput
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className="mt-4 w-full bg-indigo-600 text-white rounded-lg py-2"
+            >
+              Sign Up
+            </button>
+          </form>
         </div>
       </div>
     </div>

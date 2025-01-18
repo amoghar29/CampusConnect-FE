@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { authContext } from "../../context/authContext";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
+import FormInput from "../../components/form/FormInput";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Signin() {
@@ -38,7 +39,6 @@ export default function Signin() {
         login(token);
         navigate("/admin/dashboard/events");
       }
-
     } catch (error) {
       console.error("Error during sign-in:", error);
       setError(
@@ -78,40 +78,24 @@ export default function Signin() {
           <div className="pt-4">
             <form onSubmit={handleLogin}>
               <div>
-                <div className="group relative rounded-lg border border-gray-400 focus-within:border-purple-600 px-4 pb-2 pt-3 duration-200 focus-within:ring focus-within:ring-purple-300/30">
-                  <div className="flex justify-between">
-                    <label className="text-xs font-medium text-muted-foreground group-focus-within:text-gray-800 text-gray-500">
-                      Username
-                    </label>
-                  </div>
-                  <input
-                    type="text"
-                    name="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="off"
-                    className="block w-full border-0 bg-transparent p-0 text-base placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:leading-7 text-gray-800"
-                  />
-                </div>
+                <FormInput
+                  label="Email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                  required
+                />
               </div>
               <div className="mt-4">
-                <div className="group relative rounded-lg border border-gray-400 focus-within:border-purple-600 px-3 pb-1.5 pt-2.5 duration-200 focus-within:ring focus-within:ring-purple-300/30">
-                  <div className="flex justify-between">
-                    <label className="text-xs font-medium text-muted-foreground group-focus-within:text-gray-800 text-gray-500">
-                      Password
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      type="password"
-                      name="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="block w-full border-0 bg-transparent p-0 text-base placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:leading-7 text-gray-800"
-                    />
-                  </div>
-                </div>
+                <FormInput
+                  label="Password"
+                  name="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </div>
               <div className="mt-4 flex flex-col items-center justify-center gap-y-2 sm:flex-row sm:gap-x-2">
                 <button

@@ -31,7 +31,7 @@ export default function Club() {
             </div>
           ) : error ? (
             <div className="flex justify-center items-center min-h-[400px]">
-              <FailureCard message="Failed to fetch clubs" />
+              <FailureCard message="Failed to fetch clubs" buttonValue={"Home"} redirect={"/home"} />
             </div>
           ) : (
             <div className="flex flex-col space-y-6">

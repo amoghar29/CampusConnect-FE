@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import { IndianRupee } from "lucide-react";
 export default function EventCard({ event, isRegistrationOpen }) {
   function formatDateToDDMMYYYY(dateString) {
     const date = new Date(dateString);
@@ -32,14 +32,19 @@ export default function EventCard({ event, isRegistrationOpen }) {
           src={event.banner}
           alt={event.title}
           className="h-full w-full sm:h-360 sm:w-360 object-cover"
-          loading="lazy" 
+          loading="lazy"
         />
         <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
           {event.startDate ? formatDateToDDMMYYYY(event.startDate) : "Date"}
         </div>
         {event.registrationFee && (
           <div className="absolute bottom-4 right-4 bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm font-medium">
-            {event.registrationFee}
+            <p className="text-md text-white flex items-baseline">
+              <span className="flex items-center">
+                <IndianRupee className="w-3 h-3" />
+                {event.registrationFee}
+              </span>
+            </p>
           </div>
         )}
       </div>

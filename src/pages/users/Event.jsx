@@ -28,7 +28,7 @@ export default function Event() {
       <GradientBackground position="top" />
       {/* Hero Section */}
       <div className="relative isolate px-4 sm:px-[10%] pt-14">
-        <div className="mx-auto max-w-5xl py-24 sm:py-4">
+        <div className="mx-auto max-w-5xl">
           <div className="text-center">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">
               Discover Campus Events

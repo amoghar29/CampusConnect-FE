@@ -16,7 +16,7 @@ import {
   Instagram,
   X,
   DollarSign,
-  } from "lucide-react";
+} from "lucide-react";
 import FormContainer from "../../components/form/FormContainer";
 import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
@@ -68,23 +68,33 @@ const RegisterClub = () => {
   const handleAchievementChange = (index, value) => {
     setClubData((prev) => {
       const newAchievements = [...prev.achievements];
-      newAchievements[index] = value;
+      newAchievements[index] = value.trim();
       return { ...prev, achievements: newAchievements };
     });
   };
 
   const addAchievement = () => {
-    setClubData((prev) => ({
-      ...prev,
-      achievements: [...prev.achievements, ""],
-    }));
+    if (clubData.achievements[clubData.achievements.length - 1].trim() !== "") {
+      setClubData((prev) => ({
+        ...prev,
+        achievements: [...prev.achievements, ""],
+      }));
+    }
   };
 
   const removeAchievement = (index) => {
-    setClubData((prev) => ({
-      ...prev,
-      achievements: prev.achievements.filter((_, i) => i !== index),
-    }));
+    setClubData((prev) => {
+      if (prev.achievements.length === 1) {
+        return {
+          ...prev,
+          achievements: [""],
+        };
+      }
+      return {
+        ...prev,
+        achievements: prev.achievements.filter((_, i) => i !== index),
+      };
+    });
   };
 
   // Image handling functions similar to PostEvent.jsx
@@ -134,16 +144,23 @@ const RegisterClub = () => {
     try {
       const formData = new FormData();
 
+      const cleanedAchievements = clubData.achievements
+        .map((achievement) => achievement.trim())
+        .filter((achievement) => achievement !== "");
+
+      if (cleanedAchievements.length === 0) {
+        alert("Please add at least one achievement");
+        setLoading(false);
+        return;
+      }
+
       Object.entries(clubData).forEach(([key, value]) => {
         if (key === "logo") {
           if (value) formData.append("logo", value);
         } else if (key === "socialMedia") {
           formData.append("socialMedia", JSON.stringify(value));
         } else if (key === "achievements") {
-          formData.append(
-            "achievements",
-            JSON.stringify(value.filter((a) => a))
-          );
+          formData.append("achievements", JSON.stringify(cleanedAchievements));
         } else {
           formData.append(key, value);
         }
@@ -278,7 +295,7 @@ const RegisterClub = () => {
               )}
             </div>
           </div>
-        </div>    
+        </div>
 
         {/* Leadership Information */}
         <div className="space-y-4">
@@ -412,12 +429,14 @@ const RegisterClub = () => {
                   }
                   placeholder="Enter achievement"
                   className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
+                  required={index === 0}
                 />
                 {clubData.achievements.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeAchievement(index)}
                     className="p-3 text-red-500 hover:text-red-700"
+                    aria-label="Remove achievement"
                   >
                     <X size={20} />
                   </button>
@@ -427,7 +446,12 @@ const RegisterClub = () => {
             <button
               type="button"
               onClick={addAchievement}
-              className="mt-2 text-sm text-indigo-600 hover:text-indigo-500"
+              className="mt-2 text-sm text-indigo-600 hover:text-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={
+                clubData.achievements[
+                  clubData.achievements.length - 1
+                ].trim() === ""
+              }
             >
               + Add Achievement
             </button>
