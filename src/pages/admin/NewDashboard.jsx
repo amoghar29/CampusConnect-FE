@@ -9,6 +9,10 @@ export default function NewDashboard() {
   const currentPath = location.pathname.split("/").pop();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const handleSidebarClose = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <div className="relative isolate">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,10 +33,10 @@ export default function NewDashboard() {
           
           {/* Sidebar - Mobile overlay */}
           <div
-            className={`lg:hidden fixed inset-0 bg-gray-800/50 z-40 transition-opacity duration-200 ${
+            className={`bg-white lg:hidden fixed inset-0 bg-gray-800/50 z-40 transition-opacity duration-200 ${
               isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
-            onClick={() => setIsSidebarOpen(false)}
+            onClick={handleSidebarClose}
           />
 
           {/* Sidebar */}
@@ -40,11 +44,11 @@ export default function NewDashboard() {
             className={`fixed lg:static lg:translate-x-0 z-40 transition-transform duration-200 
               ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
           >
-            <Sidebar currentPath={currentPath} />
+            <Sidebar currentPath={currentPath} onNavigate={handleSidebarClose} />
           </div>
 
           {/* Main content */}
-          <div className="flex-1 p-4 lg:p-8 ">
+          <div className="flex-1 p-4 lg:p-8">
             <Outlet />
           </div>
         </div>

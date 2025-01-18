@@ -6,10 +6,11 @@ import {
   Lightbulb,
 } from "lucide-react";
 
-function Route({ name, icon: Icon, isActive, path }) {
+function Route({ name, icon: Icon, isActive, path, onClick }) {
   return (
     <Link
       to={path}
+      onClick={onClick}
       className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors
         ${
           isActive
@@ -23,7 +24,7 @@ function Route({ name, icon: Icon, isActive, path }) {
   );
 }
 
-export default function Sidebar({ currentPath }) {
+export default function Sidebar({ currentPath, onNavigate }) {
   const activePath =
     !currentPath || currentPath === "dashboard" ? "events" : currentPath;
 
@@ -43,7 +44,7 @@ export default function Sidebar({ currentPath }) {
   ];
 
   return (
-    <div className="w-64 h-screen lg:min-h-[calc(100vh-4rem)] ">
+    <div className="w-64 h-screen lg:min-h-[calc(100vh-4rem)]">
       <div className="px-4 pt-8">
         <h2 className="text-xl font-bold text-gray-900 mb-8">Dashboard</h2>
         <nav className="space-y-2">
@@ -52,6 +53,7 @@ export default function Sidebar({ currentPath }) {
               key={route.name}
               {...route}
               isActive={activePath === route.path.split("/").pop()}
+              onClick={onNavigate}
             />
           ))}
         </nav>
