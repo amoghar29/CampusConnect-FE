@@ -161,7 +161,6 @@ const EditEventForm = () => {
         formData
       );
 
-      console.log("Response:", result);
 
       if (result && result.status === 200) {
         fetchEventData();

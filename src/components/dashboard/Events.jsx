@@ -74,7 +74,7 @@ export default function EventsSection() {
   const handleDelete = async (eventId) => {
     try {
       const response = await axios.delete(
-        `${BACKEND_URL}/api/admin/events/${eventId}`,
+        `${BACKEND_URL}/admin/events/${eventId}`,
         {
           withCredentials: true,
         }
