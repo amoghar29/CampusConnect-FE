@@ -21,9 +21,7 @@ import FormContainer from "../../components/form/FormContainer";
 import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
-
-// import useSubmitForm from "../../customHooks/submitForm";
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const RegisterClub = () => {
   const [clubData, setClubData] = useState({
     clubName: "",
@@ -152,7 +150,7 @@ const RegisterClub = () => {
       });
 
       const response = await axios.post(
-        "http://localhost:4000/api/admin/register-club",
+        `${BACKEND_URL}/admin/register-club`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
