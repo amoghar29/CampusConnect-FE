@@ -66,7 +66,7 @@ const ClubCard = ({ club }) => {
           <div className="bg-[#111827] p-4 rounded-lg">
             <p className="text-2xl font-bold text-white flex items-center">
               <IndianRupee className="mr-1" />
-              {club.membershipFee.toLocaleString()}
+              {club.membershipFee}
             </p>
             <p className="text-indigo-400 text-sm">Membership Fee</p>
           </div>
