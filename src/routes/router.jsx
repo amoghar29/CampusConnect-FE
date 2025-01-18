@@ -19,7 +19,7 @@ import FeedbackSection from "../components/dashboard/Feedback";
 import SuggestionsSection from "../components/dashboard/Suggestion";
 import NotFound from "../components/common/NotFoundCard";
 import EditEventForm from "../components/dashboard/EditEvents";
-
+import PublicRoute from "../utils/PublicRoute";
 export default function Router() {
   return (
     <div className="App">
@@ -30,20 +30,25 @@ export default function Router() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<Signin />} />
+          <Route
+            path="/signin"
+            element={
+              <PublicRoute>
+                <Signin />
+              </PublicRoute>
+            }
+          />
           <Route path="/explore-events" element={<Event />} />
           <Route path="/clubs" element={<Club />} />
-
           <Route path="/feedback" element={<Feedback />} />
           {/* <Route path="/winners" element={<Winners />} /> */}
           <Route path="/suggestion" element={<Suggestions />} />
-
           {/* Admin Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/admin">
               <Route path="post-event" element={<PostEvent />} />
               <Route path="register-club" element={<RegisterClub />} />
-              <Route path="events/:eventId" element={<EditEventForm/>}/>
+              <Route path="events/:eventId" element={<EditEventForm />} />
 
               <Route path="dashboard" element={<NewDashboard />}>
                 <Route index element={<Navigate to="events" replace />} />
@@ -54,7 +59,6 @@ export default function Router() {
               </Route>
             </Route>
           </Route>
-
           {/* 404 Not Found Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>

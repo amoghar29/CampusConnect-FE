@@ -1,9 +1,9 @@
-import { Outlet, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { authContext } from "../context/authContext";
 import Loading from "../components/common/Loading";
 
-const ProtectedRoute = () => {
+const PublicRoute = ({ children }) => {
   const { isAuthenticated, isLoading, verifyToken } = useContext(authContext);
   const [isVerifying, setIsVerifying] = useState(true);
 
@@ -14,12 +14,12 @@ const ProtectedRoute = () => {
     };
     verify();
   }, [verifyToken]);
-  
+
   if (isVerifying || isLoading) {
     return <Loading message="Please wait..." loading={true} />;
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/signin" />;
+  return !isAuthenticated ? children : <Navigate to="/admin/dashboard" replace />;
 };
 
-export default ProtectedRoute;
+export default PublicRoute;
