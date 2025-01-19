@@ -1,12 +1,12 @@
 import useFetchData from "../../customHooks/fetchData";
-import Loading from "../common/Loading";
+import SkeletonLoader from "../common/SkeletonLoader";
 import { FailureCard } from "../common/FailureCard";
 import ResponsiveTable from "./TableComponent";
 
 const SuggestionsSection = () => {
   const { loading, data: suggestions, error } = useFetchData("admin/suggestions");
 
-  if (loading) return <Loading message="Fetching suggestions..." />;
+  if (loading) return <SkeletonLoader type="table" />;
   if (error) return <FailureCard message={error} />;
 
   const headers = [

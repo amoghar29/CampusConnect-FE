@@ -1,12 +1,12 @@
 import useFetchData from "../../customHooks/fetchData";
-import Loading from "../common/Loading";
+import SkeletonLoader from "../common/SkeletonLoader";
 import { FailureCard } from "../common/FailureCard";
 import ResponsiveTable from "./TableComponent";
 
 const FeedbackSection = () => {
   const { loading, data: feedback, error } = useFetchData("admin/feedbacks");
 
-  if (loading) return <Loading message="Fetching feedback received..." />;
+  if (loading) return <SkeletonLoader type="table" />;
   if (error) return <FailureCard message={error} />;
 
   const headers = ["Event Name", "Rating", "Category", "Description"];

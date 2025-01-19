@@ -1,7 +1,7 @@
 import { Edit2, Trash2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import useFetchData from "../../customHooks/fetchData";
-import Loading from "../common/Loading";
+import SkeletonLoader from "../common/SkeletonLoader";
 import { FailureCard } from "../common/FailureCard";
 import { SuccessCard } from "../common/SuccessCard";
 import axios from "axios";
@@ -91,7 +91,8 @@ export default function EventsSection() {
     setDeleteEventStatus(null);
   };
 
-  if (loading) return <Loading message="Fetching events..." />;
+  if (loading) return <SkeletonLoader type="default" />;
+
   if (deleteEventStatus === true)
     return (
       <SuccessCard

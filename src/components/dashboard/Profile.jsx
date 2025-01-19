@@ -16,9 +16,8 @@ import FormInput from "../form/FormInput";
 import FormTextArea from "../form/FormTextArea";
 import useFetchData from "../../customHooks/fetchData";
 import useSubmitForm from "../../customHooks/submitForm";
-import Loading from "../common/Loading";
 import { SuccessCard } from "../common/SuccessCard";
-// import { FailureCard } from "../common/FailureCard";
+import SkeletonLoader from "../common/SkeletonLoader";
 const ProfileSection = () => {
   const {
     loading,
@@ -190,7 +189,7 @@ const ProfileSection = () => {
     </div>
   );
   if (loading) {
-    return <Loading message={"Loading club details"} />;
+    return <SkeletonLoader type="profile" />;
   }
 
   if (error) {
