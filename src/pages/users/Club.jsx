@@ -26,12 +26,30 @@ export default function Club() {
         {/* Cards Container */}
         <div className="mx-auto max-w-7xl pb-20 py-16">
           {loading ? (
-            <div className="flex justify-center items-center min-h-[400px]">
-              <Loading message="Loading..." />
+            <div className="flex flex-col space-y-6">
+              {/* Loading Skeleton */}
+              {[...Array(3)].map((_, index) => (
+                <div key={index} className="w-full">
+                  <div className="group relative bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] overflow-hidden animate-pulse">
+                    <div className="relative h-48 sm:h-64 w-full overflow-hidden bg-gray-200" />
+                    <div className="p-4">
+                      <div className="h-6 bg-gray-200 rounded w-3/4 mb-2" />
+                      <div className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
+                      <div className="h-4 bg-gray-200 rounded w-2/3 mb-2" />
+                      <div className="h-4 bg-gray-200 rounded w-1/2 mb-4" />
+                      <div className="h-10 bg-gray-200 rounded" />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : error ? (
             <div className="flex justify-center items-center min-h-[400px]">
-              <FailureCard message="Failed to fetch clubs" buttonValue={"Home"} redirect={"/home"} />
+              <FailureCard
+                message="Failed to fetch clubs"
+                buttonValue={"Home"}
+                redirect={"/home"}
+              />
             </div>
           ) : (
             <div className="flex flex-col space-y-6">

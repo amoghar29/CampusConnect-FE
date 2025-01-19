@@ -37,7 +37,8 @@ const RegisterClub = () => {
       instagram: "",
     },
     membershipFee: "",
-    achievements: [""],
+    achievements: ["", "", ""],
+    clubRegistrationLink: "",
   });
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
@@ -68,32 +69,8 @@ const RegisterClub = () => {
   const handleAchievementChange = (index, value) => {
     setClubData((prev) => {
       const newAchievements = [...prev.achievements];
-      newAchievements[index] = value.trim();
+      newAchievements[index] = value;
       return { ...prev, achievements: newAchievements };
-    });
-  };
-
-  const addAchievement = () => {
-    if (clubData.achievements[clubData.achievements.length - 1].trim() !== "") {
-      setClubData((prev) => ({
-        ...prev,
-        achievements: [...prev.achievements, ""],
-      }));
-    }
-  };
-
-  const removeAchievement = (index) => {
-    setClubData((prev) => {
-      if (prev.achievements.length === 1) {
-        return {
-          ...prev,
-          achievements: [""],
-        };
-      }
-      return {
-        ...prev,
-        achievements: prev.achievements.filter((_, i) => i !== index),
-      };
     });
   };
 
@@ -239,6 +216,14 @@ const RegisterClub = () => {
             onChange={handleChange}
             placeholder="Describe your club"
             required
+          />
+
+          <FormInput
+            label="Registration Link"
+            name="clubRegistrationLink"
+            value={clubData.clubRegistrationLink}
+            onChange={handleChange}
+            placeholder="Enter registration link"
           />
 
           {/* Logo Upload Section */}
@@ -427,34 +412,12 @@ const RegisterClub = () => {
                   onChange={(e) =>
                     handleAchievementChange(index, e.target.value)
                   }
-                  placeholder="Enter achievement"
+                  placeholder={`Enter achievement ${index + 1}`}
                   className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
                   required={index === 0}
                 />
-                {clubData.achievements.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeAchievement(index)}
-                    className="p-3 text-red-500 hover:text-red-700"
-                    aria-label="Remove achievement"
-                  >
-                    <X size={20} />
-                  </button>
-                )}
               </div>
             ))}
-            <button
-              type="button"
-              onClick={addAchievement}
-              className="mt-2 text-sm text-indigo-600 hover:text-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={
-                clubData.achievements[
-                  clubData.achievements.length - 1
-                ].trim() === ""
-              }
-            >
-              + Add Achievement
-            </button>
           </div>
         </div>
 

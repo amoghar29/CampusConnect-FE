@@ -1,21 +1,19 @@
 import { useState } from "react";
 import { Users, Mail, Phone, Calendar, Award, IndianRupee } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ClubCard = ({ club }) => {
-  // Helper function to validate achievements
+  const [showFullAbout, setShowFullAbout] = useState(false);
+
   const getValidAchievements = (achievements) => {
     if (!Array.isArray(achievements)) return [];
     return achievements.filter(
       (achievement) =>
-        typeof achievement === "string" &&
-        achievement.trim() !== "" &&
-        achievement !== "bla"
+        typeof achievement === "string" && achievement.trim() !== ""
     );
   };
 
   const validAchievements = getValidAchievements(club.achievements);
-
-  const [showFullAbout, setShowFullAbout] = useState(false);
 
   const aboutText = club.aboutUs.split(" ");
   const isLongAbout = aboutText.length > 30;
@@ -23,7 +21,6 @@ const ClubCard = ({ club }) => {
   return (
     <div className="max-w-6xl mx-auto bg-[#1f2937] rounded-xl overflow-hidden shadow-xl">
       <div className="flex flex-col md:flex-row p-4 gap-1">
-        {/* Left Section with Logo and About */}
         <div className="flex-1">
           {/* Club Header */}
           <div className="flex items-center gap-6 mb-3">
@@ -70,7 +67,7 @@ const ClubCard = ({ club }) => {
                 </h2>
               </div>
               <ul className="space-y-1">
-                {validAchievements.slice(0, 1).map((achievement, index) => (
+                {validAchievements.map((achievement, index) => (
                   <li
                     key={index}
                     className="flex items-start gap-2 text-gray-300 text-sm"
@@ -122,9 +119,12 @@ const ClubCard = ({ club }) => {
             </div>
           </div>
 
-          <button className="w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white rounded-lg font-semibold text-sm">
+          <Link
+            to={club.clubRegistrationLink || "#"}
+            className="block w-full text-center py-3 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white rounded-lg font-semibold text-sm"
+          >
             Join Now
-          </button>
+          </Link>
         </div>
       </div>
     </div>
