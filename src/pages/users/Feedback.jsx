@@ -49,9 +49,11 @@ export default function Feedback() {
         }));
         setClubs(clubOptions);
       } catch (error) {
-    };
+        setClubs([]);
+      }
 
-    fetchClubs();
+      fetchClubs();
+    };
   }, []);
 
   const handleSubmit = async (e) => {
