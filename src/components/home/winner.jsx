@@ -22,7 +22,6 @@ export default function WinnerHighlight() {
               View all winners <ArrowRightIcon className="h-4 w-4" />
             </Link>
           </div>
-          {/* Add a preview of recent winners here if desired */}
           <div className="mt-8 flex justify-center">
             <Link
               to="/winners"

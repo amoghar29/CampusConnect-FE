@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {
   Mail,
   Building,
-  Image,
   Edit2,
   X,
   Save,
@@ -10,7 +9,6 @@ import {
   Calendar,
   Users,
   Link,
-  Upload,
 } from "lucide-react";
 import FormInput from "../form/FormInput";
 import FormTextArea from "../form/FormTextArea";
@@ -18,6 +16,7 @@ import useFetchData from "../../customHooks/fetchData";
 import useSubmitForm from "../../customHooks/submitForm";
 import { SuccessCard } from "../common/SuccessCard";
 import SkeletonLoader from "../common/SkeletonLoader";
+import ImageUploader from "../form/ImageUpload";
 const ProfileSection = () => {
   const {
     loading,
@@ -26,11 +25,8 @@ const ProfileSection = () => {
   } = useFetchData("admin/clubs/clubInfo");
   const { submitForm } = useSubmitForm();
   const [isEditing, setIsEditing] = useState(false);
-  const [logoFile, setLogoFile] = useState(null);
-  const [logoPreview, setLogoPreview] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  // Move formData state after data is loaded
   const [formData, setFormData] = useState({
     clubName: "",
     email: "",
@@ -49,7 +45,6 @@ const ProfileSection = () => {
     achievements: "",
   });
 
-  // Update formData when initialData is loaded
   useEffect(() => {
     if (initialData) {
       setFormData({
@@ -81,17 +76,6 @@ const ProfileSection = () => {
     }));
   };
 
-  const handleLogoChange = (e) => {
-    if (!isEditing) return;
-
-    const file = e.target.files[0];
-    if (file) {
-      setLogoFile(file);
-      const previewUrl = URL.createObjectURL(file);
-      setLogoPreview(previewUrl);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isEditing) return;
@@ -104,10 +88,6 @@ const ProfileSection = () => {
           .filter((item) => item.trim()),
       };
 
-      if (logoFile) {
-        formattedData.logo = logoFile;
-      }
-
       const response = await submitForm(
         "put",
         "admin/clubs/clubInfo",
@@ -117,13 +97,8 @@ const ProfileSection = () => {
         setSuccessMessage("Club details updated successfully");
         setIsEditing(false);
       }
-
-      if (logoPreview) {
-        URL.revokeObjectURL(logoPreview);
-        setLogoPreview(null);
-      }
     } catch (error) {
-      console.error("Error updating profile:", error);
+      setSuccessMessage(false)
     }
   };
 
@@ -148,46 +123,6 @@ const ProfileSection = () => {
     setIsEditing(false);
   };
 
-  const logoSection = (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
-        Club Logo
-      </label>
-      <div className="flex items-center gap-4">
-        <div className="w-24 h-24 rounded-lg border border-gray-300 overflow-hidden">
-          {logoPreview || formData.logo ? (
-            <img
-              src={logoPreview || formData.logo}
-              alt="Club logo"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-50">
-              <Image className="w-8 h-8 text-gray-400" />
-            </div>
-          )}
-        </div>
-        {isEditing && (
-          <div>
-            <label
-              htmlFor="logo-upload"
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer"
-            >
-              <Upload className="h-4 w-4" />
-              Upload New Logo
-            </label>
-            <input
-              id="logo-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleLogoChange}
-              className="hidden"
-            />
-          </div>
-        )}
-      </div>
-    </div>
-  );
   if (loading) {
     return <SkeletonLoader type="profile" />;
   }
@@ -226,9 +161,21 @@ const ProfileSection = () => {
           <h3 className="text-lg font-medium text-gray-900 mb-4">
             Basic Information
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="md:col-span-2">{logoSection}</div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex items-center gap-4">
+              <ImageUploader
+                title="Club Logo"
+                value={initialData?.logo}
+                onChange={(file) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    logo: file,
+                  }));
+                }}
+                maxSize={2 * 1024 * 1024}
+              />
+            </div>
             <FormInput
               label="Club Name"
               name="clubName"

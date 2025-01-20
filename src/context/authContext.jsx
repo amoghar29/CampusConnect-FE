@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
     } catch (error) {
-      console.error("Token verification failed:", error);
       setIsAuthenticated(false);
       return false;
     } finally {
@@ -53,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
       setVerificationDone(true);
     } catch (error) {
-      console.error("Logout failed:", error);
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }

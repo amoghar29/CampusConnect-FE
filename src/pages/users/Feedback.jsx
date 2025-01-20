@@ -49,8 +49,6 @@ export default function Feedback() {
         }));
         setClubs(clubOptions);
       } catch (error) {
-        console.error("Error fetching clubs:", error);
-      }
     };
 
     fetchClubs();

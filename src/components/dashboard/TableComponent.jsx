@@ -1,7 +1,6 @@
 const ResponsiveTable = ({ headers, data, renderRow }) => {
   return (
     <div className="min-w-full">
-      {/* Desktop View */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50">

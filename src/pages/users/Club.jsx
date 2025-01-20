@@ -1,7 +1,6 @@
 import GradientBackground from "../../components/common/GradientBackground";
 import ClubCard from "../../components/club/ClubCard";
 import useFetchData from "../../customHooks/fetchData";
-import Loading from "../../components/common/Loading";
 import { FailureCard } from "../../components/common/FailureCard";
 
 export default function Club() {

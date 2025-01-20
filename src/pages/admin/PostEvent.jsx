@@ -6,10 +6,8 @@ import {
   MapPin,
   FileText,
   Users,
-  X,
   PenTool,
-  Coins,
-  Image as ImageIcon,
+  IndianRupee,
   ChevronRight,
   Calendar,
 } from "lucide-react";
@@ -18,7 +16,10 @@ import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
+import ImageUploader from "../../components/form/ImageUpload";
+
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const EventCreationForm = () => {
   const [eventData, setEventData] = useState({
     title: "",
@@ -36,8 +37,6 @@ const EventCreationForm = () => {
   const [loading, setLoading] = useState(false);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [dragActive, setDragActive] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,79 +46,22 @@ const EventCreationForm = () => {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        alert("File size exceeds 10MB");
-        return;
-      }
-      setEventData((prev) => ({
-        ...prev,
-        banner: file,
-      }));
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert("File size exceeds 5MB");
-        return;
-      }
-      setEventData((prev) => ({
-        ...prev,
-        banner: file,
-      }));
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeImage = () => {
-    setImagePreview(null);
-    setEventData((prev) => ({
-      ...prev,
-      banner: null,
-    }));
-  };
-
   const handleEventSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const formData = new FormData();
+      
       Object.keys(eventData).forEach((key) => {
-        if (key === "banner" && eventData[key]) {
-          formData.append("banner", eventData[key]);
-        } else if (eventData[key]) {
+        if (key !== 'banner' && eventData[key]) {
           formData.append(key, eventData[key]);
         }
       });
+
+      if (eventData.banner) {
+        formData.append('banner', eventData.banner);
+      }
 
       const response = await axios.post(
         `${BACKEND_URL}/admin/post-event`,
@@ -138,7 +80,6 @@ const EventCreationForm = () => {
         throw new Error("Failed to create event");
       }
     } catch (error) {
-      console.error("Error creating event:", error);
       setSubmittedFailure(true);
     } finally {
       setLoading(false);
@@ -178,7 +119,7 @@ const EventCreationForm = () => {
     >
       <GradientBackground position="top" />
       <form onSubmit={handleEventSubmit} className="space-y-6">
-        {/* Event Info Section */}
+        {/* Event Information Section */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
             <FileText className="h-4 w-4 text-indigo-500" />
@@ -200,11 +141,7 @@ const EventCreationForm = () => {
               label="Date"
               type="date"
               name="startDate"
-              value={
-                eventData.startDate
-                  ? new Date(eventData.startDate).toISOString().split("T")[0]
-                  : ""
-              }
+              value={eventData.startDate}
               onChange={handleChange}
               icon={Calendar}
               required
@@ -214,9 +151,7 @@ const EventCreationForm = () => {
               label="Time"
               type="time"
               name="startTime"
-              value={
-                eventData.startTime ? eventData.startTime.split("T")[1] : ""
-              }
+              value={eventData.startTime}
               onChange={handleChange}
               icon={Calendar}
               required
@@ -244,58 +179,19 @@ const EventCreationForm = () => {
         </div>
 
         {/* Image Upload Section */}
-        <div className="mb-8">
-          <div
-            className={`relative border-2 border-dashed rounded-lg p-6 transition-all
-              ${
-                dragActive
-                  ? "border-indigo-500 bg-indigo-50"
-                  : "border-gray-300 hover:border-indigo-400"
-              }`}
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-          >
-            {imagePreview ? (
-              <div className="relative">
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-                <button
-                  type="button"
-                  onClick={removeImage}
-                  className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-            ) : (
-              <div className="text-center">
-                <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
-                <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                  <label className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                    <span>Upload event banner</span>
-                    <input
-                      type="file"
-                      className="sr-only"
-                      onChange={handleImageChange}
-                      accept="image/*"
-                    />
-                  </label>
-                  <p className="pl-1">or drag and drop</p>
-                </div>
-                <p className="text-xs leading-5 text-gray-600">
-                  PNG, JPG, GIF up to 10MB
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+        <ImageUploader
+          title="Event Banner"
+          value={null}
+          onChange={(file) => {
+            setEventData((prev) => ({
+              ...prev,
+              banner: file  
+            }));
+          }}
+          maxSize={2 * 1024 * 1024}
+        />
 
-        {/* Event Options */}
+        {/* Event Options Section */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
             <Users className="h-4 w-4 text-indigo-500" />
@@ -327,7 +223,7 @@ const EventCreationForm = () => {
               value={eventData.registrationFee}
               onChange={handleChange}
               placeholder="Enter fee"
-              icon={Coins}
+              icon={IndianRupee}
             />
 
             <FormInput
@@ -341,7 +237,6 @@ const EventCreationForm = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
         <div className="pt-6">
           <button
             type="submit"

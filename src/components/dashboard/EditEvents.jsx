@@ -6,10 +6,8 @@ import {
   MapPin,
   FileText,
   Users,
-  X,  
+  IndianRupee,
   PenTool,
-  Coins,
-  Image as ImageIcon,
   ChevronRight,
   Calendar,
   Trophy,
@@ -18,9 +16,10 @@ import FormContainer from "../../components/form/FormContainer";
 import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
-import Loading from "../../components/common/Loading";
+import SkeletonLoader from "../../components/common/SkeletonLoader";
 import useSubmitForm from "../../customHooks/submitForm";
 import useFetchData from "../../customHooks/fetchData";
+import ImageUploader from "../../components/form/ImageUpload";
 
 const EditEventForm = () => {
   const { eventId } = useParams();
@@ -42,9 +41,6 @@ const EditEventForm = () => {
   });
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
-  const [bannerPreview, setBannerPreview] = useState(null);
-  const [eventImagePreview, setEventImagePreview] = useState(null);
-  const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const { loading: submitting, submitForm } = useSubmitForm();
@@ -65,13 +61,6 @@ const EditEventForm = () => {
         banner: fetchedEventData.banner,
         eventImage: fetchedEventData.eventImage,
       });
-
-      if (fetchedEventData.bannerUrl) {
-        setBannerPreview(fetchedEventData.bannerUrl);
-      }
-      if (fetchedEventData.eventImageUrl) {
-        setEventImagePreview(fetchedEventData.eventImageUrl);
-      }
     }
   }, [fetchedEventData]);
 
@@ -81,64 +70,6 @@ const EditEventForm = () => {
       ...prev,
       [name]: value || "",
     }));
-  };
-
-  const handleImageChange = (e, imageType) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        alert("File size exceeds 10MB");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (imageType === "banner") {
-          setBannerPreview(reader.result);
-          setEventData((prev) => ({ ...prev, banner: file }));
-        } else {
-          setEventImagePreview(reader.result);
-          setEventData((prev) => ({ ...prev, eventImage: file }));
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleDrop = (e, imageType) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        alert("File size exceeds 10MB");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (imageType === "banner") {
-          setBannerPreview(reader.result);
-          setEventData((prev) => ({ ...prev, banner: file }));
-        } else {
-          setEventImagePreview(reader.result);
-          setEventData((prev) => ({ ...prev, eventImage: file }));
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeImage = (imageType) => {
-    if (imageType === "banner") {
-      setBannerPreview(null);
-      setEventData((prev) => ({ ...prev, banner: null }));
-    } else {
-      setEventImagePreview(null);
-      setEventData((prev) => ({ ...prev, eventImage: null }));
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -161,7 +92,6 @@ const EditEventForm = () => {
         formData
       );
 
-
       if (result && result.status === 200) {
         fetchEventData();
         setSubmittedSuccess(true);
@@ -169,7 +99,6 @@ const EditEventForm = () => {
         setSubmittedFailure(true);
       }
     } catch (error) {
-      console.error("Error updating event:", error);
       setSubmittedFailure(true);
     } finally {
       setLoading(false);
@@ -177,7 +106,7 @@ const EditEventForm = () => {
   };
 
   if (loading || fetching || submitting) {
-    return <Loading message={"Loading Event Data..."} loading={loading} />;
+    return <SkeletonLoader type="table" />;
   }
 
   if (submittedSuccess) {
@@ -202,75 +131,10 @@ const EditEventForm = () => {
     );
   }
 
-  const ImageUploadSection = ({ type, preview, handleDrop }) => (
-    <div className="mb-8">
-      <div
-        className={`relative border-2 border-dashed rounded-lg p-6 transition-all
-          ${
-            dragActive
-              ? "border-indigo-500 bg-indigo-50"
-              : "border-gray-300 hover:border-indigo-400"
-          }`}
-        onDragEnter={(e) => {
-          e.preventDefault();
-          setDragActive(true);
-        }}
-        onDragLeave={(e) => {
-          e.preventDefault();
-          setDragActive(false);
-        }}
-        onDragOver={(e) => {
-          e.preventDefault();
-          setDragActive(true);
-        }}
-        onDrop={(e) => handleDrop(e, type)}
-      >
-        {preview ? (
-          <div className="relative">
-            <img
-              src={preview}
-              alt={`${type} Preview`}
-              className="w-full h-48 object-cover rounded-lg"
-            />
-            <button
-              type="button"
-              onClick={() => removeImage(type)}
-              className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-            >
-              <X size={20} />
-            </button>
-          </div>
-        ) : (
-          <div className="text-center">
-            <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <div className="mt-4 flex text-sm leading-6 text-gray-600">
-              <label className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                <span>
-                  Upload {type === "banner" ? "event banner" : "event image"}
-                </span>
-                <input
-                  type="file"
-                  className="sr-only"
-                  onChange={(e) => handleImageChange(e, type)}
-                  accept="image/*"
-                />
-              </label>
-              <p className="pl-1">or drag and drop</p>
-            </div>
-            <p className="text-xs leading-5 text-gray-600">
-              PNG, JPG, GIF up to 10MB
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <FormContainer title="Edit Event" subtitle="Update your event details">
       <GradientBackground position="top" />
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Event Info Section */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
             <FileText className="h-4 w-4 text-indigo-500" />
@@ -329,7 +193,6 @@ const EditEventForm = () => {
           />
         </div>
 
-        {/* Prize Information */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
             <Trophy className="h-4 w-4 text-indigo-500" />
@@ -366,34 +229,34 @@ const EditEventForm = () => {
           </div>
         </div>
 
-        {/* Image Upload Sections */}
         <div className="space-y-4">
-          <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
-            <ImageIcon className="h-4 w-4 text-indigo-500" />
-            <h3>Event Banner</h3>
-          </div>
-          <ImageUploadSection
-            type="banner"
-            preview={bannerPreview}
-            handleChange={handleImageChange}
-            handleDrop={handleDrop}
+          <ImageUploader
+            title="Event Banner"
+            value={fetchedEventData?.banner}
+            onChange={(file) => {
+              setEventData((prev) => ({
+                ...prev,
+                banner: file,
+              }));
+            }}
+            maxSize={2 * 1024 * 1024}
           />
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
-            <ImageIcon className="h-4 w-4 text-indigo-500" />
-            <h3>Event Image</h3>
-          </div>
-          <ImageUploadSection
-            type="eventImage"
-            preview={eventImagePreview}
-            handleChange={handleImageChange}
-            handleDrop={handleDrop}
+          <ImageUploader
+            title="Event Image"
+            value={fetchedEventData?.eventImage}
+            onChange={(file) => {
+              setEventData((prev) => ({
+                ...prev,
+                eventImage: file,
+              }));
+            }}
+            maxSize={2 * 1024 * 1024}
           />
         </div>
 
-        {/* Event Options */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
             <Users className="h-4 w-4 text-indigo-500" />
@@ -416,7 +279,7 @@ const EditEventForm = () => {
               value={eventData.registrationFee}
               onChange={handleChange}
               placeholder="Enter fee"
-              icon={Coins}
+              icon={IndianRupee}
             />
 
             <FormInput

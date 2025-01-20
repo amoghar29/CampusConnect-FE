@@ -9,18 +9,17 @@ import {
   Users,
   Trophy,
   Calendar,
-  Image as ImageIcon,
   ChevronRight,
   Linkedin,
   Twitter,
   Instagram,
-  X,
-  DollarSign,
+  IndianRupee,
 } from "lucide-react";
 import FormContainer from "../../components/form/FormContainer";
 import FormInput from "../../components/form/FormInput";
 import FormTextArea from "../../components/form/FormTextArea";
 import GradientBackground from "../../components/common/GradientBackground";
+import ImageUploader from "../../components/form/ImageUpload";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const RegisterClub = () => {
   const [clubData, setClubData] = useState({
@@ -43,9 +42,6 @@ const RegisterClub = () => {
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [logoPreview, setLogoPreview] = useState(null);
-  const [dragActive, setDragActive] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,46 +68,6 @@ const RegisterClub = () => {
       newAchievements[index] = value;
       return { ...prev, achievements: newAchievements };
     });
-  };
-
-  // Image handling functions similar to PostEvent.jsx
-  const handleLogoChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert("File size exceeds 5MB");
-        return;
-      }
-      setClubData((prev) => ({
-        ...prev,
-        logo: file,
-      }));
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setLogoPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(e.type === "dragenter" || e.type === "dragover");
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-
-    const file = e.dataTransfer.files?.[0];
-    if (file) handleLogoChange({ target: { files: [file] } });
-  };
-
-  const removeLogo = () => {
-    setLogoPreview(null);
-    setClubData((prev) => ({ ...prev, logo: null }));
   };
 
   const handleSubmit = async (e) => {
@@ -156,7 +112,6 @@ const RegisterClub = () => {
         setSubmittedSuccess(true);
       }
     } catch (error) {
-      console.error("Registration failed:", error);
       setSubmittedFailure(true);
     } finally {
       setLoading(false);
@@ -192,7 +147,6 @@ const RegisterClub = () => {
     >
       <GradientBackground position="top" />
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Basic Information */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
             <Building2 className="h-4 w-4 text-indigo-500" />
@@ -225,64 +179,19 @@ const RegisterClub = () => {
             onChange={handleChange}
             placeholder="Enter registration link"
           />
-
-          {/* Logo Upload Section */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Club Logo
-            </label>
-            <div
-              className={`relative border-2 border-dashed rounded-lg p-6 transition-all
-                ${
-                  dragActive
-                    ? "border-indigo-500 bg-indigo-50"
-                    : "border-gray-300 hover:border-indigo-400"
-                }`}
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-            >
-              {logoPreview ? (
-                <div className="relative">
-                  <img
-                    src={logoPreview}
-                    alt="Preview"
-                    className="w-32 h-32 object-cover rounded-lg mx-auto"
-                  />
-                  <button
-                    type="button"
-                    onClick={removeLogo}
-                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
-                  <div className="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
-                    <label className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                      <span>Upload logo</span>
-                      <input
-                        type="file"
-                        className="sr-only"
-                        onChange={handleLogoChange}
-                        accept="image/*"
-                      />
-                    </label>
-                    <p className="pl-1">or drag and drop</p>
-                  </div>
-                  <p className="text-xs leading-5 text-gray-600">
-                    PNG up to 2MB
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
+          <ImageUploader
+            title="Club Logo"
+            value={clubData.logo}
+            onChange={(file) => {
+              setClubData((prev) => ({
+                ...prev,
+                logo: file,
+              }));
+            }}
+          maxSize={2 * 1024 * 1024}
+          />
         </div>
 
-        {/* Leadership Information */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
             <Users className="h-4 w-4 text-indigo-500" />
@@ -310,7 +219,6 @@ const RegisterClub = () => {
           </div>
         </div>
 
-        {/* Contact Information */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
             <Mail className="h-4 w-4 text-indigo-500" />
@@ -339,7 +247,6 @@ const RegisterClub = () => {
             />
           </div>
 
-          {/* Social Media Links */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormInput
               label="linkedIn"
@@ -370,7 +277,6 @@ const RegisterClub = () => {
           </div>
         </div>
 
-        {/* Additional Information */}
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-lg font-semibold text-gray-900">
             <Trophy className="h-4 w-4 text-indigo-500" />
@@ -395,11 +301,10 @@ const RegisterClub = () => {
               value={clubData.membershipFee}
               onChange={handleChange}
               placeholder="Enter amount"
-              icon={DollarSign}
+              icon={IndianRupee}
             />
           </div>
 
-          {/* Achievements */}
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
               Achievements
@@ -421,7 +326,6 @@ const RegisterClub = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
         <div className="pt-6">
           <button
             type="submit"

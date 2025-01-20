@@ -6,6 +6,7 @@ export default function FormTextArea({
   required = false,
   placeholder,
   rows = 4,
+  disabled = false
 }) {
   return (
     <div className="space-y-2">
@@ -21,6 +22,7 @@ export default function FormTextArea({
         onChange={onChange}
         placeholder={placeholder}
         className="block w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
+        disabled={disabled}
       />
     </div>
   );

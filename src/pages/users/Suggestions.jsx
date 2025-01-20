@@ -42,7 +42,7 @@ export default function Suggestions() {
         }));
         setClubs(clubOptions);
       } catch (error) {
-        console.error("Error fetching clubs:", error);
+        setClubs([]);
       }
     };
 
@@ -67,7 +67,6 @@ export default function Suggestions() {
         setSubmittedSuccess(true);
       }
     } catch (error) {
-      console.error("Submission failed:", error);
       setSubmittedFailure(true);
     }
   };

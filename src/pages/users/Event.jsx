@@ -9,10 +9,9 @@ export default function Event() {
   const currentDate = new Date();
   const { loading, data: events, error } = useFetchData("events");
 
-  // Calculate filtered events even during loading to maintain layout
   const filteredEvents = loading
-    ? [...Array(3)].map((_, index) => null) // Create array of 3 null items for skeleton loading
-    : events && Array.isArray(events) // Check if events is not null and is an array
+    ? [...Array(3)].map((_, index) => null) 
+    : events && Array.isArray(events)
     ? events
         .filter((event) => {
           const eventDate = new Date(event.startDate);
@@ -21,12 +20,11 @@ export default function Event() {
           return true;
         })
         .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
-    : []; // Default to an empty array if events is null or not an array
+    : []; 
 
   return (
     <div className="">
       <GradientBackground position="top" />
-      {/* Hero Section */}
       <div className="relative isolate px-4 sm:px-[10%] pt-14">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">

@@ -14,10 +14,10 @@ const useFetchData = (url,refreshTrigger) => {
         const response = await axios.get(`${BACKEND_URL}/${url}`, {
           withCredentials: true,
         });
-        setData(response.data); // Axios automatically parses JSON, use response.data
+        setData(response.data); 
         setLoading(false);
       } catch (err) {
-        setError(err); // Set error state in case of a request failure
+        setError(err); 
         setLoading(false);
       }
     };

@@ -15,7 +15,7 @@ const EventCard = ({ event, handleDelete }) => {
   function formatDateToDDMMYYYY(dateString) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
     const year = date.getFullYear();
 
     return `${day}-${month}-${year}`;
@@ -121,7 +121,6 @@ export default function EventsSection() {
         </Link>
       </div>
 
-      {/* Upcoming Events */}
       <div className="mb-8">
         <h3 className="text-lg font-medium mb-4">Upcoming Events</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -135,12 +134,11 @@ export default function EventsSection() {
         </div>
       </div>
 
-      {/* Past Events */}
       <div>
         <h3 className="text-lg font-medium mb-4">Past Events</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {pastEvents.map((event) => (
-            <EventCard key={event._id} event={event} onDelete={handleDelete} />
+            <EventCard key={event._id} event={event} handleDelete={handleDelete} />
           ))}
         </div>
       </div>
