@@ -93,5 +93,21 @@ npm run dev
 - Public routes for general access
 - User authentication system
 
+### Project Structure
+```
+src/
+├── components/
+│   ├── common/          # Reusable UI components
+│   ├── dashboard/       # Admin dashboard components
+│   ├── form/            # Form-related components
+│   ├── home/            # Homepage components
+│   └── club/            # Club-related components
+├── pages/
+│   ├── admin/           # Admin pages
+│   └── users/           # User-facing pages
+├── routes/              # Route configurations
+├── utils/               # Utility functions
+└── customHooks/         # Custom React hooks
+```
 
 
