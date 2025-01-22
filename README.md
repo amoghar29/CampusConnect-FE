@@ -18,7 +18,7 @@ Campus Connect is a centralized platform designed to revolutionize event and clu
 - Club membership management
 - Direct connection with club administrators
 
-### 3. Achievement Showcase
+### 3. Achievement Showcase (coming soon...)
 - Dedicated section for event and hackathon winners
 - Recognition of student achievements
 - Showcase of club activities and accomplishments
@@ -28,47 +28,6 @@ Campus Connect is a centralized platform designed to revolutionize event and clu
 - Suggestion portal for new events
 - User profiles for students
 - Administrative dashboard for club managers
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js
-- npm or yarn
-- Modern web browser
-
-### Installation
-
-1. Clone the repository
-```bash
-git clone https://github.com/amoghar29/CampusConnect-FE.git
-cd CampusConnect-FE
-```
-2.Install dependencies
-```
-npm install
-```
-3.Set up environment variables
-```
-VITE_BACKEND_URL=your_backend_url
-```
-4.Start the development server
-```
-npm run dev
-```
-## 🛠️ Technical Stack
-
-### Frontend
-- **Framework:** React.js
-- **Build Tool:** Vite
-- **Styling:** Tailwind CSS
-- **HTTP Client:** Axios
-- **Icons:** Lucide React
-- **Routing:** React Router DOM
-
-### Backend
-- **Runtime:** Node.js
-- **Database:** MongoDB
-- **Storage Services:** Cloudinary/AWS
 
 ## 📱 Key Components
 
@@ -92,6 +51,52 @@ npm run dev
 - Protected routes for administrative functions
 - Public routes for general access
 - User authentication system
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js
+- npm or yarn
+- Modern web browser
+
+
+## 🛠️ Technical Stack
+
+### Frontend
+- **Framework:** React.js
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **HTTP Client:** Axios
+- **Icons:** Lucide React
+- **Routing:** React Router DOM
+
+### Backend
+- **Runtime Environment:** Node.js
+- **Framework:** Express.js
+- **Database:** MongoDB with Mongoose ODM
+- **Authentication:** JWT (JSON Web Tokens)
+- **Password Encryption:** Bcrypt
+- **File Storage:** AWS S3 & Cloudinary
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/amoghar29/CampusConnect-FE.git
+cd CampusConnect-FE
+```
+2.Install dependencies
+```
+npm install
+```
+3.Set up environment variables
+```
+VITE_BACKEND_URL=your_backend_url
+```
+4.Start the development server
+```
+npm run dev
+```
 
 ### Project Structure
 ```
