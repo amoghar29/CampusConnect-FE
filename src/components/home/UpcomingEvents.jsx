@@ -3,7 +3,6 @@ import { ArrowRightIcon } from "lucide-react";
 import EventCard from "../event/EventCard";
 import useFetchData from "../../customHooks/fetchData";
 import Loading from "../common/Loading";
-import { FailureCard } from "../common/FailureCard";
 export default function UpcomingEvents() {
   const { loading, data: events, error } = useFetchData("events");
 

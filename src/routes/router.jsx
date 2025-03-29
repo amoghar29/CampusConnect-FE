@@ -20,13 +20,16 @@ import SuggestionsSection from "../components/dashboard/Suggestion";
 import NotFound from "../components/common/NotFoundCard";
 import EditEventForm from "../components/dashboard/EditEvents";
 import PublicRoute from "../utils/PublicRoute";
+import ChatBot from "../pages/users/Chatbot";
 export default function Router() {
   return (
     <div className="App">
       <Header />
+      <ChatBot/>
       <div className="content" style={{ marginTop: "80px" }}>
         <Routes>
           {/* Public Routes */}
+          
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<Signup />} />

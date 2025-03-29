@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Send, Smile, Frown, Meh } from "lucide-react";
 import { SuccessCard } from "../../components/common/SuccessCard";
 import { FailureCard } from "../../components/common/FailureCard";
@@ -10,8 +9,8 @@ import FormSelect from "../../components/form/FormSelect";
 import FormInput from "../../components/form/FormInput";
 import GradientBackground from "../../components/common/GradientBackground";
 import useSubmitForm from "../../customHooks/submitForm";
+import useFetchData from "../../customHooks/fetchData";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Feedback() {
   const [rating, setRating] = useState(0);
@@ -22,8 +21,7 @@ export default function Feedback() {
   const [loading, setLoading] = useState(false);
   const [eventTitle, setEventTitle] = useState("");
   const [hostingClub, setHostingClub] = useState("");
-  const [clubs, setClubs] = useState([]);
-  const { response, error, submitForm } = useSubmitForm();
+  const { submitForm } = useSubmitForm();
 
   const categories = [
     "Event Organization",
@@ -39,23 +37,7 @@ export default function Feedback() {
     { icon: Smile, label: "Satisfied", value: 5 },
   ];
 
-  useEffect(() => {
-    const fetchClubs = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/clubs/allClubNames`);
-        const clubOptions = response.data.map((club) => ({
-          label: club.clubName,
-          value: club._id,
-        }));
-        setClubs(clubOptions);
-      } catch (error) {
-        setClubs([]);
-      }
-
-      fetchClubs();
-    };
-  }, []);
-
+  const {data:clubs} = useFetchData("clubs/allClubNames")
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -174,10 +156,10 @@ export default function Feedback() {
           name="hostingClub"
           value={hostingClub}
           onChange={(e) => setHostingClub(e.target.value)}
-          options={clubs.map((club) => ({
-            value: club.value,
-            label: club.label,
-          }))}
+          options={clubs? clubs.map((club) => ({
+            value: club._id,
+            label: club.clubName,
+          })):[]}
           required
         />
 
