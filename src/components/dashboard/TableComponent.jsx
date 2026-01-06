@@ -1,4 +1,12 @@
 const ResponsiveTable = ({ headers, data, renderRow }) => {
+  if (!data || data.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500 text-sm">No data available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-w-full">
       <div className="hidden md:block overflow-x-auto">
@@ -16,14 +24,14 @@ const ResponsiveTable = ({ headers, data, renderRow }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {data?.map((item) => renderRow(item))}
+            {data.map((item) => renderRow(item))}
           </tbody>
         </table>
       </div>
 
       {/* Mobile View */}
       <div className="md:hidden space-y-4">
-        {data?.map((item) => (
+        {data.map((item) => (
           <div
             key={item._id}
             className="bg-white p-4 rounded-lg border border-gray-200 space-y-3"
@@ -32,8 +40,8 @@ const ResponsiveTable = ({ headers, data, renderRow }) => {
               <div key={index} className="space-y-1">
                 <div className="text-sm font-medium text-gray-500">{header}</div>
                 <div className="text-sm text-gray-900">
-                  {typeof renderRow(item, true)[index] === 'object' 
-                    ? renderRow(item, true)[index].content 
+                  {typeof renderRow(item, true)[index] === 'object'
+                    ? renderRow(item, true)[index].content
                     : renderRow(item, true)[index]}
                 </div>
               </div>

@@ -51,9 +51,9 @@ export default function Feedback() {
       } catch (error) {
         setClubs([]);
       }
-
-      fetchClubs();
     };
+
+    fetchClubs();
   }, []);
 
   const handleSubmit = async (e) => {

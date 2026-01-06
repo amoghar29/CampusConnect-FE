@@ -33,8 +33,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = (token) => {
-    Cookies.set("access_token", token, { expires: 1, path: "/" });
+  const login = () => {
     setIsAuthenticated(true);
     setVerificationDone(true);
     setIsLoading(false);

@@ -37,6 +37,7 @@ const EventCreationForm = () => {
   const [loading, setLoading] = useState(false);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [submittedFailure, setSubmittedFailure] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,6 +81,8 @@ const EventCreationForm = () => {
         throw new Error("Failed to create event");
       }
     } catch (error) {
+      const message = error.response?.data?.message || "Failed to create event. Please try again.";
+      setErrorMessage(message);
       setSubmittedFailure(true);
     } finally {
       setLoading(false);
@@ -102,12 +105,15 @@ const EventCreationForm = () => {
   }
 
   if (submittedFailure) {
+    const isClubNotRegistered = errorMessage.includes("register your club");
+
     return (
       <FailureCard
         title={"Failure"}
-        message={"Failed to submit suggestion."}
-        buttonValue={"Try Again"}
-        handleTryAgain={() => setSubmittedFailure(false)}
+        message={errorMessage}
+        buttonValue={isClubNotRegistered ? "Register Club" : "Try Again"}
+        redirect={isClubNotRegistered ? "/admin/register-club" : undefined}
+        handleTryAgain={isClubNotRegistered ? undefined : () => setSubmittedFailure(false)}
       />
     );
   }

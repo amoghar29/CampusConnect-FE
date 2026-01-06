@@ -1,4 +1,4 @@
-import { useState ,useContext} from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { authContext } from "../../context/authContext";
 import { Dialog, DialogPanel } from "@headlessui/react";
@@ -10,15 +10,19 @@ const navigation = [
   { name: "Home", to: "/home" },
   { name: "Clubs", to: "/clubs" },
   { name: "Explore Events", to: "/explore-events" },
-  { name: "Winners", to: "/winners" },
+  // { name: "Winners", to: "/winners" },
   { name: "Feedback", to: "/feedback" },
   { name: "Suggestions", to: "/suggestion" },
 ];
 
 export default function Header() {
   const navigate = useNavigate();
-  const { isAuthenticated,setIsAuthenticated,logout  } = useContext(authContext);
+  const { isAuthenticated, setIsAuthenticated, logout, verifyToken } = useContext(authContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    verifyToken();
+  }, [verifyToken]);
   function handleLogout() {
     logout();
     setMobileMenuOpen(false);

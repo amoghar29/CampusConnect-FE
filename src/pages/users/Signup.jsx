@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { authContext } from "../../context/authContext";
 import GradientBackground from "../../components/common/GradientBackground";
 import Loading from "../../components/common/Loading";
 import { SuccessCard } from "../../components/common/SuccessCard";
@@ -8,6 +10,8 @@ import FormInput from "../../components/form/FormInput";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Signup() {
+  const { login } = useContext(authContext);
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -32,7 +36,8 @@ export default function Signup() {
       );
 
       if (response.status === 201) {
-        setRegistrationSuccess(true);
+        login();
+        navigate("/admin/register-club");
       }
     } catch (error) {
       setRegistrationError(true);

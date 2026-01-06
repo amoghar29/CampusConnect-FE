@@ -128,6 +128,30 @@ const ProfileSection = () => {
   }
 
   if (error) {
+    const isClubNotRegistered = error?.response?.status === 404;
+
+    if (isClubNotRegistered) {
+      return (
+        <div className="bg-white rounded-lg py-8 p-6 border border-gray-200">
+          <div className="text-center">
+            <Building className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              Club Not Registered
+            </h3>
+            <p className="text-gray-500 mb-6">
+              You haven't registered your club yet. Please complete the club registration first.
+            </p>
+            <a
+              href="/admin/register-club"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+            >
+              Register Club
+            </a>
+          </div>
+        </div>
+      );
+    }
+
     return <div>Error loading club details</div>;
   }
   if (successMessage) {

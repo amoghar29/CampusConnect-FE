@@ -34,8 +34,7 @@ export default function Signin() {
 
 
       if (response.status === 200) {
-        const token = response.data.access_token;
-        login(token);
+        login();
         navigate("/admin/dashboard/events");
       }
     } catch (error) {
